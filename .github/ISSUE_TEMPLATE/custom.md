@@ -1,3 +1,10 @@
+  ---
+   name: バグ報告
+   about: バグや問題を報告する
+   title: '[BUG] '
+   labels: bug
+   assignees: ''
+   ---
 ## 概要
 <!-- 1-2文で問題や提案の核心を記述 -->
 
