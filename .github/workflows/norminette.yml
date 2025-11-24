@@ -27,7 +27,19 @@ jobs:
     - name: Run Norminette on C files
       run: |
         echo "Running Norminette..."
-        norminette srcs/ includes/
+        norminette srcs/ includes/ > norminette_output.txt 2>&1
+        if grep -E "(Error!|Error:)" norminette_output.txt; then
+          echo "❌ Norminette errors found!"
+          cat norminette_output.txt
+          exit 1
+        fi
+        if grep -i "Notice:" norminette_output.txt; then
+          echo "⚠️  Norminette notices found!"
+          cat norminette_output.txt
+          exit 1
+        fi
+        echo "✅ All files pass Norminette (no errors or notices)!"
+        cat norminette_output.txt
     
     - name: Norminette Summary
       if: failure()
