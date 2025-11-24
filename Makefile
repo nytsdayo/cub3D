@@ -6,7 +6,7 @@
 #    By: rnakatan <rnakatan@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/18 00:00:00 by cub3d             #+#    #+#              #
-#    Updated: 2025/11/24 08:32:15 by rnakatan         ###   ########.fr        #
+#    Updated: 2025/11/24 10:51:28 by rnakatan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ SRCS = $(SRC_DIR)/main.c \
 	   $(SRC_DIR)/parse/parse.c \
 	   $(SRC_DIR)/utils/ft_strlen.c \
 	   $(SRC_DIR)/utils/ft_strcmp.c \
+	   $(SRC_DIR)/utils/ft_strndup.c \
 	   $(SRC_DIR)/utils/read_map.c \
 	   $(SRC_DIR)/utils/free_map.c
 

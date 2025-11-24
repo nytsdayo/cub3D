@@ -6,7 +6,7 @@
 /*   By: rnakatan <rnakatan@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 19:18:08 by rnakatan          #+#    #+#             */
-/*   Updated: 2025/11/24 08:32:23 by rnakatan         ###   ########.fr       */
+/*   Updated: 2025/11/24 10:51:35 by rnakatan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	main(int argc, char *argv[])
 	map = read_map(argv[1]);
 	if (map == NULL)
 	{
-		write(0, "Error\n",6);
+		write(0, "Error\n", 6);
 		return (EXIT_FAILURE);
 	}
 	if (parse(map) != 0)
