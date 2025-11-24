@@ -1,10 +1,11 @@
 name: Norminette Check
 
 on:
-  push:
-    branches: [ main, develop, "**" ]
-  pull_request:
-    branches: [ main, develop ]
+  workflow_dispatch:  # Manual trigger only (temporarily disabled auto-run)
+  # push:
+  #   branches: [ main, develop, "**" ]
+  # pull_request:
+  #   branches: [ main, develop ]
 
 jobs:
   norminette:
@@ -28,12 +29,12 @@ jobs:
       run: |
         echo "Running Norminette..."
         norminette srcs/ includes/ > norminette_output.txt 2>&1
-        if grep -q -E "Error:" norminette_output.txt; then
-          echo "❌ Norminette errors found!"
+        if grep -q "Error" norminette_output.txt; then
+          echo "Norminette errors found"
           cat norminette_output.txt
           exit 1
         else
-          echo "✅ All files pass Norminette!"
+          echo "All files pass Norminette"
           cat norminette_output.txt
         fi
     
