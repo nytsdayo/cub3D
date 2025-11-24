@@ -6,7 +6,7 @@
 /*   By: rnakatan <rnakatan@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 19:39:26 by rnakatan          #+#    #+#             */
-/*   Updated: 2025/11/24 10:57:28 by rnakatan         ###   ########.fr       */
+/*   Updated: 2025/11/24 11:04:24 by rnakatan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,11 @@
 #include <unistd.h>
 #include "../../includes/utils/utils.h"
 #include <fcntl.h>
+
+#define BUFFER_SIZE 1024
+#define READ_SIZE 1023
+#define ERROR 1
+#define SUCCESS 0
 
 static int	process_buffer_lines(char ***map, char *buf);
 static void	*free_and_return_error(char **map);
@@ -26,17 +31,17 @@ const char	**read_map(const char *filename)
 {
 	const int	fd = open(filename, O_RDONLY);
 	char		**map;
-	char		buf[1024];
+	char		buf[BUFFER_SIZE];
 
 	if (fd < 0)
 		return (NULL);
 	map = NULL;
-	g_bytes_read = read(fd, buf, 1023);
+	g_bytes_read = read(fd, buf, READ_SIZE);
 	while (g_bytes_read > 0)
 	{
-		if (process_buffer_lines(&map, buf) == 1)
+		if (process_buffer_lines(&map, buf) == ERROR)
 			return ((const char **)free_and_return_error(map));
-		g_bytes_read = read(fd, buf, 1023);
+		g_bytes_read = read(fd, buf, READ_SIZE);
 	}
 	close(fd);
 	if (g_bytes_read < 0)
@@ -65,17 +70,17 @@ static int	process_buffer_lines(char ***map, char *buf)
 			*map = (char **)ft_realloc(*map, sizeof(char *) * g_line_count,
 					sizeof(char *) * (g_line_count + 1));
 			if (*map == NULL)
-				return (1);
+				return (ERROR);
 			(*map)[g_line_count] = ft_strndup(&buf[line_start],
 					i - line_start);
 			if ((*map)[g_line_count] == NULL)
-				return (1);
+				return (ERROR);
 			g_line_count++;
 			line_start = i + 1;
 		}
 		i++;
 	}
-	return (0);
+	return (SUCCESS);
 }
 
 static void	*free_and_return_error(char **map)
