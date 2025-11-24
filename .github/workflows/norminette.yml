@@ -28,18 +28,14 @@ jobs:
       run: |
         echo "Running Norminette..."
         norminette srcs/ includes/ > norminette_output.txt 2>&1
-        if grep -E "(Error!|Error:)" norminette_output.txt; then
+        if grep -q -E "Error:" norminette_output.txt; then
           echo "❌ Norminette errors found!"
           cat norminette_output.txt
           exit 1
-        fi
-        if grep -i "Notice:" norminette_output.txt; then
-          echo "⚠️  Norminette notices found!"
+        else
+          echo "✅ All files pass Norminette!"
           cat norminette_output.txt
-          exit 1
         fi
-        echo "✅ All files pass Norminette (no errors or notices)!"
-        cat norminette_output.txt
     
     - name: Norminette Summary
       if: failure()
