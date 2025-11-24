@@ -6,7 +6,7 @@
 #    By: rnakatan <rnakatan@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/18 00:00:00 by cub3d             #+#    #+#              #
-#    Updated: 2025/11/24 10:51:28 by rnakatan         ###   ########.fr        #
+#    Updated: 2025/11/24 11:11:27 by rnakatan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ NAME = cub3D
 # Compiler and flags
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
-INCLUDES = -I./includes -I./includes/core -I./includes/engine -I./includes/utils
+INCLUDES = -I./includes -I./includes/parse -I./includes/engine -I./includes/utils
 
 # Directories
 SRC_DIR = srcs
