@@ -1,0 +1,51 @@
+name: Norminette Check
+
+on:
+  workflow_dispatch:  # Manual trigger only (temporarily disabled auto-run)
+  # push:
+  #   branches: [ main, develop, "**" ]
+  # pull_request:
+  #   branches: [ main, develop ]
+
+jobs:
+  norminette:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+    
+    - name: Install Norminette
+      run: |
+        python3 -m pip install --upgrade pip setuptools
+        python3 -m pip install norminette
+    
+    - name: Run Norminette on C files
+      run: |
+        echo "Running Norminette..."
+        norminette srcs/ includes/ > norminette_output.txt 2>&1
+        if grep -q "Error" norminette_output.txt; then
+          echo "Norminette errors found"
+          cat norminette_output.txt
+          exit 1
+        else
+          echo "All files pass Norminette"
+          cat norminette_output.txt
+        fi
+    
+    - name: Norminette Summary
+      if: failure()
+      run: |
+        echo "❌ Norminette check failed!"
+        echo "Please fix the coding style issues above."
+        exit 1
+    
+    - name: Success
+      if: success()
+      run: |
+        echo "✅ All files pass Norminette!"

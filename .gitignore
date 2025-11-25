@@ -53,3 +53,29 @@ dkms.conf
 
 # debug information files
 *.dwo
+
+# Project specific
+cub3D
+obj/
+test
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Editor files
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# Core dumps
+core
+vgcore.*
+
+# Temporary files
+*.tmp
+*.temp
+a.out
