@@ -1,22 +1,24 @@
 name: Norminette Check
 
 on:
-  workflow_dispatch:  # Manual trigger only (temporarily disabled auto-run)
-  # push:
-  #   branches: [ main, develop, "**" ]
-  # pull_request:
-  #   branches: [ main, develop ]
+  workflow_dispatch:
+  push:
+    branches: [ main, develop, "**" ]
+  pull_request:
+    branches: [ main, develop ]
 
 jobs:
   norminette:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
     
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: '3.x'
     
@@ -28,24 +30,15 @@ jobs:
     - name: Run Norminette on C files
       run: |
         echo "Running Norminette..."
-        norminette srcs/ includes/ > norminette_output.txt 2>&1
-        if grep -q "Error" norminette_output.txt; then
-          echo "Norminette errors found"
-          cat norminette_output.txt
+        # Run norminette and capture output (ignore exit code as it returns 1 for Notice too)
+        norminette srcs/ includes/ > norminette_output.txt 2>&1 || true
+        cat norminette_output.txt
+        # Check for actual Error: pattern (not Notice:)
+        if grep -q "Error:" norminette_output.txt; then
+          echo ""
+          echo "❌ Norminette errors found!"
           exit 1
         else
-          echo "All files pass Norminette"
-          cat norminette_output.txt
+          echo ""
+          echo "✅ All files pass Norminette!"
         fi
-    
-    - name: Norminette Summary
-      if: failure()
-      run: |
-        echo "❌ Norminette check failed!"
-        echo "Please fix the coding style issues above."
-        exit 1
-    
-    - name: Success
-      if: success()
-      run: |
-        echo "✅ All files pass Norminette!"
