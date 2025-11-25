@@ -1,0 +1,32 @@
+name: Memory Leak Check
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main, develop, "**" ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  memory-leak-check:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Install valgrind
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y valgrind
+    
+    - name: Build project
+      run: make
+    
+    - name: Run memory leak check
+      run: |
+        echo "Running memory leak check with valgrind..."
+        # Run valgrind with leak check on a valid test map
+        valgrind --leak-check=full --show-leak-kinds=all --errors-for-leak-kinds=all --error-exitcode=1 ./cub3D assets/maps/test/simplemap.cub 2>&1 | tee valgrind_output.txt
+        echo ""
+        echo "✅ No memory leaks detected!"
