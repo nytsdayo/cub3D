@@ -14,12 +14,21 @@
 #include "utils.h" /* for free_map */
 
 int close_window(t_game *game) {
+  mlx_loop_end(game->mlx);
+  return (0);
+}
+
+void cleanup_game(t_game *game) {
   if (game->win)
     mlx_destroy_window(game->mlx, game->win);
+  if (game->mlx) {
+#ifdef __linux__
+    mlx_destroy_display(game->mlx);
+#endif
+    free(game->mlx);
+  }
   if (game->map)
     free_map((void **)game->map);
-  exit(EXIT_SUCCESS);
-  return (0);
 }
 
 int handle_keypress(int keycode, t_game *game) {

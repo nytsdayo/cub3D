@@ -24,6 +24,7 @@ void free_map(void **map);
 
 /* Cleanup */
 int close_window(t_game *game);
+void cleanup_game(t_game *game);
 int handle_keypress(int keycode, t_game *game);
 
 #endif
