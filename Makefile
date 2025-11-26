@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mkawano <mkawano@student.42tokyo.jp>     +#+  +:+       +#+         #
+#    By: rnakatan <rnakatan@student.42tokyo.jp>     +#+  +:+       +#+        #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/10/24 19:05:14 by mkawano           #+#    #+#              #
-#    Updated: 2025/11/24 23:05:00 by mkawano          ###   ########.fr        #
+#    Created: 2025/11/18 00:00:00 by rnakatan          #+#    #+#              #
+#    Updated: 2025/11/24 11:11:27 by rnakatan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
