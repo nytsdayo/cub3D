@@ -79,3 +79,11 @@ vgcore.*
 *.tmp
 *.temp
 a.out
+
+# MiniLibX
+libraries/minilibx_opengl_20191021/
+libraries/minilibx-linux/
+
+# kawano
+ai_work/
+CLAUDE.md

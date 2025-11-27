@@ -3,9 +3,9 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rnakatan <rnakatan@student.42tokyo.jp>     +#+  +:+       +#+         #
+#    By: rnakatan <rnakatan@student.42tokyo.jp>     +#+  +:+       +#+        #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/11/18 00:00:00 by cub3d             #+#    #+#              #
+#    Created: 2025/11/18 00:00:00 by rnakatan          #+#    #+#              #
 #    Updated: 2025/11/24 11:11:27 by rnakatan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
@@ -17,10 +17,13 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror
 INCLUDES = -I./includes -I./includes/parse -I./includes/engine -I./includes/utils
 
+# OS Detection
+UNAME_S := $(shell uname -s)
+
 # Directories
 SRC_DIR = srcs
 OBJ_DIR = obj
-BONUS_DIR = bonus
+LIB_DIR = libraries
 
 # Source files
 SRCS = $(SRC_DIR)/main.c \
@@ -29,16 +32,40 @@ SRCS = $(SRC_DIR)/main.c \
 	   $(SRC_DIR)/utils/ft_strcmp.c \
 	   $(SRC_DIR)/utils/ft_strndup.c \
 	   $(SRC_DIR)/utils/read_map.c \
-	   $(SRC_DIR)/utils/free_map.c
+	   $(SRC_DIR)/utils/free_map.c \
+	   $(SRC_DIR)/engine/init/init_mlx.c \
+	   $(SRC_DIR)/engine/renderer/render_frame.c \
+	   $(SRC_DIR)/utils/cleanup.c
 
 # Object files
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
+# MLX Configuration
+ifeq ($(UNAME_S), Linux)
+	MLX_PATH = $(LIB_DIR)/minilibx-linux
+	MLX_NAME = minilibx-linux.tgz
+	MLX_LIB = $(MLX_PATH)/libmlx.a
+	MLX_FLAGS = -L$(MLX_PATH) -lmlx -lXext -lX11 -lm
+	INCLUDES += -I$(MLX_PATH)
+else
+	MLX_PATH = $(LIB_DIR)/minilibx_opengl_20191021
+	MLX_NAME = minilibx_macos_opengl.tgz
+	MLX_LIB = $(MLX_PATH)/libmlx.a
+	MLX_FLAGS = -L$(MLX_PATH) -lmlx -framework OpenGL -framework AppKit
+	INCLUDES += -I$(MLX_PATH)
+endif
+
 # Rules
-all: $(NAME)
+all: $(MLX_LIB) $(NAME)
+
+$(MLX_LIB):
+	@echo "Extracting MLX..."
+	@tar -xzf $(LIB_DIR)/$(MLX_NAME) -C $(LIB_DIR)
+	@echo "Compiling MLX..."
+	@make -C $(MLX_PATH) 2>/dev/null
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) $(MLX_FLAGS) -o $(NAME)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(dir $@)
@@ -46,9 +73,11 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 
 clean:
 	rm -rf $(OBJ_DIR)
+	@if [ -d "$(MLX_PATH)" ]; then make -C $(MLX_PATH) clean; fi
 
 fclean: clean
 	rm -f $(NAME)
+	rm -rf $(MLX_PATH)
 
 re: fclean all
 
