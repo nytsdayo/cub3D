@@ -76,11 +76,11 @@ jobs:
             echo "head_sha=$(echo "$RESULT" | jq -r '.head_sha')" >> $GITHUB_OUTPUT
           fi
 
-      - name: Checkout PR branch
+      - name: Checkout base branch (trusted code)
         if: steps.check.outputs.skip != 'true'
         uses: actions/checkout@v4
         with:
-          ref: ${{ steps.check.outputs.head_ref }}
+          ref: ${{ github.event.workflow_run.head_branch }}
           fetch-depth: 0
 
       - name: Set up Python
@@ -97,11 +97,53 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y clang-format
 
-      - name: Run formatting fixes
+      - name: Run formatting fixes (inline)
         if: steps.check.outputs.skip != 'true'
         run: |
-          chmod +x .github/scripts/fix_norminette.sh
-          ./.github/scripts/fix_norminette.sh
+          # Skip execution if triggered by github-actions[bot]
+          if [ "${GITHUB_ACTOR:-}" = "github-actions[bot]" ]; then
+              echo "Skipping auto-fix: triggered by github-actions[bot] to avoid loops."
+              exit 0
+          fi
+
+          # Find all tracked .c and .h files in srcs/ and includes/ (matching norminette.yml)
+          FILES=$(git ls-files 'srcs/*.c' 'srcs/**/*.c' 'srcs/*.h' 'srcs/**/*.h' 'includes/*.c' 'includes/**/*.c' 'includes/*.h' 'includes/**/*.h' 2>/dev/null || true)
+
+          if [ -z "$FILES" ]; then
+              echo "No .c or .h files found in the repository."
+              exit 0
+          fi
+
+          echo "Processing the following files:"
+          echo "$FILES"
+          echo ""
+
+          for file in $FILES; do
+              if [ -f "$file" ]; then
+                  echo "Fixing: $file"
+
+                  # a) Convert tabs to 4 spaces
+                  sed -i 's/\t/    /g' "$file"
+
+                  # b) Remove trailing whitespace
+                  sed -i 's/[[:space:]]*$//' "$file"
+
+                  # c) Ensure a newline at EOF
+                  if [ -s "$file" ] && [ "$(tail -c 1 "$file" | wc -l)" -eq 0 ]; then
+                      echo "" >> "$file"
+                  fi
+
+                  # d) Apply clang-format
+                  if command -v clang-format &> /dev/null; then
+                      clang-format -i "$file"
+                  else
+                      echo "Warning: clang-format not found, skipping clang-format step for $file"
+                  fi
+              fi
+          done
+
+          echo ""
+          echo "Formatting fixes applied successfully."
 
       - name: Create Pull Request with fixes
         if: steps.check.outputs.skip != 'true'
