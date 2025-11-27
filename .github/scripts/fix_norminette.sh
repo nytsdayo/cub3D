@@ -15,8 +15,8 @@ if [ "${GITHUB_ACTOR:-}" = "github-actions[bot]" ]; then
     exit 0
 fi
 
-# Find all tracked .c and .h files
-FILES=$(git ls-files '*.c' '*.h')
+# Find all tracked .c and .h files in srcs/ and includes/ (matching norminette.yml)
+FILES=$(git ls-files 'srcs/*.c' 'srcs/**/*.c' 'srcs/*.h' 'srcs/**/*.h' 'includes/*.c' 'includes/**/*.c' 'includes/*.h' 'includes/**/*.h' 2>/dev/null || true)
 
 if [ -z "$FILES" ]; then
     echo "No .c or .h files found in the repository."
