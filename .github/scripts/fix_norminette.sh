@@ -2,7 +2,7 @@
 # fix_norminette.sh
 # Applies safe formatting fixes to C and header files for Norminette compliance.
 # This script performs the following fixes:
-#   a) Convert tabs to 4 spaces
+#   a) Convert leading spaces to tabs (Norminette requires tabs for indentation)
 #   b) Remove trailing whitespace
 #   c) Ensure a newline at EOF
 #   d) Apply clang-format (use repo .clang-format if present, otherwise default)
@@ -31,8 +31,9 @@ for file in $FILES; do
     if [ -f "$file" ]; then
         echo "Fixing: $file"
 
-        # a) Convert tabs to 4 spaces
-        sed -i 's/\t/    /g' "$file"
+        # a) Convert leading 4 spaces to tabs (Norminette requires tabs for indentation)
+        # First, normalize any existing leading spaces to tabs
+        perl -i -pe 's/^(    )+/"\t" x (length($&)\/4)/ge' "$file"
 
         # b) Remove trailing whitespace
         sed -i 's/[[:space:]]*$//' "$file"

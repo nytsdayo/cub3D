@@ -129,8 +129,9 @@ jobs:
               if [ -f "$file" ]; then
                   echo "Fixing: $file"
 
-                  # a) Convert tabs to 4 spaces
-                  sed -i 's/\t/    /g' "$file"
+                  # a) Convert leading 4 spaces to tabs (Norminette requires tabs for indentation)
+                  # First, normalize any existing leading spaces to tabs
+                  perl -i -pe 's/^(    )+/"\t" x (length($&)\/4)/ge' "$file"
 
                   # b) Remove trailing whitespace
                   sed -i 's/[[:space:]]*$//' "$file"
@@ -167,7 +168,7 @@ jobs:
             This PR contains automated formatting fixes to help with Norminette compliance.
 
             **Fixes applied:**
-            - ✅ Converted tabs to 4 spaces
+            - ✅ Converted leading spaces to tabs (Norminette requires tabs)
             - ✅ Removed trailing whitespace
             - ✅ Ensured newline at end of files
             - ✅ Applied clang-format
