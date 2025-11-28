@@ -33,11 +33,7 @@ int main(int argc, char *argv[]) {
     return (EXIT_FAILURE);
   }
   init_game(&game);
-  mlx_key_hook(game.win, handle_keypress, &game);
-  mlx_hook(game.win, ON_DESTROY, 0, close_window, &game);
-  mlx_loop_hook(game.mlx, render_frame, &game);
-  mlx_loop(game.mlx);
-  cleanup_game(&game);
+  run_game_loop(&game);
   return (EXIT_SUCCESS);
 }
 

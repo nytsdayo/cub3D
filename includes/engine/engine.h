@@ -19,6 +19,9 @@
 void init_mlx(t_game *game);
 void init_game(t_game *game);
 
+/* Game Loop */
+void run_game_loop(t_game *game);
+
 /* Renderer */
 int render_frame(t_game *game);
 
