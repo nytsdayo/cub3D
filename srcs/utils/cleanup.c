@@ -12,9 +12,15 @@
 
 #include "cub3d.h"
 #include "utils.h" /* for free_map */
+#include <stdlib.h>
 
 int close_window(t_game *game) {
+#ifdef __linux__
   mlx_loop_end(game->mlx);
+#else
+  cleanup_game(game);
+  exit(0);
+#endif
   return (0);
 }
 
