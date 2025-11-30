@@ -42,4 +42,17 @@ void		cast_rays(t_game *game);
 void		init_hardcoded_map(t_game *game);
 void		init_player(t_game *game);
 
+/* Ray Initialization */
+void		init_ray(t_game *game, t_ray *ray, int x);
+void		calc_step_and_side_dist(t_game *game, t_ray *ray);
+
+/* DDA Functions */
+void		perform_dda(t_game *game, t_ray *ray);
+void		calc_wall_distance(t_game *game, t_ray *ray);
+void		calc_line_height(t_ray *ray);
+
+/* Drawing Functions */
+void		put_pixel(t_game *game, int x, int y, int color);
+void		draw_vertical_line(t_game *game, t_ray *ray, int x);
+
 #endif

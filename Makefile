@@ -36,6 +36,11 @@ SRCS = $(SRC_DIR)/main.c \
 	   $(SRC_DIR)/engine/init/init_mlx.c \
 	   $(SRC_DIR)/engine/game_loop.c \
 	   $(SRC_DIR)/engine/renderer/render_frame.c \
+	   $(SRC_DIR)/engine/raycasting/init.c \
+	   $(SRC_DIR)/engine/raycasting/raycasting.c \
+	   $(SRC_DIR)/engine/raycasting/ray_init.c \
+	   $(SRC_DIR)/engine/raycasting/ray_dda.c \
+	   $(SRC_DIR)/engine/raycasting/ray_draw.c \
 	   $(SRC_DIR)/utils/cleanup.c
 
 # Object files
@@ -52,7 +57,7 @@ else
 	MLX_PATH = $(LIB_DIR)/minilibx_opengl_20191021
 	MLX_NAME = minilibx_macos_opengl.tgz
 	MLX_LIB = $(MLX_PATH)/libmlx.a
-	MLX_FLAGS = -L$(MLX_PATH) -lmlx -framework OpenGL -framework AppKit
+	MLX_FLAGS = -L$(MLX_PATH) -lmlx -framework OpenGL -framework AppKit -lm
 	INCLUDES += -I$(MLX_PATH)
 endif
 
