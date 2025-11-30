@@ -13,6 +13,8 @@
 #include "cub3d.h"
 #include "engine.h"
 
+static void	init_mlx(t_game *game);
+
 void	init_game(t_game *game)
 {
 	game->mlx = NULL;
@@ -21,7 +23,7 @@ void	init_game(t_game *game)
 	init_mlx(game);
 }
 
-void	init_mlx(t_game *game)
+static void	init_mlx(t_game *game)
 {
 	game->mlx = mlx_init();
 	if (!game->mlx)
