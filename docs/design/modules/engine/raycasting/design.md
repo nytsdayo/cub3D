@@ -42,8 +42,11 @@ typedef struct s_ray {
 
 ```
 srcs/engine/raycasting/
-├── init.c           - init_hardcoded_map(), init_player()
-└── raycasting.c     - cast_rays() とヘルパー関数
+├── mock_world.c     - init_hardcoded_map(), init_player() (暫定テストデータ)
+├── raycasting.c     - cast_rays() メインループ
+├── ray_init.c       - init_ray(), calc_step_and_side_dist()
+├── ray_dda.c        - perform_dda(), calc_wall_distance(), calc_line_height()
+└── ray_draw.c       - put_pixel(), draw_vertical_line()
 ```
 
 ### 色定義
