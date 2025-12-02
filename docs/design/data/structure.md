@@ -6,23 +6,52 @@
 
 ## 主要データ構造
 
+### マップ関連データ
+* config_data : config部分の内容を格納した構造体
+* map_data : map部分を抽出した構造体
+
 ### 構造体名
 
-<!-- 構造体の説明を記述してください -->
-
 ```c
-typedef struct s_example
+typedef struct s_color
 {
-    // フィールド定義
-} t_example;
+    int r;
+    int g;
+    int b;
+} t_color;
+
+
+
+typedef struct s_config_data
+{
+    char                *north_texture_path;
+    char                *south_texture_path;
+    char                *west_texture_path;
+    char                *east_texture_path;
+    t_color             floor_color;
+    t_color             ceiling_color;
+} t_config_data;
+
+typedef struct s_map_data
+{
+    char    **map;
+} t_map_data;
+
+typedef struct s_game_data
+{
+    t_config_data   config;
+    t_map_data      map;
+} t_game_data;
 ```
 
 #### フィールド説明
 
 | フィールド名 | 型 | 説明 |
 |-------------|-----|------|
-|             |     |      |
-
+|`[direction]_texture_path`| char* | 各方角のテクスチャファイルのパス |
+|`floor_color`| t_color | 床のRGBカラー値 |
+|`ceiling_color`| t_color | 天井のRGBカラー値 |
+|`map`| char** | 2次元配列として表現されたマップデータ |
 #### 使用箇所
 
 <!-- この構造体が使用される箇所を記述してください -->

@@ -2,7 +2,13 @@
 
 ## 概要
 
-<!-- mapサブモジュールの概要を記述してください -->
+- Parse exactly as rendered in the file; must support any valid layout.
+- Spaces inside the map are meaningful tokens.
+### Map Characters
+- `0`: empty space
+- `1`: wall
+- `N`, `S`, `E`, `W`: player spawn location + orientation
+- (Add door symbol if bonus requirements demand it.)
 
 ## 機能
 

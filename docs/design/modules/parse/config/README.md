@@ -2,11 +2,10 @@
 
 ## 概要
 
-<!-- configサブモジュールの概要を記述してください -->
-
-## 機能
-
-<!-- このサブモジュールが提供する機能を記述してください -->
+- Each element (textures, colors) may appear in any order.
+- Exactly 6 lines total must be parsed (4 orientations + floor + ceiling).
+- Sections may be separated by one or more blank lines.
+- Values inside a line are separated by one or more spaces.
 
 - 
 
