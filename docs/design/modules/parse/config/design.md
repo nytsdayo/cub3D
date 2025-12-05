@@ -46,7 +46,7 @@
 	- 先頭トークンのみ比較 (`NO`, `SO`, `WE`, `EA`, `F`, `C`). それ以外は即エラー。
 - `char *extract_path(const char *line)`
 	- 先頭識別子の後ろの空白を1個以上許可。`.xpm` 拡張子必須。ここではファイルを開かず、文字列コピーのみ。
-- `t_rgb parse_rgb(const char *line)`
+- `t_color parse_rgb(const char *line)`
 	- `split(',')` で3トークン。各トークンは `ft_isdigit` で検査し `ft_atoi`。0-255 以外はエラー。
 - `bool all_identifiers_consumed(int flags[6])`
 	- `NO,SO,WE,EA,F,C` をインデックス化した配列で進捗を管理。
