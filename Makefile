@@ -28,6 +28,8 @@ LIB_DIR = libraries
 # Source files
 SRCS = $(SRC_DIR)/main.c \
 	   $(SRC_DIR)/parse/parse.c \
+	   $(SRC_DIR)/parse/config/parse_config.c \
+	   $(SRC_DIR)/parse/map/parse_map.c \
 	   $(SRC_DIR)/utils/ft_strlen.c \
 	   $(SRC_DIR)/utils/ft_strcmp.c \
 	   $(SRC_DIR)/utils/ft_strndup.c \
