@@ -68,7 +68,7 @@ $(MLX_LIB):
 	@echo "Extracting MLX..."
 	@tar -xzf $(LIB_DIR)/$(MLX_NAME) -C $(LIB_DIR)
 	@echo "Compiling MLX..."
-	@make -C $(MLX_PATH) 2>/dev/null
+	@make -C $(MLX_PATH) 2>/dev/null || true
 
 $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) $(MLX_FLAGS) -o $(NAME)

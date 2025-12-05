@@ -79,6 +79,7 @@ vgcore.*
 *.tmp
 *.temp
 a.out
+*.log
 
 # MiniLibX
 libraries/minilibx_opengl_20191021/
