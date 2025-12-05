@@ -7,7 +7,6 @@
 - Sections may be separated by one or more blank lines.
 - Values inside a line are separated by one or more spaces.
 
-- 
 
 ## 参照
 
