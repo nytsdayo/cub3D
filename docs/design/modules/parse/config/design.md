@@ -17,8 +17,8 @@
 - テクスチャ4種: そのままの相対/絶対パス文字列を保持。
 	- 存在確認は後段 (読み込み時) に行う。
 	- 拡張子 `.xpm` であることだけここで検知する。
-- `F` / `C`: `R,G,B` 形式の3整数を抽出し、0-255 範囲を保証したデータ (例: `{ int[3]  { r,g,b; }`) へ格納。
-- 6要素すべて揃ったら次のモジュールへ `config_result` 構造体を返す。
+- `F` / `C`: `R,G,B` 形式の3整数を抽出し、0-255 範囲を保証したデータ (例: `t_color floor_color`) へ格納。
+- 6要素すべて揃ったら次のモジュールへ `t_config_data` 構造体を返す。
 
 ## パースフロー
 
@@ -56,12 +56,11 @@
 ```c
 typedef struct s_config_state {
 		char *textures[4];   // NO, SO, WE, EA
-		t_rgb floor;
-		t_rgb ceiling;
+		t_color floor;
+		t_color ceiling;
 		int  seen_flags[6];        // 各識別子の消費回数
 		size_t line_idx;     // input_data 上の現在位置
 }   t_config_state;
-```
 ```
 	
 - `seen_flags` は初期化 0。対応識別子を処理するたびに `seen_flags[idx]++`。
@@ -78,7 +77,6 @@ typedef struct s_config_state {
 | `SYNTAX_RGB` | RGB が3要素でない / 非整数 / 0-255外 | F/C 共通のバリデーションとして扱う |
 | `MISSING_IDENTIFIER` | 入力終端 or map 行に到達した時点で `seen_flags` に 0 が残る | 欠けている識別子名を列挙 |
 
-```
 ## 参照
 
 - `docs/design/modules/parse/README.md`

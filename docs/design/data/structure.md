@@ -20,8 +20,6 @@ typedef struct s_color
     int b;
 } t_color;
 
-
-
 typedef struct s_config_data
 {
     char                *north_texture_path;
@@ -48,7 +46,11 @@ typedef struct s_game_data
 
 | フィールド名 | 型 | 説明 |
 |-------------|-----|------|
-|`[direction]_texture_path`| char* | 各方角のテクスチャファイルのパス |
+|`north_texture_path`| char* | 北方向のテクスチャファイルのパス |  
+|`south_texture_path`| char* | 南方向のテクスチャファイルのパス |  
+|`west_texture_path`| char* | 西方向のテクスチャファイルのパス |  
+|`east_texture_path`| char* | 東方向のテクスチャファイルのパス |  
+
 |`floor_color`| t_color | 床のRGBカラー値 |
 |`ceiling_color`| t_color | 天井のRGBカラー値 |
 |`map`| char** | 2次元配列として表現されたマップデータ |
