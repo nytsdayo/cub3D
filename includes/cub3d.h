@@ -28,6 +28,13 @@
 #define WINDOW_HEIGHT 600
 #define TITLE "cub3D"
 
+/* Raycasting Constants */
+#define MAP_WIDTH 8
+#define MAP_HEIGHT 8
+#define FOV 60.0
+#define MOVE_SPEED 0.1
+#define ROT_SPEED 0.05
+
 /* Key Codes (Cross-platform) */
 #ifdef __APPLE__
 # define KEY_ESC 53
@@ -51,10 +58,33 @@
 #define ON_KEYDOWN 2
 #define ON_DESTROY 17
 
+/* Player Structure */
+typedef struct s_player {
+  double pos_x;
+  double pos_y;
+  double dir_x;
+  double dir_y;
+  double plane_x;
+  double plane_y;
+} t_player;
+
+/* Image Structure */
+typedef struct s_img {
+  void *img;
+  char *addr;
+  int bits_per_pixel;
+  int line_length;
+  int endian;
+} t_img;
+
+/* Game Structure */
 typedef struct s_game {
   void *mlx;
   void *win;
   char **map;
+  int world_map[MAP_HEIGHT][MAP_WIDTH];
+  t_player player;
+  t_img img;
 } t_game;
 
 #endif
