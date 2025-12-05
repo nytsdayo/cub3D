@@ -12,10 +12,11 @@
 
 #include "cub3d.h"
 #include "engine.h"
+#include "raycasting.h"
 
-int render_frame(t_game *game) {
-  (void)game;
-  /* Placeholder for rendering logic */
-  /* In the future, raycasting and drawing will happen here */
-  return (0);
+int	render_frame(t_game *game)
+{
+	cast_rays(game);
+	mlx_put_image_to_window(game->mlx, game->win, game->img.img, 0, 0);
+	return (0);
 }

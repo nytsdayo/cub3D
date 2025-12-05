@@ -17,10 +17,19 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
     
-    - name: Install valgrind
+    - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y valgrind
+        sudo apt-get install -y \
+          valgrind \
+          libx11-dev \
+          libxext-dev \
+          libxrandr-dev \
+          libxrender-dev \
+          libxinerama-dev \
+          libxi-dev \
+          libxpm-dev \
+          libxcursor-dev
     
     - name: Build project
       run: make

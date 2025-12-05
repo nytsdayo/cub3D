@@ -33,9 +33,14 @@ SRCS = $(SRC_DIR)/main.c \
 	   $(SRC_DIR)/utils/ft_strndup.c \
 	   $(SRC_DIR)/utils/read_map.c \
 	   $(SRC_DIR)/utils/free_map.c \
-	   $(SRC_DIR)/engine/init/init_mlx.c \
+	   $(SRC_DIR)/engine/init/init_game.c \
 	   $(SRC_DIR)/engine/game_loop.c \
 	   $(SRC_DIR)/engine/renderer/render_frame.c \
+	   $(SRC_DIR)/engine/raycasting/mock_world.c \
+	   $(SRC_DIR)/engine/raycasting/raycasting.c \
+	   $(SRC_DIR)/engine/raycasting/ray_init.c \
+	   $(SRC_DIR)/engine/raycasting/ray_dda.c \
+	   $(SRC_DIR)/engine/raycasting/ray_draw.c \
 	   $(SRC_DIR)/utils/cleanup.c
 
 # Object files
@@ -52,7 +57,7 @@ else
 	MLX_PATH = $(LIB_DIR)/minilibx_opengl_20191021
 	MLX_NAME = minilibx_macos_opengl.tgz
 	MLX_LIB = $(MLX_PATH)/libmlx.a
-	MLX_FLAGS = -L$(MLX_PATH) -lmlx -framework OpenGL -framework AppKit
+	MLX_FLAGS = -L$(MLX_PATH) -lmlx -framework OpenGL -framework AppKit -lm
 	INCLUDES += -I$(MLX_PATH)
 endif
 
@@ -63,7 +68,7 @@ $(MLX_LIB):
 	@echo "Extracting MLX..."
 	@tar -xzf $(LIB_DIR)/$(MLX_NAME) -C $(LIB_DIR)
 	@echo "Compiling MLX..."
-	@make -C $(MLX_PATH) 2>/dev/null
+	@make -C $(MLX_PATH) 2>/dev/null || true
 
 $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) $(MLX_FLAGS) -o $(NAME)
