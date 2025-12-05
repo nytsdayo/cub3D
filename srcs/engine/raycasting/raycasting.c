@@ -10,26 +10,24 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
 #include "raycasting.h"
+#include "cub3d.h"
 
 /*
 ** レイキャスティングメイン関数
 */
-void	cast_rays(t_game *game)
-{
-	t_ray	ray;
-	int		x;
+void cast_rays(t_game *game) {
+  t_ray ray;
+  int x;
 
-	x = 0;
-	while (x < WINDOW_WIDTH)
-	{
-		init_ray(game, &ray, x);
-		calc_step_and_side_dist(game, &ray);
-		perform_dda(game, &ray);
-		calc_wall_distance(game, &ray);
-		calc_line_height(&ray);
-		draw_vertical_line(game, &ray, x);
-		x++;
-	}
+  x = 0;
+  while (x < WINDOW_WIDTH) {
+    init_ray(game, &ray, x);
+    calc_step_and_side_dist(game, &ray);
+    perform_dda(game, &ray);
+    calc_wall_distance(game, &ray);
+    calc_line_height(&ray);
+    draw_vertical_line(game, &ray, x);
+    x++;
+  }
 }

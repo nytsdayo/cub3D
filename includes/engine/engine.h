@@ -11,17 +11,17 @@
 /* ************************************************************************** */
 
 #ifndef ENGINE_H
-# define ENGINE_H
+#define ENGINE_H
 
-# include "cub3d.h"
+#include "cub3d.h"
 
 /* Init */
-void	init_game(t_game *game);
+void init_game(t_game *game);
 
 /* Game Loop */
-void	run_game_loop(t_game *game);
+void run_game_loop(t_game *game);
 
 /* Renderer */
-int		render_frame(t_game *game);
+int render_frame(t_game *game);
 
 #endif

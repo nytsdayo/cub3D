@@ -11,8 +11,8 @@
 /* ************************************************************************** */
 
 #ifndef PARSE_H
-# define PARSE_H
+#define PARSE_H
 
-int	parse(const char **map);
+int parse(const char **map);
 
 #endif
