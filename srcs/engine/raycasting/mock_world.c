@@ -105,8 +105,8 @@ void	init_hardcoded_map(t_game *game)
 */
 void	init_player(t_game *game)
 {
-	game->player.pos_x = 4.5;
-	game->player.pos_y = 4.5;
+	game->player.pos_x = 3.5;
+	game->player.pos_y = 3.5;
 	game->player.dir_x = -1.0;
 	game->player.dir_y = 0.0;
 	game->player.plane_x = 0.0;
