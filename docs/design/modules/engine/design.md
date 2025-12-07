@@ -9,8 +9,8 @@
 
 - **ゲームの初期化**: MinilibXの初期化、ウィンドウ生成
 - **ゲームループの管理**: イベントフック設定、メインループ起動、クリーンアップ
-- **レンダリング**: フレームごとの描画処理（将来的にレイキャスティングを含む）
-- **プレイヤー制御**: 移動、回転、衝突検出（将来実装）
+- **レンダリング**: フレームごとの描画処理（レイキャスティング含む）
+- **プレイヤー制御**: 移動、回転、衝突検出（実装済み）
 
 ## インターフェース
 
@@ -19,17 +19,27 @@
 | 関数名 | 説明 | 引数 | 戻り値 |
 |--------|------|------|--------|
 | `init_game` | ゲーム構造体を初期化し、MLXを初期化する | `t_game *game` | `void` |
-| `init_mlx` | MinilibXを初期化し、ウィンドウを生成する | `t_game *game` | `void` |
 | `run_game_loop` | イベントフックを設定し、ゲームループを起動する | `t_game *game` | `void` |
 | `render_frame` | 1フレームをレンダリングする（MLXループフック） | `t_game *game` | `int` |
+
+### プレイヤー操作関数（player/）
+
+| 関数名 | 説明 | 引数 | 戻り値 |
+|--------|------|------|--------|
+| `move_forward` | プレイヤーを前方に移動 | `t_game *game` | `void` |
+| `move_backward` | プレイヤーを後方に移動 | `t_game *game` | `void` |
+| `move_left` | プレイヤーを左に移動 | `t_game *game` | `void` |
+| `move_right` | プレイヤーを右に移動 | `t_game *game` | `void` |
+| `rotate_left` | プレイヤーを左に回転 | `t_game *game` | `void` |
+| `rotate_right` | プレイヤーを右に回転 | `t_game *game` | `void` |
 
 ### サブモジュール構成
 
 - **init/**: 初期化関連（MLX、ゲーム構造体、プレイヤー）
-- **game_loop/**: ゲームループとイベント管理
+- **game_loop.c**: ゲームループとイベント管理
 - **renderer/**: レンダリング処理
-- **raycasting/**: レイキャスティングアルゴリズム（将来実装）
-- **player/**: プレイヤー移動・回転・衝突検出（将来実装）
+- **raycasting/**: レイキャスティングアルゴリズム（実装済み）
+- **player/**: プレイヤー移動・回転・衝突検出（実装済み）
 
 ## 内部設計
 
@@ -60,7 +70,7 @@ cleanup_game()
   - `main.c`は`run_game_loop()`を呼ぶだけ
 
 - **拡張性**: 将来の機能追加に対応
-  - レイキャスティング、テクスチャマッピング、ミニマップなどは
+  - テクスチャマッピング、ミニマップ、スプライトなどは
     各サブモジュールに追加可能
 
 ## エラーハンドリング
@@ -75,9 +85,20 @@ cleanup_game()
   - macOS/Linuxで異なるMLX実装に対応
   - `#ifdef __linux__`で条件分岐（例: `mlx_destroy_display()`）
 
+## 実装状況
+
+- ✅ ゲーム初期化（init/）
+- ✅ ゲームループ（game_loop.c）
+- ✅ レイキャスティング（raycasting/）
+- ✅ プレイヤー操作（player/）
+- ⏳ テクスチャマッピング（未実装）
+- ⏳ パーサー統合（進行中）
+
 ## 参照
 
 - [README](./README.md)
 - [init設計](./init/design.md)
 - [renderer設計](./renderer/design.md)
+- [player設計](./player/design.md)
+- [raycasting設計](./raycasting/design.md)
 - [ADR-0002: main.cのリファクタリング](../../../decisions/0002-main-refactoring-separation-of-concerns.md)
