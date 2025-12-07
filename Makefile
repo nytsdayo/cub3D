@@ -41,6 +41,8 @@ SRCS = $(SRC_DIR)/main.c \
 	   $(SRC_DIR)/engine/raycasting/ray_init.c \
 	   $(SRC_DIR)/engine/raycasting/ray_dda.c \
 	   $(SRC_DIR)/engine/raycasting/ray_draw.c \
+	   $(SRC_DIR)/engine/player/player_movement.c \
+	   $(SRC_DIR)/engine/player/player_rotation.c \
 	   $(SRC_DIR)/utils/cleanup.c
 
 # Object files
