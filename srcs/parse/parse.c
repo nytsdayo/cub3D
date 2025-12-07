@@ -10,13 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "parse.h"
+#include <fcntl.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <fcntl.h>
-#include "parse.h"
 
-int	parse(const char **map)
-{
-	(void)map;
-	return (0);
+int parse(const char **map) {
+  (void)map;
+  return (0);
 }

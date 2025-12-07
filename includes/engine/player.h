@@ -11,18 +11,18 @@
 /* ************************************************************************** */
 
 #ifndef PLAYER_H
-# define PLAYER_H
+#define PLAYER_H
 
-# include "cub3d.h"
+#include "cub3d.h"
 
 /* Movement */
-void	move_forward(t_game *game);
-void	move_backward(t_game *game);
-void	move_left(t_game *game);
-void	move_right(t_game *game);
+void move_forward(t_game *game);
+void move_backward(t_game *game);
+void move_left(t_game *game);
+void move_right(t_game *game);
 
 /* Rotation */
-void	rotate_left(t_game *game);
-void	rotate_right(t_game *game);
+void rotate_left(t_game *game);
+void rotate_right(t_game *game);
 
 #endif
