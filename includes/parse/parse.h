@@ -6,7 +6,7 @@
 /*   By: rnakatan <rnakatan@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 19:29:11 by rnakatan          #+#    #+#             */
-/*   Updated: 2025/12/06 04:07:40 by rnakatan         ###   ########.fr       */
+/*   Updated: 2025/12/09 15:51:28 by rnakatan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ typedef struct s_game_data
 
 /* 公開関数 */
 
-int	parse(const char **map);
+int	parse(const char *filepath, t_game_data *game_data);
 int	parse_config(char **input_data, size_t *line_index,
 		t_config_data *config);
 int	parse_map(char **input_data, size_t line_index, t_map_data *map_data);

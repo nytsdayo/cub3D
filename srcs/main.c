@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mkawano <mkawano@student.42tokyo.jp>       +#+  +:+       +#+        */
+/*   By: rnakatan <rnakatan@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 10:00:00 by rnakatan          #+#    #+#             */
-/*   Updated: 2025/11/30 18:55:35 by mkawano          ###   ########.fr       */
+/*   Updated: 2025/12/09 15:51:28 by rnakatan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,21 @@ static int	valid_args(int argc, char *argv[]);
 
 int	main(int argc, char *argv[])
 {
-	t_game	game;
+	t_game		game;
+	t_game_data	game_data;
 
 	if (valid_args(argc, argv) != 0)
 		return (EXIT_FAILURE);
+	if (parse(argv[1], &game_data) != 0)
+	{
+		write(2, "Error\nFailed to parse map\n", 27);
+		return (EXIT_FAILURE);
+	}
+	// TODO: game_dataからgameに必要な情報をコピー
 	game.map = (char **)read_map(argv[1]);
 	if (game.map == NULL)
 	{
 		write(2, "Error\nFailed to read map\n", 25);
-		return (EXIT_FAILURE);
-	}
-	if (parse((const char **)game.map) != 0)
-	{
 		return (EXIT_FAILURE);
 	}
 	init_game(&game);

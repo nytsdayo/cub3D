@@ -6,7 +6,7 @@
 /*   By: rnakatan <rnakatan@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 19:19:59 by rnakatan          #+#    #+#             */
-/*   Updated: 2025/12/06 04:07:40 by rnakatan         ###   ########.fr       */
+/*   Updated: 2025/12/09 15:51:24 by rnakatan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,21 +17,33 @@
 
 /**
  * @brief メインのパース関数
- * @param map 入力データ
+ * @param filepath .cubファイルのパス
+ * @param game_data パース結果を格納する構造体
  * @return 成功: 0 / 失敗: エラーコード
  */
-int	parse(const char **map)
+int	parse(const char *filepath, t_game_data *game_data)
 {
-	t_game_data	game_data;
-	size_t		line_index;
-	int			result;
+	char	**input_data;
+	size_t	line_index;
+	int		result;
 
+	(void)filepath;
+	(void)game_data;
 	line_index = 0;
-	result = parse_config((char **)map, &line_index, &game_data.config);
-	if (result != 0)
-		return (result);
-	result = parse_map((char **)map, line_index, &game_data.map);
-	if (result != 0)
-		return (result);
+	input_data = NULL;
+	// TODO: read_map()でファイルを読み込む
+	// input_data = read_map(filepath);
+	// if (input_data == NULL)
+	//     return (-1);
+	// result = parse_config(input_data, &line_index, &game_data->config);
+	// if (result != 0)
+	// 	return (result);
+	// result = parse_map(input_data, line_index, &game_data->map);
+	// if (result != 0)
+	// 	return (result);
+	// TODO: input_dataを解放
+	(void)input_data;
+	(void)line_index;
+	(void)result;
 	return (0);
 }
