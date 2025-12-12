@@ -141,7 +141,7 @@ static bool	is_blank_line(const char *line)
 	i = 0;
 	while (line[i])
 	{
-		if (line[i] != ' ' && line[i] != '\t' && line[i] != '\n')
+		if (!ft_isspace(line[i]) && line[i] != '\n')
 			return (false);
 		i++;
 	}
@@ -153,23 +153,23 @@ static t_identifier	detect_identifier(const char *line)
 	int	i;
 
 	i = 0;
-	while (line[i] == ' ' || line[i] == '\t')
+	while (ft_isspace(line[i]))
 		i++;
 	if (line[i] == 'N' && line[i + 1] == 'O'
-		&& (line[i + 2] == ' ' || line[i + 2] == '\t'))
+		&& ft_isspace(line[i + 2]))
 		return (ID_NO);
 	if (line[i] == 'S' && line[i + 1] == 'O'
-		&& (line[i + 2] == ' ' || line[i + 2] == '\t'))
+		&& ft_isspace(line[i + 2]))
 		return (ID_SO);
 	if (line[i] == 'W' && line[i + 1] == 'E'
-		&& (line[i + 2] == ' ' || line[i + 2] == '\t'))
+		&& ft_isspace(line[i + 2]))
 		return (ID_WE);
 	if (line[i] == 'E' && line[i + 1] == 'A'
-		&& (line[i + 2] == ' ' || line[i + 2] == '\t'))
+		&& ft_isspace(line[i + 2]))
 		return (ID_EA);
-	if (line[i] == 'F' && (line[i + 1] == ' ' || line[i + 1] == '\t'))
+	if (line[i] == 'F' && ft_isspace(line[i + 1]))
 		return (ID_F);
-	if (line[i] == 'C' && (line[i + 1] == ' ' || line[i + 1] == '\t'))
+	if (line[i] == 'C' && ft_isspace(line[i + 1]))
 		return (ID_C);
 	return (ID_UNKNOWN);
 }
@@ -182,16 +182,16 @@ static char	*extract_path(const char *line, t_identifier id)
 	char	*path;
 
 	i = 0;
-	while (line[i] == ' ' || line[i] == '\t')
+	while (ft_isspace(line[i]))
 		i++;
 	if (id >= ID_NO && id <= ID_EA)
 		i += 2;
 	else
 		i += 1;
-	while (line[i] == ' ' || line[i] == '\t')
+	while (ft_isspace(line[i]))
 		i++;
 	start = i;
-	while (line[i] && line[i] != ' ' && line[i] != '\t' && line[i] != '\n')
+	while (line[i] && !ft_isspace(line[i]) && line[i] != '\n')
 		i++;
 	len = i - start;
 	if (len < 5 || ft_strcmp(&line[i - 4], ".xpm") != 0)
@@ -226,10 +226,10 @@ static int	parse_rgb(const char *line, t_color *color)
 	int	b;
 
 	i = 0;
-	while (line[i] == ' ' || line[i] == '\t')
+	while (ft_isspace(line[i]))
 		i++;
 	i++;
-	while (line[i] == ' ' || line[i] == '\t')
+	while (ft_isspace(line[i]))
 		i++;
 	r = parse_rgb_component(line, &i);
 	if (r == -1 || line[i++] != ',')
