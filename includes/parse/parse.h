@@ -6,7 +6,7 @@
 /*   By: rnakatan <rnakatan@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 19:29:11 by rnakatan          #+#    #+#             */
-/*   Updated: 2025/12/09 15:51:28 by rnakatan         ###   ########.fr       */
+/*   Updated: 2025/12/12 20:09:24 by rnakatan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,20 @@
 
 # include <stddef.h>
 
-/* データ構造 */
+typedef enum e_identifier
+{
+	ID_UNKNOWN,
+	ID_NO,
+	ID_SO,
+	ID_WE,
+	ID_EA,
+	ID_F,
+	ID_C
+}	t_identifier;
 
+typedef int	t_seen_flags[6];
+
+/* データ構造 */
 typedef struct s_color
 {
 	int	r;
