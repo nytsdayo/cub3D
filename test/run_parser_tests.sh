@@ -48,8 +48,8 @@ if [ -d "$SUCCESS_MAPS_DIR" ]; then
             echo -n "Testing $map_name ... "
             
             if [ -f "$CUB3D_BIN" ]; then
-                # Run the parser
-                if "$CUB3D_BIN" "$map_file" &> /dev/null; then
+                # Run the parser with timeout to prevent hanging
+                if timeout 10s "$CUB3D_BIN" "$map_file" &> /dev/null; then
                     echo -e "${GREEN}✓ PASSED${NC}"
                     PASSED_TESTS=$((PASSED_TESTS + 1))
                 else
@@ -79,8 +79,8 @@ if [ -d "$FAILED_MAPS_DIR" ]; then
             echo -n "Testing $map_name ... "
             
             if [ -f "$CUB3D_BIN" ]; then
-                # Run the parser - should fail
-                if "$CUB3D_BIN" "$map_file" &> /dev/null; then
+                # Run the parser - should fail (timeout also counts as failure)
+                if timeout 10s "$CUB3D_BIN" "$map_file" &> /dev/null; then
                     echo -e "${RED}✗ FAILED (should have failed)${NC}"
                     FAILED_TESTS=$((FAILED_TESTS + 1))
                 else
