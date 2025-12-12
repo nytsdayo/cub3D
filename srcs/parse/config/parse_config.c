@@ -6,15 +6,17 @@
 /*   By: rnakatan <rnakatan@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/06 00:00:00 by rnakatan          #+#    #+#             */
-/*   Updated: 2025/12/12 21:50:05 by rnakatan         ###   ########.fr       */
+/*   Updated: 2025/12/13 04:13:36 by rnakatan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
-#include "utils.h"
 #include <stdlib.h>
 #include <stdbool.h>
 #include <unistd.h>
+
+/* Utils function prototypes */
+int		ft_isspace(int c);
 
 /* Static function prototypes */
 

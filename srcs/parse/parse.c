@@ -6,7 +6,7 @@
 /*   By: rnakatan <rnakatan@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 19:19:59 by rnakatan          #+#    #+#             */
-/*   Updated: 2025/12/09 15:51:24 by rnakatan         ###   ########.fr       */
+/*   Updated: 2025/12/13 04:20:15 by rnakatan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,10 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
+
+/* Utils function prototypes */
+char	**read_map(const char *filename);
+void	free_map(void **map);
 
 /**
  * @brief メインのパース関数（検証のみ）
@@ -31,16 +35,16 @@ int	parse(const char *filepath, t_game_data *game_data)
 	line_index = 0;
 	input_data = NULL;
 	// TODO: read_map()でファイルを読み込む
-	// input_data = read_map(filepath);
-	// if (input_data == NULL)
-	//     return (-1);
+	input_data = read_map(filepath);
+	if (input_data == NULL)
+		return (-1);
 	// result = validate_config(input_data, &line_index);
 	// if (result != 0)
 	// 	return (result);
 	// result = validate_map(input_data, line_index);
 	// if (result != 0)
 	// 	return (result);
-	// TODO: input_dataを解放
+	// free_map((void **)input_data);
 	(void)filepath;
 	(void)input_data;
 	(void)line_index;
