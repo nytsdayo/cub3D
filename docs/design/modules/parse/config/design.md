@@ -5,6 +5,92 @@
 - 親 `parse()` が取得した入力行列から config セクション (テクスチャ ×4 + RGB ×2) を切り出して正規化する。
 - map セクションへ制御を渡す前に、全6要素が一度ずつ揃っていることを保証する。
 
+## EBNF 文法定義
+
+```ebnf
+(* Config Section Grammar *)
+
+config_section = { blank_line }, config_lines, { blank_line } ;
+
+config_lines = config_line, config_line, config_line, 
+               config_line, config_line, config_line ;
+(* Exactly 6 config lines required, order-independent *)
+
+config_line = ( texture_line | color_line ), newline ;
+
+blank_line = [ whitespace ], newline ;
+
+(* Texture Configuration *)
+texture_line = texture_identifier, separator, texture_path ;
+
+texture_identifier = "NO" | "SO" | "WE" | "EA" ;
+
+texture_path = path_component, { path_separator, path_component }, ".xpm" ;
+
+path_component = { path_char } ;
+
+path_char = letter | digit | "_" | "-" | "." ;
+
+path_separator = "/" ;
+
+(* Color Configuration *)
+color_line = color_identifier, separator, rgb_value ;
+
+color_identifier = "F" | "C" ;
+
+rgb_value = color_component, ",", color_component, ",", color_component ;
+
+color_component = digit | digit, digit | digit, digit, digit ;
+(* Must be in range 0-255, semantic constraint *)
+
+(* Common Definitions *)
+separator = whitespace, { whitespace } ;
+
+whitespace = " " | "\t" ;
+
+newline = "\n" ;
+
+letter = "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J" | 
+         "K" | "L" | "M" | "N" | "O" | "P" | "Q" | "R" | "S" | "T" | 
+         "U" | "V" | "W" | "X" | "Y" | "Z" |
+         "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | 
+         "k" | "l" | "m" | "n" | "o" | "p" | "q" | "r" | "s" | "t" | 
+         "u" | "v" | "w" | "x" | "y" | "z" ;
+
+digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
+```
+
+### 文法の補足と制約
+
+#### セマンティック制約 (構文では表現できない制約)
+
+1. **識別子の一意性**: 各識別子 (`NO`, `SO`, `WE`, `EA`, `F`, `C`) は config セクション内で正確に1回のみ出現しなければならない。
+   - 実装: `seen_flags[6]` 配列で管理
+   - 違反時: `DUPLICATE_IDENTIFIER` エラー
+
+2. **RGB 値の範囲**: `color_component` は 0-255 の範囲内でなければならない。
+   - 構文上は1-3桁の数字を許可するが、値の検証は実行時に行う
+   - 違反時: `SYNTAX_RGB` エラー
+
+3. **テクスチャパスの存在**: `.xpm` 拡張子は構文で強制されるが、ファイルの実在性は後段で検証する。
+   - config パーサーはパス文字列の形式のみを検証
+   - ファイル読み込み可能性は別モジュールで検証
+
+4. **空白行の扱い**: 空白行は config セクションの前後および config 行の間に任意の数だけ出現可能。
+
+#### 実装上の注意点
+
+- **順序非依存**: 6つの config 行は任意の順序で出現可能
+- **空白の扱い**: 識別子とその値の間には1つ以上の空白文字 (スペースまたはタブ) が必要
+- **行末**: 各行は改行文字 (`\n`) で終了する必要がある
+
+#### 曖昧性に関する明記事項
+
+1. **相対パス vs 絶対パス**: EBNF では両方を許容。`./` や `/` で始まるパスも有効。
+2. **パス内の空白**: 現仕様では空白をパス区切り文字として扱うため、パス内に空白を含むことはできない。
+3. **RGB のゼロパディング**: `001` のような先頭ゼロは許容される（値が範囲内であれば）。
+4. **カンマ周辺の空白**: 現仕様では RGB 値のカンマの前後に空白は許容されない (`R,G,B` 形式)。
+
 ## 入力と前提
 
 - 入力：`char **input_data, size_t *line_index` (NULL 終端の行配列)。
