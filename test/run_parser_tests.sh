@@ -43,7 +43,7 @@ echo "----------------------------------------"
 if [ -d "$SUCCESS_MAPS_DIR" ]; then
     while IFS= read -r -d '' map_file; do
         TOTAL_TESTS=$((TOTAL_TESTS + 1))
-        map_name=$(echo "$map_file" | sed "s|$SUCCESS_MAPS_DIR/||")
+        map_name="${map_file#$SUCCESS_MAPS_DIR/}"
         echo -n "Testing $map_name ... "
         
         if [ -f "$CUB3D_BIN" ]; then
@@ -72,7 +72,7 @@ echo "----------------------------------------"
 if [ -d "$FAILED_MAPS_DIR" ]; then
     while IFS= read -r -d '' map_file; do
         TOTAL_TESTS=$((TOTAL_TESTS + 1))
-        map_name=$(echo "$map_file" | sed "s|$FAILED_MAPS_DIR/||")
+        map_name="${map_file#$FAILED_MAPS_DIR/}"
         echo -n "Testing $map_name ... "
         
         if [ -f "$CUB3D_BIN" ]; then
