@@ -277,24 +277,6 @@ A: In early stages (before MLX init, etc.) you can pass NULL. If resources are a
 
 ---
 
-### Q4: エラーメッセージを多言語化できる？
-
-A: 現在の設計では英語のみです。将来的に拡張可能な設計にはなっています。
-
-Can error messages be multilingual?
-
-A: Current design is English only. Design allows for future extension.
-
----
-
-## 問い合わせ / Contact
-
-エラーハンドリングに関する質問や提案がある場合は、Issue を作成してください。
-
-For questions or suggestions about error handling, please create an Issue.
-
----
-
 ## ライセンス / License
 
 このドキュメントは cub3D プロジェクトの一部です。
