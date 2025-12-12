@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Parser Test Script for cub3D
 # This script tests the parser with various map files
