@@ -35,7 +35,7 @@ jobs:
     - name: Run parser tests
       run: |
         echo "Running parser test suite..."
-        ./test/run_parser_tests.sh
+        bash ./test/run_parser_tests.sh
     
     - name: Test results
       if: always()

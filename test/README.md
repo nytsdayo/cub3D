@@ -12,6 +12,10 @@
 
 ```bash
 # プロジェクトのルートディレクトリから
+bash ./test/run_parser_tests.sh
+
+# または、実行権限を設定してから
+chmod +x ./test/run_parser_tests.sh
 ./test/run_parser_tests.sh
 ```
 
@@ -20,7 +24,7 @@
 ```bash
 # testディレクトリから
 cd test
-./run_parser_tests.sh
+bash ./run_parser_tests.sh
 ```
 
 ### 前提条件
