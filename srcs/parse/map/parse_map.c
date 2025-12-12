@@ -99,25 +99,38 @@ static int	validate_spaces(char **map)
 }
 
 /**
- * @brief マップセクション全体の検証を行う
+ * @brief マップセクション全体の検証を行う（内部用ヘルパー）
  * @param map マップデータ
  * @return 成功: 0 / 失敗: エラーコード
  */
 __attribute__((unused))
-static int	validate_map(char **map)
+static int	validate_map_data(char **map)
 {
 	(void)map;
 	return (0);
 }
 
 /**
- * @brief マップセクションをパースする
- * @param input_data 入力行の配列
- * @param line_index パース開始位置
- * @param map_data パース結果を格納する構造体
+ * @brief マップセクションの構文を検証する（値の確保は行わない）
+ * @param input_data 入力データの行配列
+ * @param line_index マップの開始行インデックス
  * @return 成功: 0 / 失敗: エラーコード
  */
-int	parse_map(char **input_data, size_t line_index, t_map_data *map_data)
+int	validate_map(char **input_data, size_t line_index)
+{
+	(void)input_data;
+	(void)line_index;
+	return (0);
+}
+
+/**
+ * @brief マップデータをメモリに読み込む
+ * @param input_data 入力データの行配列
+ * @param line_index マップの開始行インデックス
+ * @param map_data マップデータを格納する構造体
+ * @return 成功: 0 / 失敗: エラーコード
+ */
+int	load_map(char **input_data, size_t line_index, t_map_data *map_data)
 {
 	(void)input_data;
 	(void)line_index;

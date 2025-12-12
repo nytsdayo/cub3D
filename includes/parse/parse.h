@@ -60,8 +60,9 @@ typedef struct s_game_data
 /* 公開関数 */
 
 int	parse(const char *filepath, t_game_data *game_data);
-int	parse_config(char **input_data, size_t *line_index,
-		t_config_data *config);
-int	parse_map(char **input_data, size_t line_index, t_map_data *map_data);
+int	validate_config(char **input_data, size_t *line_index);
+int	validate_map(char **input_data, size_t line_index);
+int	load_config(const char *filepath, t_config_data *config);
+int	load_map(char **input_data, size_t line_index, t_map_data *map_data);
 
 #endif

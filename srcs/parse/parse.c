@@ -16,9 +16,9 @@
 #include <fcntl.h>
 
 /**
- * @brief メインのパース関数
+ * @brief メインのパース関数（検証のみ）
  * @param filepath .cubファイルのパス
- * @param game_data パース結果を格納する構造体
+ * @param game_data パース結果を格納する構造体（未使用、将来の拡張用）
  * @return 成功: 0 / 失敗: エラーコード
  */
 int	parse(const char *filepath, t_game_data *game_data)
@@ -27,7 +27,6 @@ int	parse(const char *filepath, t_game_data *game_data)
 	size_t	line_index;
 	int		result;
 
-	(void)filepath;
 	(void)game_data;
 	line_index = 0;
 	input_data = NULL;
@@ -35,13 +34,14 @@ int	parse(const char *filepath, t_game_data *game_data)
 	// input_data = read_map(filepath);
 	// if (input_data == NULL)
 	//     return (-1);
-	// result = parse_config(input_data, &line_index, &game_data->config);
+	// result = validate_config(input_data, &line_index);
 	// if (result != 0)
 	// 	return (result);
-	// result = parse_map(input_data, line_index, &game_data->map);
+	// result = validate_map(input_data, line_index);
 	// if (result != 0)
 	// 	return (result);
 	// TODO: input_dataを解放
+	(void)filepath;
 	(void)input_data;
 	(void)line_index;
 	(void)result;

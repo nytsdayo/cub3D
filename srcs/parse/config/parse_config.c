@@ -29,30 +29,30 @@ static bool			is_blank_line(const char *line);
 static t_identifier	detect_identifier(const char *line);
 
 /**
- * @brief テクスチャパスを抽出する (呼び出し側で解放が必要)
+ * @brief テクスチャパスのフォーマットを検証する（.xpm拡張子チェック）
  */
-static char			*extract_path(const char *line, t_identifier id);
+static int			validate_texture_format(const char *line, t_identifier id);
 
 /**
- * @brief RGB値をパースする
+ * @brief RGB値のフォーマットを検証する（R,G,B形式、0-255範囲チェック）
  */
-static int			parse_rgb(const char *line, t_color *color);
+static int			validate_rgb_format(const char *line);
 
 /**
- * @brief すべての識別子が1回ずつ処理されたかを確認する
+ * @brief すべての識別子が1回ずつ見つかったかを確認する
  */
-static bool			all_identifiers_consumed(t_seen_flags seen_flags);
+static bool			all_identifiers_found(t_seen_flags seen_flags);
 
 /**
- * @brief テクスチャ識別子を処理する
+ * @brief テクスチャ識別子の行を検証する
  */
-static int			handle_texture(const char *line, t_config_data *config,
+static int			validate_texture_line(const char *line,
 						t_seen_flags seen_flags, t_identifier id);
 
 /**
- * @brief RGB識別子を処理する
+ * @brief RGB識別子の行を検証する
  */
-static int			handle_rgb(const char *line, t_config_data *config,
+static int			validate_rgb_line(const char *line,
 						t_seen_flags seen_flags, t_identifier id);
 
 /**
@@ -68,9 +68,9 @@ static void			init_seen_flags(t_seen_flags seen_flags);
 /* Main function */
 
 /**
- * @brief 設定セクションをパースする
+ * @brief 設定セクションの構文を検証する（値の確保は行わない）
  */
-int	parse_config(char **input_data, size_t *line_index, t_config_data *config)
+int	validate_config(char **input_data, size_t *line_index)
 {
 	t_seen_flags	seen_flags;
 	t_identifier	id;
@@ -78,7 +78,7 @@ int	parse_config(char **input_data, size_t *line_index, t_config_data *config)
 
 	init_seen_flags(seen_flags);
 	while (input_data[*line_index] != NULL
-		&& !all_identifiers_consumed(seen_flags))
+		&& !all_identifiers_found(seen_flags))
 	{
 		if (is_blank_line(input_data[*line_index]))
 		{
@@ -89,16 +89,16 @@ int	parse_config(char **input_data, size_t *line_index, t_config_data *config)
 		if (id == ID_UNKNOWN)
 			return (write(2, "Error\nUnknown identifier\n", 25), -1);
 		if (id >= ID_NO && id <= ID_EA)
-			result = handle_texture(input_data[*line_index], config,
+			result = validate_texture_line(input_data[*line_index],
 					seen_flags, id);
 		else
-			result = handle_rgb(input_data[*line_index], config,
+			result = validate_rgb_line(input_data[*line_index],
 					seen_flags, id);
 		if (result != 0)
 			return (result);
 		(*line_index)++;
 	}
-	if (!all_identifiers_consumed(seen_flags))
+	if (!all_identifiers_found(seen_flags))
 		return (write(2, "Error\nMissing identifier\n", 25), -1);
 	return (0);
 }
@@ -174,12 +174,11 @@ static t_identifier	detect_identifier(const char *line)
 	return (ID_UNKNOWN);
 }
 
-static char	*extract_path(const char *line, t_identifier id)
+static int	validate_texture_format(const char *line, t_identifier id)
 {
-	int		i;
-	int		start;
-	int		len;
-	char	*path;
+	int	i;
+	int	start;
+	int	len;
 
 	i = 0;
 	while (ft_isspace(line[i]))
@@ -194,10 +193,12 @@ static char	*extract_path(const char *line, t_identifier id)
 	while (line[i] && !ft_isspace(line[i]) && line[i] != '\n')
 		i++;
 	len = i - start;
-	if (len < 5 || ft_strcmp(&line[i - 4], ".xpm") != 0)
-		return (NULL);
-	path = ft_strndup(&line[start], len);
-	return (path);
+	if (len < 5)
+		return (-1);
+	if (line[start + len - 4] != '.' || line[start + len - 3] != 'x'
+		|| line[start + len - 2] != 'p' || line[start + len - 1] != 'm')
+		return (-1);
+	return (0);
 }
 
 static int	parse_rgb_component(const char *str, int *idx)
@@ -218,7 +219,7 @@ static int	parse_rgb_component(const char *str, int *idx)
 	return (value);
 }
 
-static int	parse_rgb(const char *line, t_color *color)
+static int	validate_rgb_format(const char *line)
 {
 	int	i;
 	int	r;
@@ -240,13 +241,10 @@ static int	parse_rgb(const char *line, t_color *color)
 	b = parse_rgb_component(line, &i);
 	if (b == -1)
 		return (-1);
-	color->r = r;
-	color->g = g;
-	color->b = b;
 	return (0);
 }
 
-static bool	all_identifiers_consumed(t_seen_flags seen_flags)
+static bool	all_identifiers_found(t_seen_flags seen_flags)
 {
 	int	i;
 
@@ -260,45 +258,30 @@ static bool	all_identifiers_consumed(t_seen_flags seen_flags)
 	return (true);
 }
 
-static int	handle_texture(const char *line, t_config_data *config,
+static int	validate_texture_line(const char *line,
 		t_seen_flags seen_flags, t_identifier id)
 {
-	int		idx;
-	char	*path;
+	int	idx;
 
 	idx = get_identifier_index(id);
 	if (seen_flags[idx] > 0)
 		return (write(2, "Error\nDuplicate identifier\n", 27), -1);
-	path = extract_path(line, id);
-	if (path == NULL)
+	if (validate_texture_format(line, id) != 0)
 		return (write(2, "Error\nInvalid texture path\n", 27), -1);
-	if (id == ID_NO)
-		config->north_texture_path = path;
-	else if (id == ID_SO)
-		config->south_texture_path = path;
-	else if (id == ID_WE)
-		config->west_texture_path = path;
-	else if (id == ID_EA)
-		config->east_texture_path = path;
 	seen_flags[idx]++;
 	return (0);
 }
 
-static int	handle_rgb(const char *line, t_config_data *config,
+static int	validate_rgb_line(const char *line,
 		t_seen_flags seen_flags, t_identifier id)
 {
-	int		idx;
-	t_color	color;
+	int	idx;
 
 	idx = get_identifier_index(id);
 	if (seen_flags[idx] > 0)
 		return (write(2, "Error\nDuplicate identifier\n", 27), -1);
-	if (parse_rgb(line, &color) != 0)
+	if (validate_rgb_format(line) != 0)
 		return (write(2, "Error\nInvalid RGB value\n", 24), -1);
-	if (id == ID_F)
-		config->floor_color = color;
-	else if (id == ID_C)
-		config->ceiling_color = color;
 	seen_flags[idx]++;
 	return (0);
 }

@@ -29,10 +29,12 @@ LIB_DIR = libraries
 SRCS = $(SRC_DIR)/main.c \
 	   $(SRC_DIR)/parse/parse.c \
 	   $(SRC_DIR)/parse/config/parse_config.c \
+	   $(SRC_DIR)/parse/config/load_config.c \
 	   $(SRC_DIR)/parse/map/parse_map.c \
 	   $(SRC_DIR)/utils/ft_strlen.c \
 	   $(SRC_DIR)/utils/ft_strcmp.c \
 	   $(SRC_DIR)/utils/ft_strndup.c \
+	   $(SRC_DIR)/utils/ft_isspace.c \
 	   $(SRC_DIR)/utils/read_map.c \
 	   $(SRC_DIR)/utils/free_map.c \
 	   $(SRC_DIR)/engine/init/init_game.c \
