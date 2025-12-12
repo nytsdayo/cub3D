@@ -41,26 +41,24 @@ echo "----------------------------------------"
 echo "Testing SUCCESS cases (should pass):"
 echo "----------------------------------------"
 if [ -d "$SUCCESS_MAPS_DIR" ]; then
-    for map_file in "$SUCCESS_MAPS_DIR"/*.cub; do
-        if [ -f "$map_file" ]; then
-            TOTAL_TESTS=$((TOTAL_TESTS + 1))
-            map_name=$(basename "$map_file")
-            echo -n "Testing $map_name ... "
-            
-            if [ -f "$CUB3D_BIN" ]; then
-                # Run the parser with timeout to prevent hanging
-                if timeout 10s "$CUB3D_BIN" "$map_file" &> /dev/null; then
-                    echo -e "${GREEN}✓ PASSED${NC}"
-                    PASSED_TESTS=$((PASSED_TESTS + 1))
-                else
-                    echo -e "${RED}✗ FAILED (should have succeeded)${NC}"
-                    FAILED_TESTS=$((FAILED_TESTS + 1))
-                fi
+    while IFS= read -r -d '' map_file; do
+        TOTAL_TESTS=$((TOTAL_TESTS + 1))
+        map_name=$(echo "$map_file" | sed "s|$SUCCESS_MAPS_DIR/||")
+        echo -n "Testing $map_name ... "
+        
+        if [ -f "$CUB3D_BIN" ]; then
+            # Run the parser with timeout to prevent hanging
+            if timeout 10s "$CUB3D_BIN" "$map_file" &> /dev/null; then
+                echo -e "${GREEN}✓ PASSED${NC}"
+                PASSED_TESTS=$((PASSED_TESTS + 1))
             else
-                echo -e "${YELLOW}SKIPPED (binary not found)${NC}"
+                echo -e "${RED}✗ FAILED (should have succeeded)${NC}"
+                FAILED_TESTS=$((FAILED_TESTS + 1))
             fi
+        else
+            echo -e "${YELLOW}SKIPPED (binary not found)${NC}"
         fi
-    done
+    done < <(find "$SUCCESS_MAPS_DIR" -name "*.cub" -type f -print0 | sort -z)
 else
     echo "Success maps directory not found: $SUCCESS_MAPS_DIR"
 fi
@@ -72,26 +70,24 @@ echo "----------------------------------------"
 echo "Testing FAILURE cases (should fail):"
 echo "----------------------------------------"
 if [ -d "$FAILED_MAPS_DIR" ]; then
-    for map_file in "$FAILED_MAPS_DIR"/*.cub; do
-        if [ -f "$map_file" ]; then
-            TOTAL_TESTS=$((TOTAL_TESTS + 1))
-            map_name=$(basename "$map_file")
-            echo -n "Testing $map_name ... "
-            
-            if [ -f "$CUB3D_BIN" ]; then
-                # Run the parser - should fail (timeout also counts as failure)
-                if timeout 10s "$CUB3D_BIN" "$map_file" &> /dev/null; then
-                    echo -e "${RED}✗ FAILED (should have failed)${NC}"
-                    FAILED_TESTS=$((FAILED_TESTS + 1))
-                else
-                    echo -e "${GREEN}✓ PASSED${NC}"
-                    PASSED_TESTS=$((PASSED_TESTS + 1))
-                fi
+    while IFS= read -r -d '' map_file; do
+        TOTAL_TESTS=$((TOTAL_TESTS + 1))
+        map_name=$(echo "$map_file" | sed "s|$FAILED_MAPS_DIR/||")
+        echo -n "Testing $map_name ... "
+        
+        if [ -f "$CUB3D_BIN" ]; then
+            # Run the parser - should fail (timeout also counts as failure)
+            if timeout 10s "$CUB3D_BIN" "$map_file" &> /dev/null; then
+                echo -e "${RED}✗ FAILED (should have failed)${NC}"
+                FAILED_TESTS=$((FAILED_TESTS + 1))
             else
-                echo -e "${YELLOW}SKIPPED (binary not found)${NC}"
+                echo -e "${GREEN}✓ PASSED${NC}"
+                PASSED_TESTS=$((PASSED_TESTS + 1))
             fi
+        else
+            echo -e "${YELLOW}SKIPPED (binary not found)${NC}"
         fi
-    done
+    done < <(find "$FAILED_MAPS_DIR" -name "*.cub" -type f -print0 | sort -z)
 else
     echo "Failed maps directory not found: $FAILED_MAPS_DIR"
 fi

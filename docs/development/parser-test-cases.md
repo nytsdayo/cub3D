@@ -12,27 +12,71 @@
 **path:** `assets/maps/success/valid_complex.cub`  
 **detail:** より複雑な形状のマップレイアウト。空白スペースを含み、不規則な形状でも壁で適切に閉じられている。成功ケース。
 
+#### 2-1. 複雑なマップ - ジグザグパターン
+**path:** `assets/maps/success/valid_complex/zigzag_horizontal.cub`  
+**detail:** 水平方向にジグザグな通路を持つ複雑なマップ。成功ケース。
+
+**path:** `assets/maps/success/valid_complex/zigzag_vertical.cub`  
+**detail:** 垂直方向にジグザグな通路を持つ複雑なマップ。成功ケース。
+
+#### 2-2. 複雑なマップ - とげとげな外壁パターン
+**path:** `assets/maps/success/valid_complex/spiky_edges_1.cub`  
+**detail:** 外側の壁が不規則でとげとげした形状のマップ。成功ケース。
+
+**path:** `assets/maps/success/valid_complex/spiky_edges_2.cub`  
+**detail:** 外側の壁が段々になっているとげとげした形状のマップ。成功ケース。
+
 ### 3. 最小限の有効なマップ
 **path:** `assets/maps/success/valid_minimal.cub`  
 **detail:** 最小限のサイズで有効なマップ（3x3）。必須要素のみを含む。成功ケース。
 
 ### 4. すべての方向を含むマップ
-**path:** `assets/maps/success/valid_all_directions.cub`  
-**detail:** 各プレイヤー方向（N, S, E, W）のテスト用に、それぞれ個別のマップファイルを用意。成功ケース。
+**path:** `assets/maps/success/valid_player_north.cub`  
+**detail:** プレイヤーが北向き（N）のマップ。成功ケース。
+
+**path:** `assets/maps/success/valid_player_south.cub`  
+**detail:** プレイヤーが南向き（S）のマップ。成功ケース。
+
+**path:** `assets/maps/success/valid_player_east.cub`  
+**detail:** プレイヤーが東向き（E）のマップ。成功ケース。
+
+**path:** `assets/maps/success/valid_player_west.cub`  
+**detail:** プレイヤーが西向き（W）のマップ。成功ケース。
 
 ### 5. 設定要素の順序が異なるマップ
-**path:** `assets/maps/success/valid_random_order.cub`  
-**detail:** 設定要素（NO, SO, WE, EA, F, C）の順序が仕様に定められた順序と異なるが有効。成功ケース。
+**path:** `assets/maps/success/valid_random_order/`  
+**detail:** 設定要素（NO, SO, WE, EA, F, C）の順序が様々に異なる24パターンのマップファイル。どの順序でも有効であることを確認。成功ケース。
 
 ### 6. 空行を含む有効なマップ
 **path:** `assets/maps/success/valid_with_empty_lines.cub`  
 **detail:** 設定セクションとマップセクションの間に複数の空行がある。成功ケース。
 
+### 7. 大きなマップ（1024文字以上）
+**path:** `assets/maps/success/valid_bigmap/large_open_space.cub`  
+**detail:** 大きなオープンスペースを持つマップ（1024文字以上）。成功ケース。
+
+**path:** `assets/maps/success/valid_bigmap/maze_pattern.cub`  
+**detail:** 迷路のようなパターンを持つ大きなマップ（1024文字以上）。成功ケース。
+
+**path:** `assets/maps/success/valid_bigmap/spiral_pattern.cub`  
+**detail:** スパイラル（渦巻き）パターンを持つ大きなマップ（1024文字以上）。成功ケース。
+
 ## 失敗ケース (Failed Cases)
 
 ### 1. プレイヤーが複数いる
-**path:** `assets/maps/failed/invalid_multiple_players.cub`  
-**detail:** マップ内に複数のプレイヤー（N, S, E, Wの組み合わせ）が存在する。失敗ケース。
+**path:** `assets/maps/failed/invalid_multiple_players/`  
+**detail:** マップ内に複数のプレイヤー（N, S, E, Wの組み合わせ）が存在する全11パターン。失敗ケース。
+- N_S.cub - 北と南向きプレイヤー
+- N_E.cub - 北と東向きプレイヤー
+- N_W.cub - 北と西向きプレイヤー
+- S_E.cub - 南と東向きプレイヤー
+- S_W.cub - 南と西向きプレイヤー
+- E_W.cub - 東と西向きプレイヤー
+- N_S_E.cub - 3人のプレイヤー（北、南、東）
+- N_S_W.cub - 3人のプレイヤー（北、南、西）
+- N_E_W.cub - 3人のプレイヤー（北、東、西）
+- S_E_W.cub - 3人のプレイヤー（南、東、西）
+- N_S_E_W.cub - 4人のプレイヤー（全方向）
 
 ### 2. プレイヤーがいない
 **path:** `assets/maps/failed/invalid_no_player.cub`  
@@ -71,14 +115,20 @@
 **detail:** マップセクション内に空行が含まれている。失敗ケース。
 
 ### 11. 無効なRGBフォーマット
-**path:** `assets/maps/failed/invalid_rgb_format.cub`  
-**detail:** RGB値のフォーマットが不正（カンマ区切りでない、数値でないなど）。失敗ケース。
+**path:** `assets/maps/failed/invalid_rgb_format/`  
+**detail:** RGB値のフォーマットが不正（カンマ区切りでない、数値でないなど）な6パターン。失敗ケース。
+- floor_space_separated.cub - フロアのRGB値がスペース区切り
+- ceiling_space_separated.cub - 天井のRGB値がスペース区切り
+- floor_missing_value.cub - フロアのRGB値が不足（2つだけ）
+- ceiling_missing_value.cub - 天井のRGB値が不足（2つだけ）
+- floor_non_numeric.cub - フロアのRGB値が数値でない
+- ceiling_non_numeric.cub - 天井のRGB値が数値でない
 
 ## テスト実行方法
 
 ### シェルスクリプトでの実行
 ```bash
-./test/run_parser_tests.sh
+bash ./test/run_parser_tests.sh
 ```
 
 ### GitHub Actionsでの実行
@@ -87,8 +137,38 @@
 2. "Parser Test" ワークフローを選択
 3. "Run workflow" ボタンをクリック
 
+## テストケースの統計
+
+### 成功ケース
+- 基本マップ: 1ファイル
+- 複雑なマップ: 5ファイル（オリジナル1 + ジグザグ2 + とげとげ2）
+- 最小マップ: 1ファイル
+- プレイヤー方向: 4ファイル（N, S, E, W）
+- ランダム順序: 24ファイル
+- 空行含む: 1ファイル
+- 大きなマップ: 3ファイル（>1024文字）
+- **合計: 39ファイル**
+
+### 失敗ケース
+- 複数プレイヤー: 11ファイル（全組み合わせ）
+- プレイヤーなし: 1ファイル
+- 未閉鎖マップ: 1ファイル
+- 無効文字: 1ファイル
+- 不完全設定: 1ファイル
+- 重複設定: 1ファイル
+- RGB範囲外: 1ファイル
+- 空マップ: 1ファイル
+- 存在しないテクスチャ: 1ファイル
+- マップ内空行: 1ファイル
+- RGBフォーマット不正: 6ファイル
+- **合計: 26ファイル**
+
+### 総計
+**全テストケース: 65ファイル**
+
 ## 注意事項
 
 - パーサーはまだ実装中のため、これらのテストケースは将来の実装のための準備です。
 - テストケースは実装の進捗に応じて追加・修正される可能性があります。
 - 各テストケースは明確な目的を持ち、特定の検証ポイントをテストします。
+- ディレクトリ構造を使って、関連するテストケースをグループ化しています。
