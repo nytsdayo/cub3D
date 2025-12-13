@@ -6,14 +6,16 @@
 
 ```
 docs/design/
-├── README.md           # このファイル
-├── overview.md         # プロジェクト全体の概要
-├── architecture.md     # システムアーキテクチャ
-├── modules/            # モジュール別設計
+├── README.md              # このファイル
+├── overview.md            # プロジェクト全体の概要
+├── architecture.md        # システムアーキテクチャ
+├── implementation-notes.md # 実装時の注意事項
+├── modules/               # モジュール別設計
 │   └── <module>/
-│       ├── README.md   # モジュール概要(入口)
-│       └── design.md   # 詳細設計書(実装仕様)
-└── data/               # データ構造定義
+│       ├── README.md      # モジュール概要(入口)
+│       └── design.md      # 詳細設計書(実装仕様)
+├── data/                  # データ構造定義
+└── error_handling/        # エラーハンドリング設計
 ```
 
 ## ドキュメント規約
@@ -58,4 +60,6 @@ modules/parse/config/
 
 - [プロジェクト概要](./overview.md)
 - [アーキテクチャ](./architecture.md)
+- [実装時の注意事項](./implementation-notes.md)
 - [モジュール設計](./modules/)
+- [エラーハンドリング](./error_handling/)

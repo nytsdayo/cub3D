@@ -426,44 +426,11 @@ srcs/error/
 
 ## 実装時の注意事項 / Implementation Notes
 
-### 1. スレッドセーフティ / Thread Safety
+一般的な実装時の注意事項については、プロジェクト全体のガイドラインを参照してください。
 
-- 現在の cub3D はシングルスレッドで動作するため、スレッドセーフティは考慮不要
-- Currently single-threaded, thread safety not required
+For general implementation notes, please refer to the project-wide guidelines.
 
-### 2. メモリリーク防止 / Memory Leak Prevention
-
-- Valgrind でのメモリリークチェック必須
-- Valgrind memory leak check required
-- エラー処理パスでもリークが無いことを確認
-- Verify no leaks in error handling paths
-
-### 3. 42 Norminette 準拠 / 42 Norminette Compliance
-
-- 関数は25行以内
-- Functions must be within 25 lines
-- 行は80文字以内
-- Lines must be within 80 characters
-- 関数は5個以内のパラメータ
-- Functions must have at most 5 parameters
-
-### 4. エラーメッセージの言語 / Error Message Language
-
-- 英語でメッセージを記述（国際的な標準）
-- Error messages in English (international standard)
-- 明確で簡潔な表現を心がける
-- Keep messages clear and concise
-
-### 5. デバッグモード / Debug Mode
-
-将来的に実装を検討：
-Consider implementing in the future:
-
-```c
-#ifdef DEBUG
-    fprintf(stderr, "Debug: Error occurred at %s:%d\n", __FILE__, __LINE__);
-#endif
-```
+**参照 / Reference**: [実装時の注意事項](../implementation-notes.md)
 
 ---
 
