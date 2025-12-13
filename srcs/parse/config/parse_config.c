@@ -26,8 +26,6 @@ static t_identifier	detect_identifier(const char *line);
 /**
  * @brief 識別子のインデックスを取得する
  */
-static int			get_identifier_index(t_identifier id);
-
 /**
  * @brief seen_flagsを初期化する
  */
