@@ -58,6 +58,9 @@ dkms.conf
 cub3D
 obj/
 
+# Test executables
+tests/test_parse_config
+
 # macOS
 .DS_Store
 .AppleDouble
