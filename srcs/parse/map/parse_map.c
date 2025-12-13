@@ -11,19 +11,17 @@
 /* ************************************************************************** */
 
 #include "parse.h"
-#include <stdlib.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
 /**
  * @brief 文字が有効なマップ文字かを判定する
  * @param c 判定する文字
  * @return true: 有効 / false: 無効
  */
-__attribute__((unused))
-static bool	is_valid_char(char c)
-{
-	(void)c;
-	return (false);
+__attribute__((unused)) static bool is_valid_char(char c) {
+  (void)c;
+  return (false);
 }
 
 /**
@@ -31,11 +29,9 @@ static bool	is_valid_char(char c)
  * @param map マップデータ
  * @return 成功: 0 / 失敗: エラーコード
  */
-__attribute__((unused))
-static int	validate_map_size(char **map)
-{
-	(void)map;
-	return (0);
+__attribute__((unused)) static int validate_map_size(char **map) {
+  (void)map;
+  return (0);
 }
 
 /**
@@ -43,11 +39,9 @@ static int	validate_map_size(char **map)
  * @param map マップデータ
  * @return 成功: 0 / 失敗: エラーコード
  */
-__attribute__((unused))
-static int	validate_row_consistency(char **map)
-{
-	(void)map;
-	return (0);
+__attribute__((unused)) static int validate_row_consistency(char **map) {
+  (void)map;
+  return (0);
 }
 
 /**
@@ -55,11 +49,9 @@ static int	validate_row_consistency(char **map)
  * @param map マップデータ
  * @return 成功: 0 / 失敗: エラーコード
  */
-__attribute__((unused))
-static int	validate_surrounded_by_walls(char **map)
-{
-	(void)map;
-	return (0);
+__attribute__((unused)) static int validate_surrounded_by_walls(char **map) {
+  (void)map;
+  return (0);
 }
 
 /**
@@ -67,11 +59,9 @@ static int	validate_surrounded_by_walls(char **map)
  * @param map マップデータ
  * @return 成功: 0 / 失敗: エラーコード
  */
-__attribute__((unused))
-static int	validate_player_start(char **map)
-{
-	(void)map;
-	return (0);
+__attribute__((unused)) static int validate_player_start(char **map) {
+  (void)map;
+  return (0);
 }
 
 /**
@@ -79,11 +69,9 @@ static int	validate_player_start(char **map)
  * @param map マップデータ
  * @return 成功: 0 / 失敗: エラーコード
  */
-__attribute__((unused))
-static int	validate_invalid_chars(char **map)
-{
-	(void)map;
-	return (0);
+__attribute__((unused)) static int validate_invalid_chars(char **map) {
+  (void)map;
+  return (0);
 }
 
 /**
@@ -91,11 +79,9 @@ static int	validate_invalid_chars(char **map)
  * @param map マップデータ
  * @return 成功: 0 / 失敗: エラーコード
  */
-__attribute__((unused))
-static int	validate_spaces(char **map)
-{
-	(void)map;
-	return (0);
+__attribute__((unused)) static int validate_spaces(char **map) {
+  (void)map;
+  return (0);
 }
 
 /**
@@ -103,11 +89,9 @@ static int	validate_spaces(char **map)
  * @param map マップデータ
  * @return 成功: 0 / 失敗: エラーコード
  */
-__attribute__((unused))
-static int	validate_map_data(char **map)
-{
-	(void)map;
-	return (0);
+__attribute__((unused)) static int validate_map_data(char **map) {
+  (void)map;
+  return (0);
 }
 
 /**
@@ -116,11 +100,10 @@ static int	validate_map_data(char **map)
  * @param line_index マップの開始行インデックス
  * @return 成功: 0 / 失敗: エラーコード
  */
-int	validate_map(char **input_data, size_t line_index)
-{
-	(void)input_data;
-	(void)line_index;
-	return (0);
+int validate_map(char **input_data, size_t line_index) {
+  (void)input_data;
+  (void)line_index;
+  return (0);
 }
 
 /**
@@ -130,10 +113,9 @@ int	validate_map(char **input_data, size_t line_index)
  * @param map_data マップデータを格納する構造体
  * @return 成功: 0 / 失敗: エラーコード
  */
-int	load_map(char **input_data, size_t line_index, t_map_data *map_data)
-{
-	(void)input_data;
-	(void)line_index;
-	(void)map_data;
-	return (0);
+int load_map(char **input_data, size_t line_index, t_map_data *map_data) {
+  (void)input_data;
+  (void)line_index;
+  (void)map_data;
+  return (0);
 }
