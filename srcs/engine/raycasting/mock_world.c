@@ -21,77 +21,70 @@
 ** TODO: テスト用の仮実装
 ** 統合時にパーサーが読み込んだマップデータに置き換える
 */
-static void	init_map_rows(int temp_map[MAP_HEIGHT][MAP_WIDTH])
-{
-	int	row[MAP_WIDTH];
-	int	i;
+static void init_map_rows(int temp_map[MAP_HEIGHT][MAP_WIDTH]) {
+  int row[MAP_WIDTH];
+  int i;
 
-	i = 0;
-	row[0] = 1;
-	row[1] = 1;
-	row[2] = 1;
-	row[3] = 1;
-	row[4] = 1;
-	row[5] = 1;
-	row[6] = 1;
-	row[7] = 1;
-	while (i < MAP_WIDTH)
-	{
-		temp_map[0][i] = row[i];
-		temp_map[7][i] = row[i];
-		i++;
-	}
+  i = 0;
+  row[0] = 1;
+  row[1] = 1;
+  row[2] = 1;
+  row[3] = 1;
+  row[4] = 1;
+  row[5] = 1;
+  row[6] = 1;
+  row[7] = 1;
+  while (i < MAP_WIDTH) {
+    temp_map[0][i] = row[i];
+    temp_map[7][i] = row[i];
+    i++;
+  }
 }
 
-static void	init_map_middle(int temp_map[MAP_HEIGHT][MAP_WIDTH])
-{
-	temp_map[1][0] = 1;
-	temp_map[1][7] = 1;
-	temp_map[2][0] = 1;
-	temp_map[2][2] = 1;
-	temp_map[2][5] = 1;
-	temp_map[2][7] = 1;
-	temp_map[3][0] = 1;
-	temp_map[3][7] = 1;
-	temp_map[4][0] = 1;
-	temp_map[4][2] = 1;
-	temp_map[4][3] = 1;
-	temp_map[4][4] = 1;
-	temp_map[4][5] = 1;
-	temp_map[4][7] = 1;
-	temp_map[5][0] = 1;
-	temp_map[5][7] = 1;
-	temp_map[6][0] = 1;
-	temp_map[6][7] = 1;
+static void init_map_middle(int temp_map[MAP_HEIGHT][MAP_WIDTH]) {
+  temp_map[1][0] = 1;
+  temp_map[1][7] = 1;
+  temp_map[2][0] = 1;
+  temp_map[2][2] = 1;
+  temp_map[2][5] = 1;
+  temp_map[2][7] = 1;
+  temp_map[3][0] = 1;
+  temp_map[3][7] = 1;
+  temp_map[4][0] = 1;
+  temp_map[4][2] = 1;
+  temp_map[4][3] = 1;
+  temp_map[4][4] = 1;
+  temp_map[4][5] = 1;
+  temp_map[4][7] = 1;
+  temp_map[5][0] = 1;
+  temp_map[5][7] = 1;
+  temp_map[6][0] = 1;
+  temp_map[6][7] = 1;
 }
 
-void	init_hardcoded_map(t_game *game)
-{
-	int	temp_map[MAP_HEIGHT][MAP_WIDTH];
-	int	i;
-	int	j;
+void init_hardcoded_map(t_game *game) {
+  int temp_map[MAP_HEIGHT][MAP_WIDTH];
+  int i;
+  int j;
 
-	i = 0;
-	while (i < MAP_HEIGHT)
-	{
-		j = 0;
-		while (j < MAP_WIDTH)
-		{
-			temp_map[i][j] = 0;
-			j++;
-		}
-		i++;
-	}
-	init_map_rows(temp_map);
-	init_map_middle(temp_map);
-	i = 0;
-	while (i < MAP_HEIGHT)
-	{
-		j = 0;
-		while (j++ < MAP_WIDTH)
-			game->world_map[i][j - 1] = temp_map[i][j - 1];
-		i++;
-	}
+  i = 0;
+  while (i < MAP_HEIGHT) {
+    j = 0;
+    while (j < MAP_WIDTH) {
+      temp_map[i][j] = 0;
+      j++;
+    }
+    i++;
+  }
+  init_map_rows(temp_map);
+  init_map_middle(temp_map);
+  i = 0;
+  while (i < MAP_HEIGHT) {
+    j = 0;
+    while (j++ < MAP_WIDTH)
+      game->world_map[i][j - 1] = temp_map[i][j - 1];
+    i++;
+  }
 }
 
 /*
@@ -103,14 +96,13 @@ void	init_hardcoded_map(t_game *game)
 ** TODO: テスト用の仮実装
 ** 統合時にパーサーが読み込んだプレイヤーデータに置き換える
 */
-void	init_player(t_game *game)
-{
-	game->player.pos_x = 4.5;
-	game->player.pos_y = 4.5;
-	game->player.dir_x = -1.0;
-	game->player.dir_y = 0.0;
-	game->player.plane_x = 0.0;
-	game->player.plane_y = 0.66;
+void init_player(t_game *game) {
+  game->player.pos_x = 4.5;
+  game->player.pos_y = 4.5;
+  game->player.dir_x = -1.0;
+  game->player.dir_y = 0.0;
+  game->player.plane_x = 0.0;
+  game->player.plane_y = 0.66;
 }
 
 /*
@@ -156,21 +148,21 @@ game->player.plane_y = 0.66;  // 視野角を決定
 - planeの長さが視野角（FOV）を決定
 - 長さ0.66 ≈ FOV 66度
 
-		カメラ平面
-			|
-	-------+-------
-			|
-			[P]  ← プレイヤー
-			↓
-			dir
+                カメラ平面
+                        |
+        -------+-------
+                        |
+                        [P]  ← プレイヤー
+                        ↓
+                        dir
 
 プレイヤーの視野:
-	左端レイ ←  plane  → 右端レイ
-			\      |      /
-			\     |     /
-			\    ↓    /
-			\  dir  /
-				\  |  /
-				\ | /
-				[P]
+        左端レイ ←  plane  → 右端レイ
+                        \      |      /
+                        \     |     /
+                        \    ↓    /
+                        \  dir  /
+                                \  |  /
+                                \ | /
+                                [P]
 */
