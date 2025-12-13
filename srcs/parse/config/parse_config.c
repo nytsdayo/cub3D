@@ -166,7 +166,9 @@ static int	validate_texture_format(const char *line, t_identifier id)
 	while (line[i] && !ft_isspace(line[i]) && line[i] != '\n')
 		i++;
 	len = i - start;
-	if (len < 4 || ft_strncmp(&line[start + len - 4], ".xpm", 4) != 0)
+	if (len < 4)
+		return (-1);
+	if (ft_strncmp(&line[start + len - 4], ".xpm", 4) != 0)
 		return (-1);
 	return (0);
 }
