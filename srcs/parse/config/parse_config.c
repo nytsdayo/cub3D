@@ -19,14 +19,19 @@
 /* Static function prototypes */
 
 /**
- * @brief 空白のみの行かどうかを判定する
- */
-static bool			is_blank_line(const char *line);
-
-/**
  * @brief 行の先頭から識別子を検出する
  */
 static t_identifier	detect_identifier(const char *line);
+
+/**
+ * @brief 識別子のインデックスを取得する
+ */
+static int			get_identifier_index(t_identifier id);
+
+/**
+ * @brief seen_flagsを初期化する
+ */
+static void			init_seen_flags(t_seen_flags seen_flags);
 
 /**
  * @brief テクスチャパスのフォーマットを検証する（.xpm拡張子チェック）
@@ -122,20 +127,6 @@ static int	get_identifier_index(t_identifier id)
 	else if (id == ID_C)
 		return (5);
 	return (-1);
-}
-
-static bool	is_blank_line(const char *line)
-{
-	int	i;
-
-	i = 0;
-	while (line[i])
-	{
-		if (!ft_isspace(line[i]) && line[i] != '\n')
-			return (false);
-		i++;
-	}
-	return (true);
 }
 
 static t_identifier	detect_identifier(const char *line)

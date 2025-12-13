@@ -69,17 +69,4 @@ int				load_config(const char *filepath, t_config_data *config);
 int				load_map(char **input_data, size_t line_index,
 					t_map_data *map_data);
 
-/* ヘルパー関数 (identifier_utils.c) */
-
-int				is_blank_line(const char *line);
-t_identifier	detect_identifier(const char *line);
-int				get_identifier_index(t_identifier id);
-int				all_identifiers_found(t_seen_flags seen_flags);
-void			init_seen_flags(t_seen_flags seen_flags);
-
-/* バリデーション関数 (validate_format.c) */
-
-int				validate_texture_format(const char *line, t_identifier id);
-int				validate_rgb_format(const char *line);
-
 #endif
