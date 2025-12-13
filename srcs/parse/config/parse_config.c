@@ -6,17 +6,15 @@
 /*   By: rnakatan <rnakatan@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/06 00:00:00 by rnakatan          #+#    #+#             */
-/*   Updated: 2025/12/13 04:13:36 by rnakatan         ###   ########.fr       */
+/*   Updated: 2025/12/13 04:50:39 by rnakatan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
+#include "utils.h"
 #include <stdlib.h>
 #include <stdbool.h>
 #include <unistd.h>
-
-/* Utils function prototypes */
-int		ft_isspace(int c);
 
 /* Static function prototypes */
 
@@ -46,15 +44,9 @@ static int			validate_rgb_format(const char *line);
 static bool			all_identifiers_found(t_seen_flags seen_flags);
 
 /**
- * @brief テクスチャ識別子の行を検証する
+ * @brief 識別子の行を検証する
  */
-static int			validate_texture_line(const char *line,
-						t_seen_flags seen_flags, t_identifier id);
-
-/**
- * @brief RGB識別子の行を検証する
- */
-static int			validate_rgb_line(const char *line,
+static int			validate_identifier_line(const char *line,
 						t_seen_flags seen_flags, t_identifier id);
 
 /**
@@ -90,12 +82,8 @@ int	validate_config(char **input_data, size_t *line_index)
 		id = detect_identifier(input_data[*line_index]);
 		if (id == ID_UNKNOWN)
 			return (write(2, "Error\nUnknown identifier\n", 25), -1);
-		if (id >= ID_NO && id <= ID_EA)
-			result = validate_texture_line(input_data[*line_index],
-					seen_flags, id);
-		else
-			result = validate_rgb_line(input_data[*line_index],
-					seen_flags, id);
+		result = validate_identifier_line(input_data[*line_index],
+				seen_flags, id);
 		if (result != 0)
 			return (result);
 		(*line_index)++;
@@ -157,17 +145,13 @@ static t_identifier	detect_identifier(const char *line)
 	i = 0;
 	while (ft_isspace(line[i]))
 		i++;
-	if (line[i] == 'N' && line[i + 1] == 'O'
-		&& ft_isspace(line[i + 2]))
+	if (ft_strncmp(&line[i], "NO", 2) == 0 && ft_isspace(line[i + 2]))
 		return (ID_NO);
-	if (line[i] == 'S' && line[i + 1] == 'O'
-		&& ft_isspace(line[i + 2]))
+	if (ft_strncmp(&line[i], "SO", 2) == 0 && ft_isspace(line[i + 2]))
 		return (ID_SO);
-	if (line[i] == 'W' && line[i + 1] == 'E'
-		&& ft_isspace(line[i + 2]))
+	if (ft_strncmp(&line[i], "WE", 2) == 0 && ft_isspace(line[i + 2]))
 		return (ID_WE);
-	if (line[i] == 'E' && line[i + 1] == 'A'
-		&& ft_isspace(line[i + 2]))
+	if (ft_strncmp(&line[i], "EA", 2) == 0 && ft_isspace(line[i + 2]))
 		return (ID_EA);
 	if (line[i] == 'F' && ft_isspace(line[i + 1]))
 		return (ID_F);
@@ -210,13 +194,13 @@ static int	parse_rgb_component(const char *str, int *idx)
 
 	value = 0;
 	digits = 0;
-	while (str[*idx] >= '0' && str[*idx] <= '9' && digits < 3)
+	while (ft_isdigit(str[*idx]) && digits < 3)
 	{
 		value = value * 10 + (str[*idx] - '0');
 		(*idx)++;
 		digits++;
 	}
-	if (digits == 0 || value > 255)
+	if (digits == NON_NUM || value > RGB_MAX)
 		return (-1);
 	return (value);
 }
@@ -224,9 +208,6 @@ static int	parse_rgb_component(const char *str, int *idx)
 static int	validate_rgb_format(const char *line)
 {
 	int	i;
-	int	r;
-	int	g;
-	int	b;
 
 	i = 0;
 	while (ft_isspace(line[i]))
@@ -234,14 +215,9 @@ static int	validate_rgb_format(const char *line)
 	i++;
 	while (ft_isspace(line[i]))
 		i++;
-	r = parse_rgb_component(line, &i);
-	if (r == -1 || line[i++] != ',')
-		return (-1);
-	g = parse_rgb_component(line, &i);
-	if (g == -1 || line[i++] != ',')
-		return (-1);
-	b = parse_rgb_component(line, &i);
-	if (b == -1)
+	if (parse_rgb_component(line, &i) == -1 || line[i++] != ','
+		|| parse_rgb_component(line, &i) == -1 || line[i++] != ','
+		|| parse_rgb_component(line, &i) == -1)
 		return (-1);
 	return (0);
 }
@@ -260,7 +236,7 @@ static bool	all_identifiers_found(t_seen_flags seen_flags)
 	return (true);
 }
 
-static int	validate_texture_line(const char *line,
+static int	validate_identifier_line(const char *line,
 		t_seen_flags seen_flags, t_identifier id)
 {
 	int	idx;
@@ -268,22 +244,16 @@ static int	validate_texture_line(const char *line,
 	idx = get_identifier_index(id);
 	if (seen_flags[idx] > 0)
 		return (write(2, "Error\nDuplicate identifier\n", 27), -1);
-	if (validate_texture_format(line, id) != 0)
-		return (write(2, "Error\nInvalid texture path\n", 27), -1);
-	seen_flags[idx]++;
-	return (0);
-}
-
-static int	validate_rgb_line(const char *line,
-		t_seen_flags seen_flags, t_identifier id)
-{
-	int	idx;
-
-	idx = get_identifier_index(id);
-	if (seen_flags[idx] > 0)
-		return (write(2, "Error\nDuplicate identifier\n", 27), -1);
-	if (validate_rgb_format(line) != 0)
-		return (write(2, "Error\nInvalid RGB value\n", 24), -1);
+	if (id >= ID_NO && id <= ID_EA)
+	{
+		if (validate_texture_format(line, id) != 0)
+			return (write(2, "Error\nInvalid texture path\n", 27), -1);
+	}
+	else
+	{
+		if (validate_rgb_format(line) != 0)
+			return (write(2, "Error\nInvalid RGB value\n", 24), -1);
+	}
 	seen_flags[idx]++;
 	return (0);
 }

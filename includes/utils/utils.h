@@ -18,6 +18,7 @@
 
 size_t ft_strlen(const char *s);
 int ft_strcmp(const char *s1, const char *s2);
+int ft_strncmp(const char *s1, const char *s2, size_t n);
 char *ft_strndup(const char *s, size_t len);
 const char **read_map(const char *filename);
 void free_map(void **map);

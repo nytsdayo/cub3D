@@ -33,6 +33,7 @@ SRCS = $(SRC_DIR)/main.c \
 	   $(SRC_DIR)/parse/map/parse_map.c \
 	   $(SRC_DIR)/utils/ft_strlen.c \
 	   $(SRC_DIR)/utils/ft_strcmp.c \
+	   $(SRC_DIR)/utils/ft_strncmp.c \
 	   $(SRC_DIR)/utils/ft_strndup.c \
 	   $(SRC_DIR)/utils/ft_isspace.c \
 	   $(SRC_DIR)/utils/read_map.c \

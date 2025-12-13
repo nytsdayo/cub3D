@@ -6,7 +6,7 @@
 /*   By: rnakatan <rnakatan@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 19:19:59 by rnakatan          #+#    #+#             */
-/*   Updated: 2025/12/13 04:20:15 by rnakatan         ###   ########.fr       */
+/*   Updated: 2025/12/13 04:29:45 by rnakatan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,6 @@ int	parse(const char *filepath, t_game_data *game_data)
 
 	(void)game_data;
 	line_index = 0;
-	input_data = NULL;
-	// TODO: read_map()でファイルを読み込む
 	input_data = read_map(filepath);
 	if (input_data == NULL)
 		return (-1);
@@ -44,7 +42,7 @@ int	parse(const char *filepath, t_game_data *game_data)
 	// result = validate_map(input_data, line_index);
 	// if (result != 0)
 	// 	return (result);
-	// free_map((void **)input_data);
+	free_map((void **)input_data);
 	(void)filepath;
 	(void)input_data;
 	(void)line_index;
