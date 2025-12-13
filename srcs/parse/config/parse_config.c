@@ -6,7 +6,7 @@
 /*   By: rnakatan <rnakatan@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/06 00:00:00 by rnakatan          #+#    #+#             */
-/*   Updated: 2025/12/13 04:50:39 by rnakatan         ###   ########.fr       */
+/*   Updated: 2025/12/13 20:10:28 by rnakatan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,8 +158,6 @@ static int	validate_texture_format(const char *line, t_identifier id)
 	int	len;
 
 	i = 0;
-	while (ft_isspace(line[i]))
-		i++;
 	if (id >= ID_NO && id <= ID_EA)
 		i += 2;
 	else
@@ -170,10 +168,7 @@ static int	validate_texture_format(const char *line, t_identifier id)
 	while (line[i] && !ft_isspace(line[i]) && line[i] != '\n')
 		i++;
 	len = i - start;
-	if (len < 5)
-		return (-1);
-	if (line[start + len - 4] != '.' || line[start + len - 3] != 'x'
-		|| line[start + len - 2] != 'p' || line[start + len - 1] != 'm')
+	if (len < 4 || ft_strncmp(&line[start + len - 4], ".xpm", 4) != 0)
 		return (-1);
 	return (0);
 }
@@ -201,9 +196,6 @@ static int	validate_rgb_format(const char *line)
 	int	i;
 
 	i = 0;
-	while (ft_isspace(line[i]))
-		i++;
-	i++;
 	while (ft_isspace(line[i]))
 		i++;
 	if (parse_rgb_component(line, &i) == -1 || line[i++] != ','
@@ -235,14 +227,16 @@ static int	validate_identifier_line(const char *line,
 	idx = get_identifier_index(id);
 	if (seen_flags[idx] > 0)
 		return (write(2, "Error\nDuplicate identifier\n", 27), -1);
+	while (ft_isspace(*line))
+		line++;
 	if (id >= ID_NO && id <= ID_EA)
 	{
-		if (validate_texture_format(line, id) != 0)
+		if (validate_texture_format(line + 2, id) != 0)
 			return (write(2, "Error\nInvalid texture path\n", 27), -1);
 	}
 	else
 	{
-		if (validate_rgb_format(line) != 0)
+		if (validate_rgb_format(line + 1) != 0)
 			return (write(2, "Error\nInvalid RGB value\n", 24), -1);
 	}
 	seen_flags[idx]++;
