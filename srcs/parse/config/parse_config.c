@@ -6,121 +6,239 @@
 /*   By: rnakatan <rnakatan@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/06 00:00:00 by rnakatan          #+#    #+#             */
-/*   Updated: 2025/12/06 04:07:40 by rnakatan         ###   ########.fr       */
+/*   Updated: 2025/12/13 20:10:28 by rnakatan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
+#include "utils.h"
 #include <stdlib.h>
 #include <stdbool.h>
+#include <unistd.h>
 
-/**
- * @brief 空白のみの行かどうかを判定する
- * @param line 判定する行
- * @return true: 空白のみ / false: 非空白文字を含む
- */
-__attribute__((unused))
-static bool	is_blank_line(const char *line)
-{
-	(void)line;
-	return (false);
-}
+/* Static function prototypes */
 
 /**
  * @brief 行の先頭から識別子を検出する
- * @param line 検査する行
- * @return 識別子のタイプ (NO, SO, WE, EA, F, C, UNKNOWN)
  */
-__attribute__((unused))
-static int	detect_identifier(const char *line)
+static t_identifier	detect_identifier(const char *line);
+
+/**
+ * @brief 識別子のインデックスを取得する
+ */
+/**
+ * @brief seen_flagsを初期化する
+ */
+static void			init_seen_flags(t_seen_flags seen_flags);
+
+/**
+ * @brief テクスチャパスのフォーマットを検証する（.xpm拡張子チェック）
+ */
+static int			validate_texture_format(const char *line, t_identifier id);
+
+/**
+ * @brief RGB値のフォーマットを検証する（R,G,B形式、0-255範囲チェック）
+ */
+static int			validate_rgb_format(const char *line);
+
+/**
+ * @brief すべての識別子が1回ずつ見つかったかを確認する
+ */
+static bool			all_identifiers_found(t_seen_flags seen_flags);
+
+/**
+ * @brief 識別子の行を検証する
+ */
+static int			validate_identifier_line(const char *line,
+						t_seen_flags seen_flags, t_identifier id);
+
+/**
+ * @brief 識別子のインデックスを取得する
+ */
+static int			get_identifier_index(t_identifier id);
+
+/**
+ * @brief seen_flagsを初期化する
+ */
+static void			init_seen_flags(t_seen_flags seen_flags);
+
+/* Main function */
+
+/**
+ * @brief 設定セクションの構文を検証する（値の確保は行わない）
+ */
+int	validate_config(char **input_data, size_t *line_index)
 {
-	(void)line;
+	t_seen_flags	seen_flags;
+	t_identifier	id;
+	int				result;
+
+	init_seen_flags(seen_flags);
+	while (input_data[*line_index] != NULL
+		&& !all_identifiers_found(seen_flags))
+	{
+		if (is_blank_line(input_data[*line_index]))
+		{
+			(*line_index)++;
+			continue ;
+		}
+		id = detect_identifier(input_data[*line_index]);
+		if (id == ID_UNKNOWN)
+			return (write(2, "Error\nUnknown identifier\n", 25), -1);
+		result = validate_identifier_line(input_data[*line_index],
+				seen_flags, id);
+		if (result != 0)
+			return (result);
+		(*line_index)++;
+	}
+	if (!all_identifiers_found(seen_flags))
+		return (write(2, "Error\nMissing identifier\n", 25), -1);
 	return (0);
 }
 
-/**
- * @brief テクスチャパスを抽出する
- * @param line 識別子の後の文字列
- * @return 抽出されたパス文字列 (呼び出し側で解放が必要)
- */
-__attribute__((unused))
-static char	*extract_path(const char *line)
+/* Static function implementations */
+
+static void	init_seen_flags(t_seen_flags seen_flags)
 {
-	(void)line;
-	return (NULL);
+	int	i;
+
+	i = 0;
+	while (i < 6)
+	{
+		seen_flags[i] = 0;
+		i++;
+	}
 }
 
-/**
- * @brief RGB値をパースする
- * @param line RGB文字列 ("R,G,B"形式)
- * @param color 結果を格納する構造体
- * @return 成功: 0 / 失敗: エラーコード
- */
-__attribute__((unused))
-static int	parse_rgb(const char *line, t_color *color)
+static int	get_identifier_index(t_identifier id)
 {
-	(void)line;
-	(void)color;
+	if (id == ID_NO)
+		return (0);
+	else if (id == ID_SO)
+		return (1);
+	else if (id == ID_WE)
+		return (2);
+	else if (id == ID_EA)
+		return (3);
+	else if (id == ID_F)
+		return (4);
+	else if (id == ID_C)
+		return (5);
+	return (-1);
+}
+
+static t_identifier	detect_identifier(const char *line)
+{
+	int	i;
+
+	i = 0;
+	while (ft_isspace(line[i]))
+		i++;
+	if (ft_strncmp(&line[i], "NO", 2) == 0 && ft_isspace(line[i + 2]))
+		return (ID_NO);
+	if (ft_strncmp(&line[i], "SO", 2) == 0 && ft_isspace(line[i + 2]))
+		return (ID_SO);
+	if (ft_strncmp(&line[i], "WE", 2) == 0 && ft_isspace(line[i + 2]))
+		return (ID_WE);
+	if (ft_strncmp(&line[i], "EA", 2) == 0 && ft_isspace(line[i + 2]))
+		return (ID_EA);
+	if (line[i] == 'F' && line[i + 1] && ft_isspace(line[i + 1]))
+		return (ID_F);
+	if (line[i] == 'C' && line[i + 1] && ft_isspace(line[i + 1]))
+		return (ID_C);
+	return (ID_UNKNOWN);
+}
+
+static int	validate_texture_format(const char *line, t_identifier id)
+{
+	int	i;
+	int	start;
+	int	len;
+
+	i = 0;
+	if (id >= ID_NO && id <= ID_EA)
+		i += 2;
+	else
+		i += 1;
+	while (ft_isspace(line[i]))
+		i++;
+	start = i;
+	while (line[i] && !ft_isspace(line[i]) && line[i] != '\n')
+		i++;
+	len = i - start;
+	if (len < 4)
+		return (-1);
+	if (ft_strncmp(&line[start + len - 4], ".xpm", 4) != 0)
+		return (-1);
 	return (0);
 }
 
-/**
- * @brief すべての識別子が1回ずつ処理されたかを確認する
- * @param seen_flags 各識別子の処理済みフラグ
- * @return true: 全て処理済み / false: 未処理あり
- */
-__attribute__((unused))
-static bool	all_identifiers_consumed(int seen_flags[6])
+static int	parse_rgb_component(const char *str, int *idx)
 {
-	(void)seen_flags;
-	return (false);
+	int	value;
+	int	digits;
+
+	value = 0;
+	digits = 0;
+	while (ft_isdigit(str[*idx]) && digits < 3)
+	{
+		value = value * 10 + (str[*idx] - '0');
+		(*idx)++;
+		digits++;
+	}
+	if (digits == NON_NUM || value > RGB_MAX)
+		return (-1);
+	return (value);
 }
 
-/**
- * @brief テクスチャ識別子を処理する
- * @param line 識別子を含む行
- * @param config 設定データを格納する構造体
- * @param seen_flags 処理済みフラグ
- * @return 成功: 0 / 失敗: エラーコード
- */
-__attribute__((unused))
-static int	handle_texture(const char *line, t_config_data *config,
-		int seen_flags[6])
+static int	validate_rgb_format(const char *line)
 {
-	(void)line;
-	(void)config;
-	(void)seen_flags;
+	int	i;
+
+	i = 0;
+	while (ft_isspace(line[i]))
+		i++;
+	if (parse_rgb_component(line, &i) == -1 || line[i++] != ','
+		|| parse_rgb_component(line, &i) == -1 || line[i++] != ','
+		|| parse_rgb_component(line, &i) == -1)
+		return (-1);
 	return (0);
 }
 
-/**
- * @brief RGB識別子を処理する
- * @param line 識別子を含む行
- * @param config 設定データを格納する構造体
- * @param seen_flags 処理済みフラグ
- * @return 成功: 0 / 失敗: エラーコード
- */
-__attribute__((unused))
-static int	handle_rgb(const char *line, t_config_data *config,
-		int seen_flags[6])
+static bool	all_identifiers_found(t_seen_flags seen_flags)
 {
-	(void)line;
-	(void)config;
-	(void)seen_flags;
-	return (0);
+	int	i;
+
+	i = 0;
+	while (i < 6)
+	{
+		if (seen_flags[i] == 0)
+			return (false);
+		i++;
+	}
+	return (true);
 }
 
-/**
- * @brief 設定セクションをパースする
- * @param input_data 入力行の配列
- * @param line_index パース開始位置 (更新される)
- * @param config パース結果を格納する構造体
- * @return 成功: 0 / 失敗: エラーコード
- */
-int	parse_config(char **input_data, size_t *line_index, t_config_data *config)
+static int	validate_identifier_line(const char *line,
+		t_seen_flags seen_flags, t_identifier id)
 {
-	(void)input_data;
-	(void)line_index;
-	(void)config;
+	int	idx;
+
+	idx = get_identifier_index(id);
+	if (seen_flags[idx] > 0)
+		return (write(2, "Error\nDuplicate identifier\n", 27), -1);
+	while (ft_isspace(*line))
+		line++;
+	if (id >= ID_NO && id <= ID_EA)
+	{
+		if (validate_texture_format(line + 2, id) != 0)
+			return (write(2, "Error\nInvalid texture path\n", 27), -1);
+	}
+	else
+	{
+		if (validate_rgb_format(line + 1) != 0)
+			return (write(2, "Error\nInvalid RGB value\n", 24), -1);
+	}
+	seen_flags[idx]++;
 	return (0);
 }
