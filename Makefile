@@ -91,4 +91,18 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+# Test target for parse_map module
+TEST_MAP_NAME = test_parse_map
+TEST_MAP_SRCS = $(SRC_DIR)/parse/map/test_parse_map.c \
+				$(SRC_DIR)/parse/map/parse_map.c \
+				$(SRC_DIR)/utils/ft_strlen.c \
+				$(SRC_DIR)/utils/ft_strndup.c \
+				$(SRC_DIR)/utils/read_map.c \
+				$(SRC_DIR)/utils/free_map.c
+TEST_MAP_OBJS = $(TEST_MAP_SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+
+test_parse_map: $(TEST_MAP_OBJS)
+	$(CC) $(CFLAGS) $(TEST_MAP_OBJS) -o $(TEST_MAP_NAME)
+	./$(TEST_MAP_NAME)
+
+.PHONY: all clean fclean re test_parse_map
