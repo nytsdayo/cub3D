@@ -12,11 +12,8 @@
 
 /**
  * @brief 文字が空白文字（スペースまたはタブ）かどうかを判定する
- * 
+ *
  * @param c 判定する文字
  * @return int 空白文字の場合は1、それ以外は0
  */
-int	ft_isspace(int c)
-{
-	return (c == ' ' || c == '\t');
-}
+int ft_isspace(int c) { return (c == ' ' || c == '\t'); }
