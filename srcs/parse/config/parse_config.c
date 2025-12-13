@@ -142,9 +142,9 @@ static t_identifier	detect_identifier(const char *line)
 		return (ID_WE);
 	if (ft_strncmp(&line[i], "EA", 2) == 0 && ft_isspace(line[i + 2]))
 		return (ID_EA);
-	if (line[i] == 'F' && ft_isspace(line[i + 1]))
+	if (line[i] == 'F' && line[i + 1] && ft_isspace(line[i + 1]))
 		return (ID_F);
-	if (line[i] == 'C' && ft_isspace(line[i + 1]))
+	if (line[i] == 'C' && line[i + 1] && ft_isspace(line[i + 1]))
 		return (ID_C);
 	return (ID_UNKNOWN);
 }
