@@ -28,19 +28,32 @@ int	handle_keypress(int keycode, t_game *game)
 {
 	if (keycode == KEY_ESC)
 		close_window(game);
-	else if (keycode == KEY_W)
-		move_forward(game);
-	else if (keycode == KEY_S)
-		move_backward(game);
-	else if (keycode == KEY_A)
-		move_left(game);
-	else if (keycode == KEY_D)
-		move_right(game);
-	else if (keycode == KEY_LEFT)
-		rotate_left(game);
-	else if (keycode == KEY_RIGHT)
-		rotate_right(game);
+	else if (keycode >= 0 && keycode < 256)
+		game->keys[keycode] = 1;
 	return (0);
+}
+
+int	handle_keyrelease(int keycode, t_game *game)
+{
+	if (keycode >= 0 && keycode < 256)
+		game->keys[keycode] = 0;
+	return (0);
+}
+
+void	process_held_keys(t_game *game)
+{
+	if (game->keys[KEY_W])
+		move_forward(game);
+	if (game->keys[KEY_S])
+		move_backward(game);
+	if (game->keys[KEY_A])
+		move_left(game);
+	if (game->keys[KEY_D])
+		move_right(game);
+	if (game->keys[KEY_LEFT])
+		rotate_left(game);
+	if (game->keys[KEY_RIGHT])
+		rotate_right(game);
 }
 
 #ifdef __linux__

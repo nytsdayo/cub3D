@@ -57,6 +57,7 @@
 
 /* Events */
 #define ON_KEYDOWN 2
+#define ON_KEYUP 3
 #define ON_DESTROY 17
 
 /* Player Structure */
@@ -86,6 +87,7 @@ typedef struct s_game {
   int world_map[MAP_HEIGHT][MAP_WIDTH];
   t_player player;
   t_img img;
+  int keys[256];
 } t_game;
 
 #endif
