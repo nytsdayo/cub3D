@@ -28,7 +28,7 @@
 
 | 関数名 | 説明 | 引数 | 戻り値 |
 |--------|------|------|--------|
-| `is_valid_position` | 指定された位置が有効か（壁でないか）をチェック | `t_game *game, double x, double y` | `int` (1: 有効, 0: 無効) |
+| `is_wall` | 指定された位置が壁かどうかをチェック（バウンディングボックス4コーナー） | `t_game *game, double x, double y` | `int` (1: 壁, 0: 通行可能) |
 
 ## 内部設計
 
@@ -38,9 +38,13 @@
 
 ```
 1. 新しい位置を計算（現在位置 + 方向ベクトル * 移動速度）
-2. is_valid_position() で衝突判定
-3. 有効な場合のみ位置を更新
+2. X軸とY軸を個別に is_wall() で衝突判定
+3. 各軸が通行可能な場合のみその軸の位置を更新
 ```
+
+**X/Y軸分離チェックの利点：**
+- 斜めに壁に当たった際も壁に沿ってスライドできる
+- より自然な移動感覚
 
 #### 移動方向の計算
 
@@ -48,12 +52,22 @@
   ```c
   new_x = pos_x ± dir_x * MOVE_SPEED
   new_y = pos_y ± dir_y * MOVE_SPEED
+  // X軸とY軸を個別にチェック
+  if (!is_wall(game, new_x, pos_y))
+      pos_x = new_x;
+  if (!is_wall(game, pos_x, new_y))
+      pos_y = new_y;
   ```
 
 - **左右移動（ストレイフ）**: カメラ平面 (`plane_x`, `plane_y`) に沿って移動
   ```c
   new_x = pos_x ± plane_x * MOVE_SPEED
   new_y = pos_y ± plane_y * MOVE_SPEED
+  // X軸とY軸を個別にチェック
+  if (!is_wall(game, new_x, pos_y))
+      pos_x = new_x;
+  if (!is_wall(game, pos_x, new_y))
+      pos_y = new_y;
   ```
 
 ### 回転処理
@@ -79,30 +93,41 @@ new_plane_y = plane_x * sin(θ) + plane_y * cos(θ)
 
 ### 衝突判定
 
-`is_valid_position(game, x, y)` の処理：
+`is_wall(game, x, y)` の処理：
+
+**バウンディングボックス4コーナーチェック方式**
 
 ```
-1. 座標をマップのインデックスに変換
-   map_x = (int)x
-   map_y = (int)y
+1. プレイヤーのバウンディングボックス4コーナーの座標を計算
+   x1 = (int)(x - COLLISION_MARGIN)  // 左上
+   x2 = (int)(x + COLLISION_MARGIN)  // 右上
+   y1 = (int)(y - COLLISION_MARGIN)  // 左下
+   y2 = (int)(y + COLLISION_MARGIN)  // 右下
 
 2. マップ範囲外チェック
-   if (map_x < 0 || map_x >= MAP_WIDTH || map_y < 0 || map_y >= MAP_HEIGHT)
-       return 0
+   if (x1 < 0 || x2 >= MAP_WIDTH || y1 < 0 || y2 >= MAP_HEIGHT)
+       return 1  // 壁扱い
 
-3. 壁チェック
-   if (game->world_map[map_y][map_x] != 0)
-       return 0
+3. 4コーナーすべてが壁でないかチェック
+   if (game->world_map[y1][x1] != 0) return 1
+   if (game->world_map[y1][x2] != 0) return 1
+   if (game->world_map[y2][x1] != 0) return 1
+   if (game->world_map[y2][x2] != 0) return 1
 
-4. 有効な位置
-   return 1
+4. すべて通行可能
+   return 0
 ```
+
+**利点：**
+- プレイヤーの当たり判定が点ではなく矩形となり、壁へのクリッピングを防止
+- より現実的な衝突判定
 
 ### 定数
 
 ```c
-#define MOVE_SPEED 0.1   // 移動速度（1フレームあたりの移動量）
-#define ROT_SPEED 0.05   // 回転速度（ラジアン、約2.86度）
+#define MOVE_SPEED 0.1           // 移動速度（1フレームあたりの移動量）
+#define ROT_SPEED 0.05           // 回転速度（ラジアン、約2.86度）
+#define COLLISION_MARGIN 0.2     // プレイヤーの当たり判定マージン（半径）
 ```
 
 ## ファイル構成
@@ -118,27 +143,48 @@ includes/engine/
 
 ## 使用方法
 
-キーボード入力は `handle_keypress()` (cleanup.c) で処理され、
-対応するプレイヤー操作関数を呼び出す：
+キーボード入力は `input.c` で処理され、連続キー押下に対応：
 
+**キー状態の管理：**
 ```c
+// handle_keypress() - キーを押したときに呼ばれる
 int handle_keypress(int keycode, t_game *game)
 {
-    if (keycode == KEY_W)
-        move_forward(game);
-    else if (keycode == KEY_S)
-        move_backward(game);
-    else if (keycode == KEY_A)
-        move_left(game);
-    else if (keycode == KEY_D)
-        move_right(game);
-    else if (keycode == KEY_LEFT)
-        rotate_left(game);
-    else if (keycode == KEY_RIGHT)
-        rotate_right(game);
-    // ...
+    if (keycode >= 0 && keycode < 256)
+        game->keys[keycode] = 1;  // キー押下状態を記録
+    return (0);
+}
+
+// handle_keyrelease() - キーを離したときに呼ばれる
+int handle_keyrelease(int keycode, t_game *game)
+{
+    if (keycode >= 0 && keycode < 256)
+        game->keys[keycode] = 0;  // キー解放状態を記録
+    return (0);
 }
 ```
+
+**毎フレーム処理：**
+```c
+// process_held_keys() - render_frame() で毎フレーム呼ばれる
+void process_held_keys(t_game *game)
+{
+    if (game->keys[KEY_W])
+        move_forward(game);
+    if (game->keys[KEY_S])
+        move_backward(game);
+    if (game->keys[KEY_A])
+        move_left(game);
+    if (game->keys[KEY_D])
+        move_right(game);
+    if (game->keys[KEY_LEFT])
+        rotate_left(game);
+    if (game->keys[KEY_RIGHT])
+        rotate_right(game);
+}
+```
+
+この方式により、キーを押し続けることでスムーズな連続移動が可能になる。
 
 ## キーバインド
 
@@ -154,9 +200,10 @@ int handle_keypress(int keycode, t_game *game)
 
 ## エラーハンドリング
 
-- **範囲外チェック**: マップの境界を超える移動は `is_valid_position()` で拒否
-- **壁衝突**: 壁のマスへの移動は拒否
+- **範囲外チェック**: マップの境界を超える移動は `is_wall()` で拒否
+- **壁衝突**: 壁のマスへの移動は拒否（4コーナーのいずれかが壁の場合）
 - **無効な移動**: 移動が拒否された場合、プレイヤーの位置は更新されない（安全）
+- **軸ごとの判定**: X軸とY軸を個別にチェックするため、片方が壁でももう片方に移動可能
 
 ## パフォーマンス考慮
 

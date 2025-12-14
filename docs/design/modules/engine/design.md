@@ -37,6 +37,7 @@
 
 - **init/**: 初期化関連（MLX、ゲーム構造体、プレイヤー）
 - **game_loop.c**: ゲームループとイベント管理
+- **input/**: キーボード入力処理（実装済み）
 - **renderer/**: レンダリング処理
 - **raycasting/**: レイキャスティングアルゴリズム（実装済み）
 - **player/**: プレイヤー移動・回転・衝突検出（実装済み）
@@ -49,14 +50,23 @@
 run_game_loop()
   ↓
 setup_event_hooks()
-  ├─ mlx_key_hook() → handle_keypress()
+  ├─ mlx_hook(ON_KEYDOWN) → handle_keypress()    # キー押下を記録
+  ├─ mlx_hook(ON_KEYUP) → handle_keyrelease()    # キー解放を記録
   ├─ mlx_hook(ON_DESTROY) → close_window()
   └─ mlx_loop_hook() → render_frame()
+       ├─ process_held_keys()                     # 押されているキーを処理
+       └─ レイキャスティング + 描画
   ↓
 mlx_loop() [ブロッキング]
   ↓
 cleanup_game()
 ```
+
+**キー入力処理の仕組み：**
+- `handle_keypress()` と `handle_keyrelease()` が `game->keys[256]` 配列を更新
+- `render_frame()` 内で毎フレーム `process_held_keys()` を呼び出し
+- 押されているキーに対応する移動・回転関数を実行
+- フレームレートに同期した安定した動作を実現
 
 ### 設計方針
 
@@ -89,8 +99,11 @@ cleanup_game()
 
 - ✅ ゲーム初期化（init/）
 - ✅ ゲームループ（game_loop.c）
+- ✅ 入力処理（input/）
 - ✅ レイキャスティング（raycasting/）
 - ✅ プレイヤー操作（player/）
+- ✅ 連続キー押下処理
+- ✅ 衝突判定改善（バウンディングボックス、X/Y軸分離）
 - ⏳ テクスチャマッピング（未実装）
 - ⏳ パーサー統合（進行中）
 
@@ -98,7 +111,9 @@ cleanup_game()
 
 - [README](./README.md)
 - [init設計](./init/design.md)
+- [input設計](./input/design.md)
 - [renderer設計](./renderer/design.md)
 - [player設計](./player/design.md)
 - [raycasting設計](./raycasting/design.md)
 - [ADR-0002: main.cのリファクタリング](../../../decisions/0002-main-refactoring-separation-of-concerns.md)
+- [ADR-0003: プレイヤー移動・回転の実装方針](../../../decisions/0003-player-movement-implementation.md)

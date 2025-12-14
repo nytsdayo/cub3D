@@ -51,28 +51,70 @@ cub3Dプロジェクトでプレイヤーの移動と回転機能を実装する
 **欠点:**
 - ファイル数がさらに増える
 
+### 選択肢 4: 入力処理を専用モジュールに分離（採用）
+
+**利点:**
+- cleanup.cの責務を明確化（クリーンアップのみ）
+- 入力処理の拡張が容易（マウス入力など）
+- 単一責任原則に従う
+
+**欠点:**
+- ファイル数が増える
+- モジュール間の依存関係が発生
+
+### 選択肢 5: 連続キー押下処理の実装方式
+
+#### 方式A: mlx_key_hookでキー押下のたびに処理（不採用）
+
+**欠点:**
+- キーリピート率がOSやMLX実装に依存
+- スムーズな移動が困難
+
+#### 方式B: キー状態配列 + 毎フレーム処理（採用）
+
+**利点:**
+- フレームレートに同期した安定した動作
+- 複数キー同時押しに対応
+- 動きがスムーズ
+
+**実装:**
+- `keys[256]`配列でキー状態を追跡
+- `mlx_hook`でpress/releaseイベントを監視
+- `process_held_keys()`を毎フレーム呼び出し
+
 ## 決定
 
-**選択肢 2 と 3 を組み合わせる**: `player` モジュールとして独立させ、移動と回転を別ファイルに分離する。
+以下の方針を採用：
+- **選択肢 2, 3**: `player` モジュールとして独立させ、移動と回転を別ファイルに分離
+- **選択肢 4**: 入力処理を `input` モジュールに分離
+- **選択肢 5B**: キー状態配列 + 毎フレーム処理方式
 
 ### 実装詳細
 
 #### ファイル構成
 
 ```
-srcs/engine/player/
-├── player_movement.c   # 移動処理（5関数）
-│   ├── move_forward()
-│   ├── move_backward()
-│   ├── move_left()
-│   ├── move_right()
-│   └── is_valid_position() (static)
-└── player_rotation.c   # 回転処理（2関数）
-    ├── rotate_left()
-    └── rotate_right()
+srcs/engine/
+├── input/
+│   └── input.c              # 入力処理（4関数）
+│       ├── handle_keypress()
+│       ├── handle_keyrelease()
+│       ├── process_held_keys()
+│       └── close_window()
+└── player/
+    ├── player_movement.c    # 移動処理（5関数）
+    │   ├── move_forward()
+    │   ├── move_backward()
+    │   ├── move_left()
+    │   ├── move_right()
+    │   └── is_wall() (static)
+    └── player_rotation.c    # 回転処理（2関数）
+        ├── rotate_left()
+        └── rotate_right()
 
 includes/engine/
-└── player.h            # 公開関数プロトタイプ
+├── input.h              # 入力処理の関数プロトタイプ
+└── player.h             # プレイヤー操作の関数プロトタイプ
 ```
 
 #### 移動方式
@@ -87,19 +129,44 @@ includes/engine/
   - 方向ベクトルとカメラ平面を同時に回転
   - 数学的に正確で、浮動小数点誤差が累積しにくい
 
+#### 入力処理
+
+- **キー状態管理**: `game->keys[256]` 配列でキーの押下状態を追跡
+- **イベントハンドリング**:
+  - `mlx_hook(ON_KEYDOWN)` → `handle_keypress()`: キーを押したときに配列を1に設定
+  - `mlx_hook(ON_KEYUP)` → `handle_keyrelease()`: キーを離したときに配列を0に設定
+- **フレームごとの処理**:
+  - `process_held_keys()` を `render_frame()` 内で毎フレーム呼び出し
+  - 押されているキーに対応する移動・回転関数を実行
+
 #### 衝突判定
 
 - **方針**: 移動先の位置を事前チェック
-- **実装**: `is_valid_position(game, x, y)` (static関数)
+- **実装**: `is_wall(game, x, y)` (static関数)
   - マップ範囲外チェック
+  - バウンディングボックス4コーナーをチェック（壁へのクリッピング防止）
   - 壁チェック（`world_map[y][x] != 0`）
-  - 有効な場合のみ位置更新
+  - X/Y軸を個別にチェックして壁に沿ってスライド可能に
+
+#### X/Y軸分離チェック
+
+各移動関数で、X軸とY軸の衝突判定を個別に行う：
+
+```c
+if (!is_wall(game, new_x, current_y))
+    pos_x = new_x;  // X軸のみ移動
+if (!is_wall(game, current_x, new_y))
+    pos_y = new_y;  // Y軸のみ移動
+```
+
+これにより、斜めに壁に当たった際も壁に沿ってスライドできる。
 
 #### 定数
 
 ```c
-#define MOVE_SPEED 0.1   // 移動速度
-#define ROT_SPEED 0.05   // 回転速度（ラジアン）
+#define MOVE_SPEED 0.1           // 移動速度
+#define ROT_SPEED 0.05           // 回転速度（ラジアン）
+#define COLLISION_MARGIN 0.2     // プレイヤーの当たり判定マージン
 ```
 
 これらは `cub3d.h` で定義し、プロジェクト全体で共有。
@@ -148,6 +215,7 @@ includes/engine/
 
 ## 参照
 
+- [input モジュール設計](../design/modules/engine/input/design.md)
 - [player モジュール設計](../design/modules/engine/player/design.md)
 - [engine モジュール設計](../design/modules/engine/design.md)
 - [Lode's Raycasting Tutorial - Input](https://lodev.org/cgtutor/raycasting.html)
@@ -157,3 +225,15 @@ includes/engine/
 
 - パーサー統合後、ハードコードされたマップ (`mock_world.c`) からパーサーが読み込んだマップに切り替え予定
 - 初期位置の問題（壁の中に配置）を修正済み：(4.5, 4.5) → (3.5, 3.5)
+
+### 実装後の改善履歴
+
+- **2025-12-15**: 入力処理モジュール分離 (d40be28)
+  - cleanup.c から入力処理を input.c に移動
+- **2025-12-15**: 画像クリーンアップ追加 (330357c)
+  - メモリリーク修正（mlx_destroy_image 追加）
+- **2025-12-15**: 衝突判定改善 (502f773)
+  - COLLISION_MARGIN 追加、4コーナーチェック、X/Y軸分離
+  - is_valid_position → is_wall にリネーム
+- **2025-12-15**: 連続キー押下処理実装 (a074e35)
+  - keys[256] 配列とフレームごとの処理を追加
