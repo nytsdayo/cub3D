@@ -34,6 +34,7 @@
 #define FOV 60.0
 #define MOVE_SPEED 0.1
 #define ROT_SPEED 0.05
+#define COLLISION_MARGIN 0.2
 
 /* Key Codes (Cross-platform) */
 #ifdef __APPLE__
