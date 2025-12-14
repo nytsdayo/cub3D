@@ -35,6 +35,7 @@ SRCS = $(SRC_DIR)/main.c \
 	   $(SRC_DIR)/utils/free_map.c \
 	   $(SRC_DIR)/engine/init/init_game.c \
 	   $(SRC_DIR)/engine/game_loop.c \
+	   $(SRC_DIR)/engine/input/input.c \
 	   $(SRC_DIR)/engine/renderer/render_frame.c \
 	   $(SRC_DIR)/engine/raycasting/mock_world.c \
 	   $(SRC_DIR)/engine/raycasting/raycasting.c \

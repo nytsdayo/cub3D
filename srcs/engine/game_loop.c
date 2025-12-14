@@ -12,6 +12,7 @@
 
 #include "cub3d.h"
 #include "engine.h"
+#include "input.h"
 #include "utils.h"
 
 /*

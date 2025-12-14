@@ -1,30 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cleanup.c                                          :+:      :+:    :+:   */
+/*   input.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mkawano <mkawano@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/30 18:54:23 by mkawano           #+#    #+#             */
-/*   Updated: 2025/12/15 03:07:15 by mkawano          ###   ########.fr       */
+/*   Created: 2025/12/15 03:06:10 by mkawano           #+#    #+#             */
+/*   Updated: 2025/12/15 03:06:12 by mkawano          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
-#include "utils.h"
-#include <stdlib.h>
+#ifndef INPUT_H
+# define INPUT_H
 
-void	cleanup_game(t_game *game)
-{
-	if (game->win)
-		mlx_destroy_window(game->mlx, game->win);
-	if (game->mlx)
-	{
-#ifdef __linux__
-		mlx_destroy_display(game->mlx);
+# include "cub3d.h"
+
+/* Window Control */
+int	close_window(t_game *game);
+
+/* Input Handling */
+int	handle_keypress(int keycode, t_game *game);
+
 #endif
-		free(game->mlx);
-	}
-	if (game->map)
-		free_map((void **)game->map);
-}
