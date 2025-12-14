@@ -16,6 +16,8 @@
 
 void	cleanup_game(t_game *game)
 {
+	if (game->img.img)
+		mlx_destroy_image(game->mlx, game->img.img);
 	if (game->win)
 		mlx_destroy_window(game->mlx, game->win);
 	if (game->mlx)
