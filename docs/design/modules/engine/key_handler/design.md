@@ -1,4 +1,4 @@
-# input サブモジュール設計
+# key_handler サブモジュール設計
 
 ## 目的
 
@@ -108,8 +108,8 @@ static void platform_close(t_game *game)
 ## ファイル構成
 
 ```
-srcs/engine/input/
-└── input.c              # 入力処理（4関数 + 1内部関数）
+srcs/engine/key_handler/
+└── key_handler.c              # 入力処理（4関数 + 1内部関数）
     ├── handle_keypress()
     ├── handle_keyrelease()
     ├── process_held_keys()
@@ -117,7 +117,7 @@ srcs/engine/input/
     └── platform_close() (static)
 
 includes/engine/
-└── input.h              # 入力処理の関数プロトタイプ
+└── key_handler.h              # 入力処理の関数プロトタイプ
 ```
 
 ## 使用方法

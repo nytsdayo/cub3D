@@ -12,7 +12,7 @@
 
 #include "cub3d.h"
 #include "engine.h"
-#include "input.h"
+#include "key_handler.h"
 #include "utils.h"
 
 /*
