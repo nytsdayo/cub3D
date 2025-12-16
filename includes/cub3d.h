@@ -20,8 +20,8 @@
 #include <unistd.h>
 
 #ifdef __linux__
-# include <X11/X.h>
-# include <X11/keysym.h>
+#include <X11/X.h>
+#include <X11/keysym.h>
 #endif
 
 #define WINDOW_WIDTH 800
@@ -41,21 +41,21 @@
 
 /* Key Codes (Cross-platform) */
 #ifdef __APPLE__
-# define KEY_ESC 53
-# define KEY_W 13
-# define KEY_A 0
-# define KEY_S 1
-# define KEY_D 2
-# define KEY_LEFT 123
-# define KEY_RIGHT 124
+#define KEY_ESC 53
+#define KEY_W 13
+#define KEY_A 0
+#define KEY_S 1
+#define KEY_D 2
+#define KEY_LEFT 123
+#define KEY_RIGHT 124
 #else
-# define KEY_ESC XK_Escape
-# define KEY_W XK_w
-# define KEY_A XK_a
-# define KEY_S XK_s
-# define KEY_D XK_d
-# define KEY_LEFT XK_Left
-# define KEY_RIGHT XK_Right
+#define KEY_ESC XK_Escape
+#define KEY_W XK_w
+#define KEY_A XK_a
+#define KEY_S XK_s
+#define KEY_D XK_d
+#define KEY_LEFT XK_Left
+#define KEY_RIGHT XK_Right
 #endif
 
 /* Events */

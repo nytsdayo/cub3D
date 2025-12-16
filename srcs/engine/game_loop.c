@@ -22,18 +22,17 @@
 ** - Window close event (X button)
 ** - Frame rendering loop hook
 */
-static void	setup_event_hooks(t_game *game)
-{
+static void setup_event_hooks(t_game *game) {
 #ifdef __linux__
-	mlx_hook(game->win, ON_KEYDOWN, KeyPressMask, handle_keypress, game);
-	mlx_hook(game->win, ON_KEYUP, KeyReleaseMask, handle_keyrelease, game);
-	mlx_hook(game->win, ON_DESTROY, StructureNotifyMask, close_window, game);
+  mlx_hook(game->win, ON_KEYDOWN, KeyPressMask, handle_keypress, game);
+  mlx_hook(game->win, ON_KEYUP, KeyReleaseMask, handle_keyrelease, game);
+  mlx_hook(game->win, ON_DESTROY, StructureNotifyMask, close_window, game);
 #else
-	mlx_hook(game->win, ON_KEYDOWN, 0, handle_keypress, game);
-	mlx_hook(game->win, ON_KEYUP, 0, handle_keyrelease, game);
-	mlx_hook(game->win, ON_DESTROY, 0, close_window, game);
+  mlx_hook(game->win, ON_KEYDOWN, 0, handle_keypress, game);
+  mlx_hook(game->win, ON_KEYUP, 0, handle_keyrelease, game);
+  mlx_hook(game->win, ON_DESTROY, 0, close_window, game);
 #endif
-	mlx_loop_hook(game->mlx, render_frame, game);
+  mlx_loop_hook(game->mlx, render_frame, game);
 }
 
 /*
@@ -43,9 +42,8 @@ static void	setup_event_hooks(t_game *game)
 ** 2. Starts the MLX main loop (blocks until window closes)
 ** 3. Performs cleanup after loop ends
 */
-void	run_game_loop(t_game *game)
-{
-	setup_event_hooks(game);
-	mlx_loop(game->mlx);
-	cleanup_game(game);
+void run_game_loop(t_game *game) {
+  setup_event_hooks(game);
+  mlx_loop(game->mlx);
+  cleanup_game(game);
 }
