@@ -1,0 +1,44 @@
+name: Parser Test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  parser-test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential xorg libxext-dev zlib1g-dev libbsd-dev
+    
+    - name: Build cub3D
+      run: |
+        echo "Building cub3D..."
+        make
+        echo "Build completed"
+    
+    - name: List test maps
+      run: |
+        echo "Success test cases:"
+        ls -1 assets/maps/success/
+        echo ""
+        echo "Failure test cases:"
+        ls -1 assets/maps/failed/
+    
+    - name: Run parser tests
+      run: |
+        echo "Running parser test suite..."
+        bash ./test/run_parser_tests.sh
+    
+    - name: Test results
+      if: always()
+      run: |
+        echo "Test execution completed"
+        echo "Check the logs above for detailed results"

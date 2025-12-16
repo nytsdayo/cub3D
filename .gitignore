@@ -57,7 +57,9 @@ dkms.conf
 # Project specific
 cub3D
 obj/
-test
+test/*.o
+test/*.out
+test/cub3D
 
 # macOS
 .DS_Store
