@@ -28,14 +28,14 @@ int	handle_keypress(int keycode, t_game *game)
 {
 	if (keycode == KEY_ESC)
 		close_window(game);
-	else if (keycode >= 0 && keycode < 256)
+	else if (keycode >= 0 && keycode < KEY_STATE_SIZE)
 		game->keys[keycode] = 1;
 	return (0);
 }
 
 int	handle_keyrelease(int keycode, t_game *game)
 {
-	if (keycode >= 0 && keycode < 256)
+	if (keycode >= 0 && keycode < KEY_STATE_SIZE)
 		game->keys[keycode] = 0;
 	return (0);
 }
@@ -56,19 +56,12 @@ void	process_held_keys(t_game *game)
 		rotate_right(game);
 }
 
+static void	platform_close(t_game *game)
+{
 #ifdef __linux__
-
-static void	platform_close(t_game *game)
-{
 	mlx_loop_end(game->mlx);
-}
-
 #else
-
-static void	platform_close(t_game *game)
-{
 	cleanup_game(game);
 	exit(0);
-}
-
 #endif
+}

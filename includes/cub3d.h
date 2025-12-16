@@ -36,6 +36,9 @@
 #define ROT_SPEED 0.05
 #define COLLISION_MARGIN 0.2
 
+/* Key State Array Size (large enough for X11 KeySym values) */
+#define KEY_STATE_SIZE 70000
+
 /* Key Codes (Cross-platform) */
 #ifdef __APPLE__
 # define KEY_ESC 53
@@ -87,7 +90,7 @@ typedef struct s_game {
   int world_map[MAP_HEIGHT][MAP_WIDTH];
   t_player player;
   t_img img;
-  int keys[256];
+  int keys[KEY_STATE_SIZE];
 } t_game;
 
 #endif
