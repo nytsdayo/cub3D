@@ -86,7 +86,7 @@ cub3Dプロジェクトでプレイヤーの移動と回転機能を実装する
 
 以下の方針を採用：
 - **選択肢 2, 3**: `player` モジュールとして独立させ、移動と回転を別ファイルに分離
-- **選択肢 4**: 入力処理を `input` モジュールに分離
+- **選択肢 4**: 入力処理を `key_handler` モジュールに分離
 - **選択肢 5B**: キー状態配列 + 毎フレーム処理方式
 
 ### 実装詳細
@@ -95,8 +95,8 @@ cub3Dプロジェクトでプレイヤーの移動と回転機能を実装する
 
 ```
 srcs/engine/
-├── input/
-│   └── input.c              # 入力処理（4関数）
+├── key_handler/
+│   └── key_handler.c              # 入力処理（4関数）
 │       ├── handle_keypress()
 │       ├── handle_keyrelease()
 │       ├── process_held_keys()
@@ -113,7 +113,7 @@ srcs/engine/
         └── rotate_right()
 
 includes/engine/
-├── input.h              # 入力処理の関数プロトタイプ
+├── key_handler.h              # 入力処理の関数プロトタイプ
 └── player.h             # プレイヤー操作の関数プロトタイプ
 ```
 
@@ -215,7 +215,7 @@ if (!is_wall(game, current_x, new_y))
 
 ## 参照
 
-- [input モジュール設計](../design/modules/engine/input/design.md)
+- [input モジュール設計](../design/modules/engine/key_handler/design.md)
 - [player モジュール設計](../design/modules/engine/player/design.md)
 - [engine モジュール設計](../design/modules/engine/design.md)
 - [Lode's Raycasting Tutorial - Input](https://lodev.org/cgtutor/raycasting.html)
@@ -229,7 +229,7 @@ if (!is_wall(game, current_x, new_y))
 ### 実装後の改善履歴
 
 - **2025-12-15**: 入力処理モジュール分離 (d40be28)
-  - cleanup.c から入力処理を input.c に移動
+  - cleanup.c から入力処理を key_handler.c に移動
 - **2025-12-15**: 画像クリーンアップ追加 (330357c)
   - メモリリーク修正（mlx_destroy_image 追加）
 - **2025-12-15**: 衝突判定改善 (502f773)
