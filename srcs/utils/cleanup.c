@@ -14,19 +14,17 @@
 #include "utils.h"
 #include <stdlib.h>
 
-void	cleanup_game(t_game *game)
-{
-	if (game->img.img)
-		mlx_destroy_image(game->mlx, game->img.img);
-	if (game->win)
-		mlx_destroy_window(game->mlx, game->win);
-	if (game->mlx)
-	{
+void cleanup_game(t_game *game) {
+  if (game->img.img)
+    mlx_destroy_image(game->mlx, game->img.img);
+  if (game->win)
+    mlx_destroy_window(game->mlx, game->win);
+  if (game->mlx) {
 #ifdef __linux__
-		mlx_destroy_display(game->mlx);
+    mlx_destroy_display(game->mlx);
 #endif
-		free(game->mlx);
-	}
-	if (game->map)
-		free_map((void **)game->map);
+    free(game->mlx);
+  }
+  if (game->map)
+    free_map((void **)game->map);
 }
