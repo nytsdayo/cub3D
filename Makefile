@@ -35,12 +35,15 @@ SRCS = $(SRC_DIR)/main.c \
 	   $(SRC_DIR)/utils/free_map.c \
 	   $(SRC_DIR)/engine/init/init_game.c \
 	   $(SRC_DIR)/engine/game_loop.c \
+	   $(SRC_DIR)/engine/input/input.c \
 	   $(SRC_DIR)/engine/renderer/render_frame.c \
 	   $(SRC_DIR)/engine/raycasting/mock_world.c \
 	   $(SRC_DIR)/engine/raycasting/raycasting.c \
 	   $(SRC_DIR)/engine/raycasting/ray_init.c \
 	   $(SRC_DIR)/engine/raycasting/ray_dda.c \
 	   $(SRC_DIR)/engine/raycasting/ray_draw.c \
+	   $(SRC_DIR)/engine/player/player_movement.c \
+	   $(SRC_DIR)/engine/player/player_rotation.c \
 	   $(SRC_DIR)/utils/cleanup.c
 
 # Object files

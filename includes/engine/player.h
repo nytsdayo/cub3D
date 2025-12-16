@@ -1,32 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cleanup.c                                          :+:      :+:    :+:   */
+/*   player.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mkawano <mkawano@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/30 18:54:23 by mkawano           #+#    #+#             */
-/*   Updated: 2025/12/15 03:07:15 by mkawano          ###   ########.fr       */
+/*   Created: 2025/12/07 23:26:58 by mkawano           #+#    #+#             */
+/*   Updated: 2025/12/07 23:27:01 by mkawano          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
-#include "utils.h"
-#include <stdlib.h>
+#ifndef PLAYER_H
+# define PLAYER_H
 
-void	cleanup_game(t_game *game)
-{
-	if (game->img.img)
-		mlx_destroy_image(game->mlx, game->img.img);
-	if (game->win)
-		mlx_destroy_window(game->mlx, game->win);
-	if (game->mlx)
-	{
-#ifdef __linux__
-		mlx_destroy_display(game->mlx);
+# include "cub3d.h"
+
+/* Movement */
+void	move_forward(t_game *game);
+void	move_backward(t_game *game);
+void	move_left(t_game *game);
+void	move_right(t_game *game);
+
+/* Rotation */
+void	rotate_left(t_game *game);
+void	rotate_right(t_game *game);
+
 #endif
-		free(game->mlx);
-	}
-	if (game->map)
-		free_map((void **)game->map);
-}
