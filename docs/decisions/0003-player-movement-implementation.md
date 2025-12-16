@@ -215,7 +215,7 @@ if (!is_wall(game, current_x, new_y))
 
 ## 参照
 
-- [input モジュール設計](../design/modules/engine/key_handler/design.md)
+- [key_handler モジュール設計](../design/modules/engine/key_handler/design.md)
 - [player モジュール設計](../design/modules/engine/player/design.md)
 - [engine モジュール設計](../design/modules/engine/design.md)
 - [Lode's Raycasting Tutorial - Input](https://lodev.org/cgtutor/raycasting.html)
