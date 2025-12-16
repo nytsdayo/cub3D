@@ -37,7 +37,7 @@
 
 - **init/**: 初期化関連（MLX、ゲーム構造体、プレイヤー）
 - **game_loop.c**: ゲームループとイベント管理
-- **input/**: キーボード入力処理（実装済み）
+- **key_handler/**: キーボード入力処理（実装済み）
 - **renderer/**: レンダリング処理
 - **raycasting/**: レイキャスティングアルゴリズム（実装済み）
 - **player/**: プレイヤー移動・回転・衝突検出（実装済み）
@@ -99,7 +99,7 @@ cleanup_game()
 
 - ✅ ゲーム初期化（init/）
 - ✅ ゲームループ（game_loop.c）
-- ✅ 入力処理（input/）
+- ✅ 入力処理（key_handler/）
 - ✅ レイキャスティング（raycasting/）
 - ✅ プレイヤー操作（player/）
 - ✅ 連続キー押下処理
@@ -111,7 +111,7 @@ cleanup_game()
 
 - [README](./README.md)
 - [init設計](./init/design.md)
-- [input設計](./input/design.md)
+- [input設計](./key_handler/design.md)
 - [renderer設計](./renderer/design.md)
 - [player設計](./player/design.md)
 - [raycasting設計](./raycasting/design.md)

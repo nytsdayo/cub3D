@@ -1,4 +1,4 @@
-# input サブモジュール
+# key_handler サブモジュール
 
 ## 概要
 
@@ -14,11 +14,11 @@
 ## ファイル構成
 
 ```
-srcs/engine/input/
-└── input.c              # 入力処理の実装
+srcs/engine/key_handler/
+└── key_handler.c              # 入力処理の実装
 
 includes/engine/
-└── input.h              # 公開インターフェース
+└── key_handler.h              # 公開インターフェース
 ```
 
 ## 主要な関数
