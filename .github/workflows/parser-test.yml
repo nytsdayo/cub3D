@@ -21,7 +21,7 @@ jobs:
     - name: Unit tests
       run: |
         echo "Running unit tests..."
-        make tests
+        make test
         echo "Unit tests completed"
   
     - name: Build cub3D
