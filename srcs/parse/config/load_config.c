@@ -20,9 +20,8 @@
  * @param config 設定データを格納する構造体
  * @return 成功: 0 / 失敗: エラーコード
  */
-int	load_config(const char *filepath, t_config_data *config)
-{
-	(void)filepath;
-	(void)config;
-	return (0);
+int load_config(const char *filepath, t_config_data *config) {
+  (void)filepath;
+  (void)config;
+  return (0);
 }
