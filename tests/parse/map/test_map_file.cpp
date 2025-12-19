@@ -37,7 +37,7 @@ static void	print_map(char **map)
 extern "C" void	test_map_file(const char *filename, int expected_result)
 {
 	const char	**input_data;
-	t_map_data	map_data;
+	t_map_data	map_data = {nullptr};
 	int			result;
 
 	std::cout << "\n=== Testing " << filename << " ===" << std::endl;
@@ -47,7 +47,6 @@ extern "C" void	test_map_file(const char *filename, int expected_result)
 		std::cout << "Failed to read file: " << filename << std::endl;
 		return;
 	}
-	map_data.map = nullptr;
 	result = load_map((char **)input_data, 0, &map_data);
 	if (result == expected_result)
 	{
