@@ -26,9 +26,14 @@ static void	init_image(t_game *game);
 */
 void	init_game(t_game *game)
 {
+	int	i;
+
 	game->mlx = NULL;
 	game->win = NULL;
 	game->map = NULL;
+	i = 0;
+	while (i < 256)
+		game->keys[i++] = 0;
 	init_mlx(game);
 	init_image(game);
 	init_hardcoded_map(game);
