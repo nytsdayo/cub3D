@@ -2,8 +2,8 @@
 
 ## 目的
 
-- 親 `parse()` が取得した入力行列から config セクション (テクスチャ ×4 + RGB ×2) を切り出して正規化する。
-- map セクションへ制御を渡す前に、全6要素が一度ずつ揃っていることを保証する。
+- 親 `parse()` が読んだ行列から config セクション（テクスチャ×4 + RGB×2）を抽出・正規化
+- map セクションへ渡す前に全6要素が1回ずつ出現していることを保証
 
 ## EBNF 文法定義
 
@@ -60,23 +60,13 @@ letter = "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J" |
 digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
 ```
 
-### 文法の補足と制約
+### 文法の補足と制約（箇条書き）
 
-#### セマンティック制約 (構文では表現できない制約)
-
-1. **識別子の一意性**: 各識別子 (`NO`, `SO`, `WE`, `EA`, `F`, `C`) は config セクション内で正確に1回のみ出現しなければならない。
-   - 実装: `seen_flags[6]` 配列で管理
-   - 違反時: `DUPLICATE_IDENTIFIER` エラー
-
-2. **RGB 値の範囲**: `color_component` は 0-255 の範囲内でなければならない。
-   - 構文上は1-3桁の数字を許可するが、値の検証は実行時に行う
-   - 違反時: `SYNTAX_RGB` エラー
-
-3. **テクスチャパスの存在**: `.xpm` 拡張子は構文で強制されるが、ファイルの実在性は後段で検証する。
-   - config パーサーはパス文字列の形式のみを検証
-   - ファイル読み込み可能性は別モジュールで検証
-
-4. **空白行の扱い**: 空白行は config セクションの前後および config 行の間に任意の数だけ出現可能。
+- 識別子の一意性: `NO|SO|WE|EA|F|C` は各1回のみ（`seen_flags[6]` で管理、違反時 `DUPLICATE_IDENTIFIER`）
+- RGB 範囲: `color_component` は 0-255（構文は1-3桁、範囲は実行時チェック、違反時 `SYNTAX_RGB`）
+- テクスチャパス: `.xpm` 拡張子のみを構文で強制、実在チェックは別モジュール
+- 空白行: Config セクション前後と各行の間で任意数許容
+- セクション境界: Config はちょうど6行のみ許可。map 開始後の config 行や7行目以降の config 行はフォーマットエラー
 
 #### 実装上の注意点
 
@@ -93,37 +83,27 @@ digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
 
 ## 入力と前提
 
-- 入力：`char **input_data, size_t *line_index` (NULL 終端の行配列)。
-- 先頭およびセクション途中に空行が混在する。
-- 空行/空白のみの行は config 処理では無視する。
-- 行の順序は任意。識別子 `NO|SO|WE|EA|F|C` の出現回数は最大1回。
+- 入力: `char **input_data, size_t *line_index`（NULL 終端）
+- 先頭・途中に空行混在を許容し、空白行は無視
+- 行順は任意、識別子は最大1回ずつ
 
 ## 成果物
 
-- テクスチャ4種: そのままの相対/絶対パス文字列を保持。
-	- 存在確認は後段 (読み込み時) に行う。
-	- 拡張子 `.xpm` であることだけここで検知する。
-- `F` / `C`: `R,G,B` 形式の3整数を抽出し、0-255 範囲を保証したデータ (例: `t_color floor_color`) へ格納。
-- 6要素すべて揃ったら次のモジュールへ `t_config_data` 構造体を返す。
+- テクスチャ4種: 相対/絶対パス文字列を保持（存在確認は後段、拡張子 `.xpm` のみここで検知）
+- `F` / `C`: `R,G,B` の3整数を抽出し 0-255 を保証して格納（例: `t_color`）
+- 6要素が揃ったら `t_config_data` とともに次のモジュールへ制御を渡す
 
-## パースフロー
+## パースフロー（箇条書き）
 
-```text
-1. skip_reading_blank_lines()
-2. while (!all_identifiers_consumed)
-	* 現在行の状態をチェック
-		2.1 NULL line -> MISSING_IDENTIFIER エラー
-		2.2 empty line -> skip
-		2.3 detect_identifier(line)
-			 - unknown/duplicate -> ERROR
-		2.4 dispatch(line_after_id)
-			 - texture_handler: check `.xpm` extension, save trimmed path
-			 - rgb_handler: split(',') -> 3-element int conversion -> range check
-		2.5 increment corresponding flag.
-			- if already 1, DUPLICATE error.	 
-	* 次行へ進む(line_index++)
-3. 次の非空行まで進み、line_indexを更新する。
-```
+- `skip_reading_blank_lines()`
+- while (!all_identifiers_consumed)
+  - 現在行を評価: NULL なら `MISSING_IDENTIFIER`、空行なら skip
+  - `detect_identifier(line)`: unknown/duplicate は即エラー
+  - dispatch(line_after_id):
+    - texture: `.xpm` 拡張子を確認しパスを保存
+    - rgb: `split(',')` で3要素、整数化し 0-255 範囲を確認
+  - フラグをインクリメント（既に1なら `DUPLICATE_IDENTIFIER`）
+  - line_index++、次の非空行へ
 
 ### ヘルパー関数メモ
 
@@ -139,19 +119,15 @@ digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
 
 ## 状態管理
 
-```c
-typedef struct s_config_state {
-		char *textures[4];   // NO, SO, WE, EA
-		t_color floor;
-		t_color ceiling;
-		int  seen_flags[6];        // 各識別子の消費回数
-		size_t line_idx;     // input_data 上の現在位置
-}   t_config_state;
-```
-	
-- `seen_flags` は初期化 0。対応識別子を処理するたびに `seen_flags[idx]++`。
-- `seen_flags[idx] > 1` を検出したらただちに `DUPLICATE_IDENTIFIER` を返す。
-- ループ終了条件は `min(seen_flags[]) == 1`。1つでも 0 が残っている状態で NULL 行に到達した場合は `MISSING_IDENTIFIER`。
+- `t_config_state`:
+  - `char *textures[4];` // NO, SO, WE, EA
+  - `t_color floor;`
+  - `t_color ceiling;`
+  - `int seen_flags[6];` // 各識別子の消費回数
+  - `size_t line_idx;`   // 現在位置
+- `seen_flags` は 0 初期化、処理ごとに `++`
+- `seen_flags[idx] > 1` で即 `DUPLICATE_IDENTIFIER`
+- ループ終了条件 `min(seen_flags[]) == 1`。0 が残ったまま NULL 行に到達したら `MISSING_IDENTIFIER`
 
 ## エラーハンドリング
 

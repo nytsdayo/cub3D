@@ -2,9 +2,8 @@
 
 ## 目的 / Purpose
 
-全てのエラーを統一的に処理し、一貫したエラーメッセージ出力と適切なリソースクリーンアップを保証する。
-
-Uniformly handle all errors, ensuring consistent error message output and proper resource cleanup.
+- 全モジュールでエラー処理を統一し、メッセージ形式とクリーンアップを一貫させる
+- 入口・パース・ランタイムすべてを単一のハンドラ経由で終了させる
 
 ---
 
@@ -29,6 +28,12 @@ Uniformly handle all errors, ensuring consistent error message output and proper
 ---
 
 ## アーキテクチャ / Architecture
+
+### 要約（箇条書き）
+
+- 各モジュールでエラー検知 → `error_exit()` に集約
+- `error_exit()` はメッセージ出力 → クリーンアップ → `exit(1)` の順で処理
+- 警告は `error_warning()` で出力し処理継続
 
 ### フロー図 / Flow Diagram
 
@@ -111,6 +116,9 @@ void error_warning(t_warning_code warning_code, const char *context);
 
 ## データ構造 / Data Structures
 
+- 列挙型でエラー・警告コードを一元管理（番号帯でカテゴリ分け）
+- クリーンアップ対象を構造体にまとめ、ハンドラから解放できるようにする
+
 ### エラーコード列挙型 / Error Code Enumeration
 
 ```c
@@ -122,15 +130,20 @@ void error_warning(t_warning_code warning_code, const char *context);
  */
 typedef enum e_error_code
 {
-    /* Parse/Config Errors (100-199) */
-    ERR_UNKNOWN_IDENTIFIER = 100,
+    /* Command Line Errors (100-199) */
+    ERR_INVALID_ARGC = 100,
+    ERR_INVALID_ARGV,
+
+    /* Parse/Config Errors (200-299) */
+    ERR_UNKNOWN_IDENTIFIER = 200,
     ERR_DUPLICATE_IDENTIFIER,
     ERR_SYNTAX_TEXTURE,
     ERR_SYNTAX_RGB,
     ERR_MISSING_IDENTIFIER,
+    ERR_CONFIG_AFTER_MAP,
     
-    /* Parse/Map Errors (200-299) */
-    ERR_MINIMUM_MAP_SIZE = 200,
+    /* Parse/Map Errors (300-399) */
+    ERR_MINIMUM_MAP_SIZE = 300,
     ERR_MAXIMUM_MAP_SIZE,
     ERR_WALL_ENCLOSURE,
     ERR_PLAYER_COUNT_ZERO,
@@ -139,29 +152,25 @@ typedef enum e_error_code
     ERR_INVALID_CHARACTER,
     ERR_SPACE_VOID_CONTACT,
     
-    /* File/Path Errors (300-399) */
-    ERR_FILE_NOT_FOUND = 300,
+    /* File/Path Errors (400-499) */
+    ERR_FILE_NOT_FOUND = 400,
     ERR_FILE_READ_PERMISSION,
     ERR_INVALID_FILE_EXTENSION,
     ERR_INVALID_PATH,
     
-    /* Memory Errors (400-499) */
-    ERR_MALLOC_FAILURE = 400,
+    /* Memory Errors (500-599) */
+    ERR_MALLOC_FAILURE = 500,
     ERR_BUFFER_OVERFLOW,
     
-    /* Engine/MLX Errors (500-599) */
-    ERR_MLX_INIT_FAILURE = 500,
+    /* Engine/MLX Errors (600-699) */
+    ERR_MLX_INIT_FAILURE = 600,
     ERR_WINDOW_CREATION_FAILURE,
     ERR_IMAGE_CREATION_FAILURE,
     ERR_TEXTURE_LOAD_FAILURE,
     
-    /* Engine/Runtime Errors (600-699) */
-    ERR_DDA_OUT_OF_BOUNDS = 600,
+    /* Engine/Runtime Errors (700-799) */
+    ERR_DDA_OUT_OF_BOUNDS = 700,
     ERR_DRAW_COORD_OUT_OF_RANGE,
-    
-    /* Command Line Errors (700-799) */
-    ERR_INVALID_ARGC = 700,
-    ERR_INVALID_ARGV,
     
     /* Generic Errors (900-999) */
     ERR_GENERIC = 900,
@@ -210,6 +219,9 @@ typedef struct s_cleanup_data
 
 ## 内部実装詳細 / Internal Implementation Details
 
+- 静的テーブルでエラーコード→メッセージを解決
+- ハンドラはテーブル参照後に共通フォーマット `Error\n<message>` を出力
+
 ### エラーメッセージテーブル / Error Message Table
 
 ```c
@@ -226,10 +238,11 @@ static const char *g_error_messages[] = {
     [ERR_SYNTAX_TEXTURE] = "Invalid texture path syntax",
     [ERR_SYNTAX_RGB] = "Invalid RGB color format or range",
     [ERR_MISSING_IDENTIFIER] = "Missing required identifier",
+    [ERR_CONFIG_AFTER_MAP] = "Config line appeared after map section or too many config lines",
     
     /* Parse/Map Errors */
     [ERR_MINIMUM_MAP_SIZE] = "Map is too small (minimum 3x3 required)",
-    [ERR_MAXIMUM_MAP_SIZE] = "Map exceeds maximum allowed size",
+    [ERR_MAXIMUM_MAP_SIZE] = "Map exceeds maximum allowed size (max 1024x1024)",
     [ERR_WALL_ENCLOSURE] = "Map is not enclosed by walls",
     [ERR_PLAYER_COUNT_ZERO] = "No player start position found",
     [ERR_PLAYER_COUNT_MULTIPLE] = "Multiple player start positions found",
