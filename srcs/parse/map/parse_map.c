@@ -193,6 +193,8 @@ static int	validate_invalid_chars(char **map)
  * @param map マップデータ
  * @param i 行インデックス
  * @param j 列インデックス
+ * @param rows マップの行数
+ * @param cols マップの列数
  * @return true: 有効 / false: 無効
  */
 static bool	check_adjacent_cells(char **map, size_t i, size_t j, size_t rows, size_t cols)
