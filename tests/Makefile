@@ -18,7 +18,7 @@ CXX = c++
 CXXFLAGS = -Wall -Wextra -Werror -g -std=c++11
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g
-INCLUDES = -I../includes -I../includes/parse -I../includes/utils -I../libraries/minilibx-linux
+INCLUDES = -I../includes -I../includes/parse -I../includes/utils -I../libraries/minilibx-linux -I./
 
 # Directories
 SRC_DIR = ../srcs
