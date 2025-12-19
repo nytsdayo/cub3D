@@ -22,9 +22,8 @@ char *ft_strndup(const char *s, size_t len);
 const char **read_map(const char *filename);
 void free_map(void **map);
 
-int	ft_isdigit(int c);
-int	ft_isspace(int c);
-
+int		ft_isdigit(int c);
+int		ft_isspace(int c);
 
 /* Cleanup */
 int close_window(t_game *game);
