@@ -6,7 +6,7 @@
 /*   By: rnakatan <rnakatan@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/06 00:00:00 by rnakatan          #+#    #+#             */
-/*   Updated: 2025/12/13 09:00:00 by rnakatan         ###   ########.fr       */
+/*   Updated: 2025/12/19 16:58:19 by rnakatan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -321,6 +321,7 @@ int	validate_map(char **input_data, size_t line_index)
 	size_t	map_lines;
 	size_t	max_len;
 	size_t	i;
+	size_t	j;
 	char	**normalized_map;
 	int		result;
 
@@ -345,7 +346,6 @@ int	validate_map(char **input_data, size_t line_index)
 			free(normalized_map);
 			return (-1);
 		}
-		size_t j = 0;
 		while (j < max_len)
 		{
 			if (j < ft_strlen(input_data[line_index + i]))
@@ -378,6 +378,7 @@ int	load_map(char **input_data, size_t line_index, t_map_data *map_data)
 	size_t	map_lines;
 	size_t	max_len;
 	size_t	i;
+	size_t	j;
 
 	if (!input_data || !map_data)
 		return (-1);
@@ -400,7 +401,6 @@ int	load_map(char **input_data, size_t line_index, t_map_data *map_data)
 			map_data->map = NULL;
 			return (-1);
 		}
-		size_t j = 0;
 		while (j < max_len)
 		{
 			if (j < ft_strlen(input_data[line_index + i]))
