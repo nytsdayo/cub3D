@@ -1,22 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isspace.c                                       :+:      :+:    :+:   */
+/*   is_blank_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rnakatan <rnakatan@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/12 00:00:00 by rnakatan          #+#    #+#             */
-/*   Updated: 2025/12/13 19:59:17 by rnakatan         ###   ########.fr       */
+/*   Created: 2025/12/13 00:00:00 by rnakatan          #+#    #+#             */
+/*   Updated: 2025/12/13 00:00:00 by rnakatan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "utils.h"
+#include <stdbool.h>
+
 /**
- * @brief 文字が空白文字（スペースまたはタブ）かどうかを判定する
- * 
- * @param c 判定する文字
- * @return int 空白文字の場合は1、それ以外は0
+ * @brief 空白のみの行かどうかを判定する
+ * @param line 判定する行
+ * @return true: 空白のみ / false: それ以外
  */
-int	ft_isspace(int c)
+int	is_blank_line(const char *line)
 {
-	return (c == ' ' || c == '\t');
+	int	i;
+
+	i = 0;
+	while (line[i])
+	{
+		if (!ft_isspace(line[i]) && line[i] != '\n')
+			return (0);
+		i++;
+	}
+	return (1);
 }

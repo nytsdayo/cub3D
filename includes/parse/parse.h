@@ -6,7 +6,7 @@
 /*   By: rnakatan <rnakatan@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 19:29:11 by rnakatan          #+#    #+#             */
-/*   Updated: 2025/12/13 03:21:46 by rnakatan         ###   ########.fr       */
+/*   Updated: 2025/12/13 19:59:15 by rnakatan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 # define PARSE_H
 
 # include <stddef.h>
+
+# define RGB_MAX 255
+# define NON_NUM 0
 
 typedef enum e_identifier
 {
@@ -59,10 +62,11 @@ typedef struct s_game_data
 
 /* 公開関数 */
 
-int	parse(const char *filepath, t_game_data *game_data);
-int	validate_config(char **input_data, size_t *line_index);
-int	validate_map(char **input_data, size_t line_index);
-int	load_config(const char *filepath, t_config_data *config);
-int	load_map(char **input_data, size_t line_index, t_map_data *map_data);
+int				parse(const char *filepath, t_game_data *game_data);
+int				validate_config(char **input_data, size_t *line_index);
+int				validate_map(char **input_data, size_t line_index);
+int				load_config(const char *filepath, t_config_data *config);
+int				load_map(char **input_data, size_t line_index,
+					t_map_data *map_data);
 
 #endif

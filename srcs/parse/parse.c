@@ -33,8 +33,6 @@ int	parse(const char *filepath, t_game_data *game_data)
 
 	(void)game_data;
 	line_index = 0;
-	input_data = NULL;
-	// TODO: read_map()でファイルを読み込む
 	input_data = read_map(filepath);
 	if (input_data == NULL)
 		return (-1);
@@ -44,7 +42,7 @@ int	parse(const char *filepath, t_game_data *game_data)
 	// result = validate_map(input_data, line_index);
 	// if (result != 0)
 	// 	return (result);
-	// free_map((void **)input_data);
+	free_map((void **)input_data);
 	(void)filepath;
 	(void)input_data;
 	(void)line_index;

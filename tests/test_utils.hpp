@@ -1,22 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isspace.c                                       :+:      :+:    :+:   */
+/*   test_utils.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rnakatan <rnakatan@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/12 00:00:00 by rnakatan          #+#    #+#             */
-/*   Updated: 2025/12/13 19:59:17 by rnakatan         ###   ########.fr       */
+/*   Created: 2025/12/13 00:00:00 by rnakatan          #+#    #+#             */
+/*   Updated: 2025/12/13 00:00:00 by rnakatan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/**
- * @brief 文字が空白文字（スペースまたはタブ）かどうかを判定する
- * 
- * @param c 判定する文字
- * @return int 空白文字の場合は1、それ以外は0
- */
-int	ft_isspace(int c)
-{
-	return (c == ' ' || c == '\t');
-}
+#ifndef TEST_UTILS_HPP
+#define TEST_UTILS_HPP
+
+class TestStats {
+private:
+	int total;
+	int passed;
+	int failed;
+
+public:
+	TestStats();
+	void recordTest(bool success);
+	void printSummary() const;
+	int getFailed() const;
+};
+
+#endif // TEST_UTILS_HPP
