@@ -12,6 +12,7 @@
 
 # Test executables
 TEST_PARSE_CONFIG = test_parse_config
+TEST_PARSE_MAP = test_parse_map
 
 # Compiler and flags
 CXX = c++
@@ -44,11 +45,27 @@ PARSE_CONFIG_C_SRCS = $(SRC_DIR)/parse/config/parse_config.c \
 PARSE_CONFIG_CPP_OBJ = $(PARSE_CONFIG_CPP:.cpp=.o)
 PARSE_CONFIG_C_OBJS = $(PARSE_CONFIG_C_SRCS:.c=.o)
 
-# Rules
-all: $(TEST_PARSE_CONFIG)
+TEST_MAP_CXX_SRCS = $(TEST_DIR)/parse/map/test_parse_map.cpp \
+					$(TEST_DIR)/parse/map/test_map_file.cpp
+TEST_MAP_C_SRCS = $(SRC_DIR)/parse/map/parse_map.c \
+				  $(SRC_DIR)/utils/ft_strlen.c \
+				  $(SRC_DIR)/utils/ft_strndup.c \
+				  $(SRC_DIR)/utils/read_map.c \
+				  $(SRC_DIR)/utils/free_map.c
+TEST_MAP_CXX_OBJS = $(TEST_MAP_CXX_SRCS:.cpp=.o)
+TEST_MAP_C_OBJS = $(TEST_MAP_C_SRCS:.c=.o)
+TEST_MAP_OBJS = $(TEST_MAP_CXX_OBJS) $(TEST_MAP_C_OBJS)
 
+# Rules
+all: parse_config parse_map
+
+parse_config: 
 $(TEST_PARSE_CONFIG): $(PARSE_CONFIG_CPP_OBJ) $(PARSE_CONFIG_C_OBJS)
 	$(CXX) $(CXXFLAGS) $(PARSE_CONFIG_CPP_OBJ) $(PARSE_CONFIG_C_OBJS) -o $(TEST_PARSE_CONFIG)
+
+parse_map: $(TEST_MAP_OBJS)
+	$(CXX) $(CXXFLAGS) $(TEST_MAP_OBJS) -o $(TEST_PARSE_MAP)
+	./$(TEST_PARSE_MAP)
 
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
@@ -64,4 +81,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re parse_map parse_config
