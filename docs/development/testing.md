@@ -207,5 +207,5 @@ void test_function()
 ## 参照
 
 - [開発環境セットアップ](../setup.md)
-- [デバッグガイド](../debugging.md)
-- [コーディング規約](../coding-standards.md)
+- デバッグガイド
+- コーディング規約
