@@ -18,6 +18,12 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y build-essential xorg libxext-dev zlib1g-dev libbsd-dev
     
+    - name: Unit tests
+      run: |
+        echo "Running unit tests..."
+        make tests
+        echo "Unit tests completed"
+  
     - name: Build cub3D
       run: |
         echo "Building cub3D..."
