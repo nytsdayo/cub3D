@@ -6,12 +6,13 @@
 /*   By: rnakatan <rnakatan@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/06 00:00:00 by rnakatan          #+#    #+#             */
-/*   Updated: 2025/12/19 16:58:19 by rnakatan         ###   ########.fr       */
+/*   Updated: 2025/12/19 19:18:37 by rnakatan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parse.h"
 #include "utils.h"
+#include <stddef.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -346,6 +347,7 @@ int	validate_map(char **input_data, size_t line_index)
 			free(normalized_map);
 			return (-1);
 		}
+		j = 0;
 		while (j < max_len)
 		{
 			if (j < ft_strlen(input_data[line_index + i]))
@@ -401,6 +403,7 @@ int	load_map(char **input_data, size_t line_index, t_map_data *map_data)
 			map_data->map = NULL;
 			return (-1);
 		}
+		j = 0;
 		while (j < max_len)
 		{
 			if (j < ft_strlen(input_data[line_index + i]))

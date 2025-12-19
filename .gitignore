@@ -58,6 +58,9 @@ dkms.conf
 cub3D
 obj/
 test
+test_parse_config
+test_parse_map
+
 
 # macOS
 .DS_Store
