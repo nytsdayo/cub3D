@@ -57,9 +57,10 @@ dkms.conf
 # Project specific
 cub3D
 obj/
+test
+test_parse_config
+test_parse_map
 
-# Test executables
-tests/test_parse_config
 
 # macOS
 .DS_Store

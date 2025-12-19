@@ -94,4 +94,36 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+# Test target for parse_map module (C++)
+TEST_MAP_NAME = test_parse_map
+TEST_MAP_CXX_SRCS = tests/parse/map/test_parse_map.cpp \
+					tests/parse/map/test_map_file.cpp
+TEST_MAP_C_SRCS = $(SRC_DIR)/parse/map/parse_map.c \
+				  $(SRC_DIR)/utils/ft_strlen.c \
+				  $(SRC_DIR)/utils/ft_strndup.c \
+				  $(SRC_DIR)/utils/read_map.c \
+				  $(SRC_DIR)/utils/free_map.c
+TEST_MAP_INCLUDES = -I./includes -I./includes/parse -I./includes/utils -I./tests/parse/map -I$(MLX_PATH)
+TEST_MAP_CXX_OBJS = $(TEST_MAP_CXX_SRCS:.cpp=.o)
+TEST_MAP_C_OBJS = $(TEST_MAP_C_SRCS:.c=.o)
+TEST_MAP_OBJS = $(TEST_MAP_CXX_OBJS) $(TEST_MAP_C_OBJS)
+CXX = c++
+CXXFLAGS = -Wall -Wextra -Werror -std=c++11
+
+tests/parse/map/%.o: tests/parse/map/%.cpp
+	@mkdir -p $(dir $@)
+	$(CXX) $(CXXFLAGS) $(TEST_MAP_INCLUDES) -c $< -o $@
+
+srcs/parse/map/%.o: srcs/parse/map/%.c
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) $(TEST_MAP_INCLUDES) -c $< -o $@
+
+srcs/utils/%.o: srcs/utils/%.c
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) $(TEST_MAP_INCLUDES) -c $< -o $@
+
+test_parse_map: $(TEST_MAP_OBJS)
+	$(CXX) $(CXXFLAGS) $(TEST_MAP_OBJS) -o $(TEST_MAP_NAME)
+	./$(TEST_MAP_NAME)
+
+.PHONY: all clean fclean re test_parse_map

@@ -30,7 +30,6 @@ int	main(int argc, char *argv[])
 		write(2, "Error\nFailed to parse map\n", 27);
 		return (EXIT_FAILURE);
 	}
-	// TODO: game_dataからgameに必要な情報をコピー
 	game.map = (char **)read_map(argv[1]);
 	if (game.map == NULL)
 	{
