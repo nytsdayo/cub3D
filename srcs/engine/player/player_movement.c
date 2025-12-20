@@ -12,7 +12,6 @@
 
 #include "cub3d.h"
 #include "player.h"
-#include <stdio.h>
 
 static int	is_wall(t_game *game, double x, double y);
 
@@ -29,12 +28,8 @@ void	move_forward(t_game *game)
 	double	dy;
 	double	total;
 
-	printf("[W] pos(%.2f,%.2f) dir(%.2f,%.2f) ",
-		game->player.pos_x, game->player.pos_y,
-		game->player.dir_x, game->player.dir_y);
 	new_x = game->player.pos_x + game->player.dir_x * MOVE_SPEED;
 	new_y = game->player.pos_y + game->player.dir_y * MOVE_SPEED;
-	printf("new(%.2f,%.2f)\n", new_x, new_y);
 	if (!is_wall(game, new_x, new_y))
 	{
 		game->player.pos_x = new_x;
@@ -75,12 +70,8 @@ void	move_backward(t_game *game)
 	double	dy;
 	double	total;
 
-	printf("[S] pos(%.2f,%.2f) dir(%.2f,%.2f) ",
-		game->player.pos_x, game->player.pos_y,
-		game->player.dir_x, game->player.dir_y);
 	new_x = game->player.pos_x - game->player.dir_x * MOVE_SPEED;
 	new_y = game->player.pos_y - game->player.dir_y * MOVE_SPEED;
-	printf("new(%.2f,%.2f)\n", new_x, new_y);
 	if (!is_wall(game, new_x, new_y))
 	{
 		game->player.pos_x = new_x;
@@ -123,12 +114,8 @@ void	move_left(t_game *game)
 	double	dy;
 	double	total;
 
-	printf("[A] pos(%.2f,%.2f) plane(%.2f,%.2f) ",
-		game->player.pos_x, game->player.pos_y,
-		game->player.plane_x, game->player.plane_y);
 	new_x = game->player.pos_x - game->player.plane_x * MOVE_SPEED;
 	new_y = game->player.pos_y - game->player.plane_y * MOVE_SPEED;
-	printf("new(%.2f,%.2f)\n", new_x, new_y);
 	if (!is_wall(game, new_x, new_y))
 	{
 		game->player.pos_x = new_x;
@@ -171,12 +158,8 @@ void	move_right(t_game *game)
 	double	dy;
 	double	total;
 
-	printf("[D] pos(%.2f,%.2f) plane(%.2f,%.2f) ",
-		game->player.pos_x, game->player.pos_y,
-		game->player.plane_x, game->player.plane_y);
 	new_x = game->player.pos_x + game->player.plane_x * MOVE_SPEED;
 	new_y = game->player.pos_y + game->player.plane_y * MOVE_SPEED;
-	printf("new(%.2f,%.2f)\n", new_x, new_y);
 	if (!is_wall(game, new_x, new_y))
 	{
 		game->player.pos_x = new_x;
