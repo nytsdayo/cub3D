@@ -112,6 +112,8 @@ void	move_backward(t_game *game)
 /*
 ** move_left
 ** プレイヤーを左に移動（カメラ平面の逆方向）
+** 後方移動チェックはdir（前進方向）を使用：
+** ストレーフ中も前進していた方向に対する後退を防ぐため
 */
 void	move_left(t_game *game)
 {
@@ -158,6 +160,8 @@ void	move_left(t_game *game)
 /*
 ** move_right
 ** プレイヤーを右に移動（カメラ平面方向）
+** 後方移動チェックはdir（前進方向）を使用：
+** ストレーフ中も前進していた方向に対する後退を防ぐため
 */
 void	move_right(t_game *game)
 {
