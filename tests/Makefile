@@ -74,7 +74,7 @@ parse_map: $(TEST_MAP_OBJS)
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
-	rm -f $(PARSE_CONFIG_CPP_OBJ) $(PARSE_CONFIG_C_OBJS)
+	rm -f $(PARSE_CONFIG_CPP_OBJ) $(PARSE_CONFIG_C_OBJS) $(TEST_MAP_CXX_OBJS) $(TEST_MAP_C_OBJS)
 
 fclean: clean
 	rm -f $(TEST_PARSE_CONFIG)
