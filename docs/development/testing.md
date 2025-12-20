@@ -31,7 +31,7 @@ tests/
 ### マップパーサーテスト
 
 ```bash
-make test_parse_map
+make parse_map
 ```
 
 このコマンドは以下を実行します：
