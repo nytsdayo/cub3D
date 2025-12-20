@@ -17,7 +17,8 @@
 
 void	cleanup_game(t_game *game)
 {
-	cleanup_textures(game);
+	if (game->mlx)
+		cleanup_textures(game);
 	if (game->img.img)
 		mlx_destroy_image(game->mlx, game->img.img);
 	if (game->win)
