@@ -12,25 +12,55 @@
 
 #include "cub3d.h"
 #include "player.h"
+#include <stdio.h>
 
 static int	is_wall(t_game *game, double x, double y);
 
 /*
 ** move_forward
 ** プレイヤーを前方に移動（方向ベクトルに沿って）
-** X/Y軸を個別にチェックし、壁に沿ってスライド可能にする
+** 両軸同時移動を優先し、壁に当たる場合のみ軸ごとにスライド
 */
 void	move_forward(t_game *game)
 {
 	double	new_x;
 	double	new_y;
+	double	dx;
+	double	dy;
+	double	total;
 
+	printf("[W] pos(%.2f,%.2f) dir(%.2f,%.2f) ",
+		game->player.pos_x, game->player.pos_y,
+		game->player.dir_x, game->player.dir_y);
 	new_x = game->player.pos_x + game->player.dir_x * MOVE_SPEED;
 	new_y = game->player.pos_y + game->player.dir_y * MOVE_SPEED;
-	if (!is_wall(game, new_x, game->player.pos_y))
+	printf("new(%.2f,%.2f)\n", new_x, new_y);
+	if (!is_wall(game, new_x, new_y))
+	{
 		game->player.pos_x = new_x;
-	if (!is_wall(game, game->player.pos_x, new_y))
 		game->player.pos_y = new_y;
+		return ;
+	}
+	dx = game->player.dir_x * MOVE_SPEED;
+	dy = game->player.dir_y * MOVE_SPEED;
+	if (dx < 0)
+		dx = -dx;
+	if (dy < 0)
+		dy = -dy;
+	total = dx + dy;
+	if (dy / total >= 0.8 && !is_wall(game, game->player.pos_x, new_y))
+		game->player.pos_y = new_y;
+	else if (dx / total >= 0.8 && !is_wall(game, new_x, game->player.pos_y))
+		game->player.pos_x = new_x;
+	else if (dy / total < 0.8 && dx / total < 0.8)
+	{
+		if (!is_wall(game, new_x, game->player.pos_y)
+			&& (new_x - game->player.pos_x) * game->player.dir_x >= 0)
+			game->player.pos_x = new_x;
+		else if (!is_wall(game, game->player.pos_x, new_y)
+			&& (new_y - game->player.pos_y) * game->player.dir_y >= 0)
+			game->player.pos_y = new_y;
+	}
 }
 
 /*
@@ -41,13 +71,42 @@ void	move_backward(t_game *game)
 {
 	double	new_x;
 	double	new_y;
+	double	dx;
+	double	dy;
+	double	total;
 
+	printf("[S] pos(%.2f,%.2f) dir(%.2f,%.2f) ",
+		game->player.pos_x, game->player.pos_y,
+		game->player.dir_x, game->player.dir_y);
 	new_x = game->player.pos_x - game->player.dir_x * MOVE_SPEED;
 	new_y = game->player.pos_y - game->player.dir_y * MOVE_SPEED;
-	if (!is_wall(game, new_x, game->player.pos_y))
+	printf("new(%.2f,%.2f)\n", new_x, new_y);
+	if (!is_wall(game, new_x, new_y))
+	{
 		game->player.pos_x = new_x;
-	if (!is_wall(game, game->player.pos_x, new_y))
 		game->player.pos_y = new_y;
+		return ;
+	}
+	dx = game->player.dir_x * MOVE_SPEED;
+	dy = game->player.dir_y * MOVE_SPEED;
+	if (dx < 0)
+		dx = -dx;
+	if (dy < 0)
+		dy = -dy;
+	total = dx + dy;
+	if (dy / total >= 0.8 && !is_wall(game, game->player.pos_x, new_y))
+		game->player.pos_y = new_y;
+	else if (dx / total >= 0.8 && !is_wall(game, new_x, game->player.pos_y))
+		game->player.pos_x = new_x;
+	else if (dy / total < 0.8 && dx / total < 0.8)
+	{
+		if (!is_wall(game, new_x, game->player.pos_y)
+			&& (new_x - game->player.pos_x) * game->player.dir_x >= 0)
+			game->player.pos_x = new_x;
+		else if (!is_wall(game, game->player.pos_x, new_y)
+			&& (new_y - game->player.pos_y) * game->player.dir_y >= 0)
+			game->player.pos_y = new_y;
+	}
 }
 
 /*
@@ -58,13 +117,42 @@ void	move_left(t_game *game)
 {
 	double	new_x;
 	double	new_y;
+	double	dx;
+	double	dy;
+	double	total;
 
+	printf("[A] pos(%.2f,%.2f) plane(%.2f,%.2f) ",
+		game->player.pos_x, game->player.pos_y,
+		game->player.plane_x, game->player.plane_y);
 	new_x = game->player.pos_x - game->player.plane_x * MOVE_SPEED;
 	new_y = game->player.pos_y - game->player.plane_y * MOVE_SPEED;
-	if (!is_wall(game, new_x, game->player.pos_y))
+	printf("new(%.2f,%.2f)\n", new_x, new_y);
+	if (!is_wall(game, new_x, new_y))
+	{
 		game->player.pos_x = new_x;
-	if (!is_wall(game, game->player.pos_x, new_y))
 		game->player.pos_y = new_y;
+		return ;
+	}
+	dx = game->player.plane_x * MOVE_SPEED;
+	dy = game->player.plane_y * MOVE_SPEED;
+	if (dx < 0)
+		dx = -dx;
+	if (dy < 0)
+		dy = -dy;
+	total = dx + dy;
+	if (dy / total >= 0.8 && !is_wall(game, game->player.pos_x, new_y))
+		game->player.pos_y = new_y;
+	else if (dx / total >= 0.8 && !is_wall(game, new_x, game->player.pos_y))
+		game->player.pos_x = new_x;
+	else if (dy / total < 0.8 && dx / total < 0.8)
+	{
+		if (!is_wall(game, new_x, game->player.pos_y)
+			&& (new_x - game->player.pos_x) * game->player.dir_x >= 0)
+			game->player.pos_x = new_x;
+		else if (!is_wall(game, game->player.pos_x, new_y)
+			&& (new_y - game->player.pos_y) * game->player.dir_y >= 0)
+			game->player.pos_y = new_y;
+	}
 }
 
 /*
@@ -75,13 +163,42 @@ void	move_right(t_game *game)
 {
 	double	new_x;
 	double	new_y;
+	double	dx;
+	double	dy;
+	double	total;
 
+	printf("[D] pos(%.2f,%.2f) plane(%.2f,%.2f) ",
+		game->player.pos_x, game->player.pos_y,
+		game->player.plane_x, game->player.plane_y);
 	new_x = game->player.pos_x + game->player.plane_x * MOVE_SPEED;
 	new_y = game->player.pos_y + game->player.plane_y * MOVE_SPEED;
-	if (!is_wall(game, new_x, game->player.pos_y))
+	printf("new(%.2f,%.2f)\n", new_x, new_y);
+	if (!is_wall(game, new_x, new_y))
+	{
 		game->player.pos_x = new_x;
-	if (!is_wall(game, game->player.pos_x, new_y))
 		game->player.pos_y = new_y;
+		return ;
+	}
+	dx = game->player.plane_x * MOVE_SPEED;
+	dy = game->player.plane_y * MOVE_SPEED;
+	if (dx < 0)
+		dx = -dx;
+	if (dy < 0)
+		dy = -dy;
+	total = dx + dy;
+	if (dy / total >= 0.8 && !is_wall(game, game->player.pos_x, new_y))
+		game->player.pos_y = new_y;
+	else if (dx / total >= 0.8 && !is_wall(game, new_x, game->player.pos_y))
+		game->player.pos_x = new_x;
+	else if (dy / total < 0.8 && dx / total < 0.8)
+	{
+		if (!is_wall(game, new_x, game->player.pos_y)
+			&& (new_x - game->player.pos_x) * game->player.dir_x >= 0)
+			game->player.pos_x = new_x;
+		else if (!is_wall(game, game->player.pos_x, new_y)
+			&& (new_y - game->player.pos_y) * game->player.dir_y >= 0)
+			game->player.pos_y = new_y;
+	}
 }
 
 /*

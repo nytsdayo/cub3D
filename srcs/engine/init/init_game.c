@@ -13,6 +13,7 @@
 #include "cub3d.h"
 #include "engine.h"
 #include "raycasting.h"
+#include "texture.h"
 
 static void	init_mlx(t_game *game);
 static void	init_image(t_game *game);
@@ -36,6 +37,8 @@ void	init_game(t_game *game)
 		game->keys[i++] = 0;
 	init_mlx(game);
 	init_image(game);
+	init_textures(game);
+	init_colors(game);
 	init_hardcoded_map(game);
 	init_player(game);
 }

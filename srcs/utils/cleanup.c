@@ -11,11 +11,13 @@
 /* ************************************************************************** */
 
 #include "cub3d.h"
+#include "texture.h"
 #include "utils.h"
 #include <stdlib.h>
 
 void	cleanup_game(t_game *game)
 {
+	cleanup_textures(game);
 	if (game->img.img)
 		mlx_destroy_image(game->mlx, game->img.img);
 	if (game->win)

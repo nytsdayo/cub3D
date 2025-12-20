@@ -36,6 +36,22 @@
 #define ROT_SPEED 0.05
 #define COLLISION_MARGIN 0.2
 
+/* Texture Constants */
+#define TEX_WIDTH 2048
+#define TEX_HEIGHT 2048
+#define TEX_NORTH_PATH "assets/textures/cub3_North.xpm"
+#define TEX_SOUTH_PATH "assets/textures/cub3_South.xpm"
+#define TEX_EAST_PATH "assets/textures/cub3_East.xpm"
+#define TEX_WEST_PATH "assets/textures/cub3_West.xpm"
+
+/* Temporary RGB values (until parser is ready) */
+#define CEILING_R 10
+#define CEILING_G 15
+#define CEILING_B 35
+#define FLOOR_R 230
+#define FLOOR_G 240
+#define FLOOR_B 250
+
 /* Key State Array Size (large enough for X11 KeySym values) */
 #define KEY_STATE_SIZE 70000
 
@@ -84,6 +100,25 @@ typedef struct s_img
 	int		endian;
 }			t_img;
 
+/* Texture Structure */
+typedef struct s_texture
+{
+	t_img	north;
+	t_img	south;
+	t_img	east;
+	t_img	west;
+	int		width;
+	int		height;
+}			t_texture;
+
+/* Color Structure for Floor/Ceiling */
+typedef struct s_color
+{
+	int		r;
+	int		g;
+	int		b;
+}			t_color;
+
 /* Game Structure */
 typedef struct s_game {
   void *mlx;
@@ -92,6 +127,9 @@ typedef struct s_game {
   int   world_map[MAP_HEIGHT][MAP_WIDTH];
   t_player player;
   t_img img;
+  t_texture textures;
+  t_color floor_color;
+  t_color ceiling_color;
   int keys[KEY_STATE_SIZE];
 } t_game;
 
