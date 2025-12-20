@@ -40,8 +40,7 @@ int	parse(const char *filepath, t_game_data *game_data)
 		|| validate_map(input_data, line_index) != 0)
 		ret = -1;
 	else
-		ret = 0;
-	ret = load_data((const char**)input_data, game_data);
+		ret = load_data((const char **)input_data, game_data);
 	// get_map_data(input_data, &game_data->map);
 	free_map((void **)input_data);
 	return (ret);
