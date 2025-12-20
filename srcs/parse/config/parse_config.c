@@ -6,7 +6,7 @@
 /*   By: rnakatan <rnakatan@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/06 00:00:00 by rnakatan          #+#    #+#             */
-/*   Updated: 2025/12/20 01:25:16 by rnakatan         ###   ########.fr       */
+/*   Updated: 2025/12/20 12:37:48 by rnakatan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,6 @@ static int			validate_identifier_line(const char *line,
  * @brief 識別子のインデックスを取得する
  */
 static int			get_identifier_index(t_identifier id);
-
-/**
- * @brief seen_flagsを初期化する
- */
-static void			init_seen_flags(t_seen_flags seen_flags);
 
 /* Main function */
 
