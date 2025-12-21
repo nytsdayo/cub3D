@@ -121,16 +121,16 @@ typedef struct s_color
 
 /* Game Structure */
 typedef struct s_game {
-  void *mlx;
-  void *win;
-  char **map;
-  int   world_map[MAP_HEIGHT][MAP_WIDTH];
-  t_player player;
-  t_img img;
-  t_texture textures;
-  t_color floor_color;
-  t_color ceiling_color;
-  int keys[KEY_STATE_SIZE];
-} t_game;
+	void *mlx;
+	void *win;
+	char **map;
+	int   world_map[MAP_HEIGHT][MAP_WIDTH];
+	t_player player;
+	t_img img;
+	t_texture textures;
+	t_color floor_color;
+	t_color ceiling_color;
+	int keys[KEY_STATE_SIZE];
+}			t_game;
 
 #endif
