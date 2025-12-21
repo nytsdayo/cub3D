@@ -13,14 +13,13 @@
 #include "cub3d.h"
 #include "texture.h"
 
-void	cleanup_textures(t_game *game)
-{
-	if (game->textures.north.img)
-		mlx_destroy_image(game->mlx, game->textures.north.img);
-	if (game->textures.south.img)
-		mlx_destroy_image(game->mlx, game->textures.south.img);
-	if (game->textures.east.img)
-		mlx_destroy_image(game->mlx, game->textures.east.img);
-	if (game->textures.west.img)
-		mlx_destroy_image(game->mlx, game->textures.west.img);
+void cleanup_textures(t_game *game) {
+  if (game->textures.north.img)
+    mlx_destroy_image(game->mlx, game->textures.north.img);
+  if (game->textures.south.img)
+    mlx_destroy_image(game->mlx, game->textures.south.img);
+  if (game->textures.east.img)
+    mlx_destroy_image(game->mlx, game->textures.east.img);
+  if (game->textures.west.img)
+    mlx_destroy_image(game->mlx, game->textures.west.img);
 }
