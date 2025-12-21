@@ -20,59 +20,59 @@
 # include <unistd.h>
 
 # ifdef __linux__
-# include <X11/X.h>
-# include <X11/keysym.h>
-#endif
+#  include <X11/X.h>
+#  include <X11/keysym.h>
+# endif
 
 # define WINDOW_WIDTH 800
 # define WINDOW_HEIGHT 600
 # define TITLE "cub3D"
 
 /* Raycasting Constants */
-#define MAP_WIDTH 8
-#define MAP_HEIGHT 8
-#define FOV 60.0
-#define MOVE_SPEED 0.1
-#define ROT_SPEED 0.05
-#define COLLISION_MARGIN 0.2
+# define MAP_WIDTH 8
+# define MAP_HEIGHT 8
+# define FOV 60.0
+# define MOVE_SPEED 0.1
+# define ROT_SPEED 0.05
+# define COLLISION_MARGIN 0.2
 
 /* Texture Constants */
-#define TEX_WIDTH 2048
-#define TEX_HEIGHT 2048
-#define TEX_NORTH_PATH "assets/textures/cub3_North.xpm"
-#define TEX_SOUTH_PATH "assets/textures/cub3_South.xpm"
-#define TEX_EAST_PATH "assets/textures/cub3_East.xpm"
-#define TEX_WEST_PATH "assets/textures/cub3_West.xpm"
+# define TEX_WIDTH 2048
+# define TEX_HEIGHT 2048
+# define TEX_NORTH_PATH "assets/textures/cub3_North.xpm"
+# define TEX_SOUTH_PATH "assets/textures/cub3_South.xpm"
+# define TEX_EAST_PATH "assets/textures/cub3_East.xpm"
+# define TEX_WEST_PATH "assets/textures/cub3_West.xpm"
 
 /* Temporary RGB values (until parser is ready) */
-#define CEILING_R 10
-#define CEILING_G 15
-#define CEILING_B 35
-#define FLOOR_R 230
-#define FLOOR_G 240
-#define FLOOR_B 250
+# define CEILING_R 10
+# define CEILING_G 15
+# define CEILING_B 35
+# define FLOOR_R 230
+# define FLOOR_G 240
+# define FLOOR_B 250
 
 /* Key State Array Size (large enough for X11 KeySym values) */
-#define KEY_STATE_SIZE 70000
+# define KEY_STATE_SIZE 70000
 
 /* Key Codes (Cross-platform) */
 # ifdef __APPLE__
-# define KEY_ESC 53
-# define KEY_W 13
-# define KEY_A 0
-# define KEY_S 1
-# define KEY_D 2
-# define KEY_LEFT 123
-# define KEY_RIGHT 124
+#  define KEY_ESC 53
+#  define KEY_W 13
+#  define KEY_A 0
+#  define KEY_S 1
+#  define KEY_D 2
+#  define KEY_LEFT 123
+#  define KEY_RIGHT 124
 # else
-# define KEY_ESC XK_Escape
-# define KEY_W XK_w
-# define KEY_A XK_a
-# define KEY_S XK_s
-# define KEY_D XK_d
-# define KEY_LEFT XK_Left
-# define KEY_RIGHT XK_Right
-#endif
+#  define KEY_ESC XK_Escape
+#  define KEY_W XK_w
+#  define KEY_A XK_a
+#  define KEY_S XK_s
+#  define KEY_D XK_d
+#  define KEY_LEFT XK_Left
+#  define KEY_RIGHT XK_Right
+# endif
 
 /* Events */
 # define ON_KEYDOWN 2
