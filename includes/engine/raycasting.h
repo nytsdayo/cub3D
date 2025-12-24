@@ -35,6 +35,8 @@ typedef struct s_ray
 	int		line_height;
 	int		draw_start;
 	int		draw_end;
+	double	wall_x;
+	int		tex_x;
 }			t_ray;
 
 /* Raycasting Functions */
@@ -50,6 +52,9 @@ void		calc_step_and_side_dist(t_game *game, t_ray *ray);
 void		perform_dda(t_game *game, t_ray *ray);
 void		calc_wall_distance(t_game *game, t_ray *ray);
 void		calc_line_height(t_ray *ray);
+
+/* Texture Coordinate Calculation */
+void		calc_texture_coords(t_game *game, t_ray *ray);
 
 /* Drawing Functions */
 void		put_pixel(t_game *game, int x, int y, int color);

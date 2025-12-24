@@ -16,13 +16,24 @@
 #include "utils.h"
 #include <stdlib.h>
 
-static void	platform_close(t_game *game);
+#ifdef __linux__
 
 int	close_window(t_game *game)
 {
-	platform_close(game);
+	mlx_loop_end(game->mlx);
 	return (0);
 }
+
+#else
+
+int	close_window(t_game *game)
+{
+	cleanup_game(game);
+	exit(0);
+	return (0);
+}
+
+#endif
 
 int	handle_keypress(int keycode, t_game *game)
 {
@@ -54,14 +65,4 @@ void	process_held_keys(t_game *game)
 		rotate_left(game);
 	if (game->keys[KEY_RIGHT])
 		rotate_right(game);
-}
-
-static void	platform_close(t_game *game)
-{
-#ifdef __linux__
-	mlx_loop_end(game->mlx);
-#else
-	cleanup_game(game);
-	exit(0);
-#endif
 }

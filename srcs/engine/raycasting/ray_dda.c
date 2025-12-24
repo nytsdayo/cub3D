@@ -32,7 +32,7 @@ void	perform_dda(t_game *game, t_ray *ray)
 			ray->map_y += ray->step_y;
 			ray->side = 1;
 		}
-		if (game->world_map[ray->map_x][ray->map_y] > 0)
+		if (game->world_map[ray->map_y][ray->map_x] > 0)
 			ray->hit = 1;
 	}
 }

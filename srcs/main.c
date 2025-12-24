@@ -32,6 +32,7 @@ int	main(int argc, char *argv[])
 	}
 	if (parse((const char **)game.map) != 0)
 	{
+		free_map((void **)game.map);
 		return (EXIT_FAILURE);
 	}
 	init_game(&game);
