@@ -28,9 +28,12 @@ LIB_DIR = libraries
 # Source files
 SRCS = $(SRC_DIR)/main.c \
 	   $(SRC_DIR)/parse/parse.c \
+	   $(SRC_DIR)/parse/load_data.c \
 	   $(SRC_DIR)/parse/config/parse_config.c \
 	   $(SRC_DIR)/parse/config/load_config.c \
+	   $(SRC_DIR)/parse/config/detect_identifier.c \
 	   $(SRC_DIR)/parse/map/parse_map.c \
+	   $(SRC_DIR)/parse/map/load_map.c \
 	   $(SRC_DIR)/utils/ft_strlen.c \
 	   $(SRC_DIR)/utils/ft_strcmp.c \
 	   $(SRC_DIR)/utils/ft_strncmp.c \
@@ -42,12 +45,15 @@ SRCS = $(SRC_DIR)/main.c \
 	   $(SRC_DIR)/utils/free_map.c \
 	   $(SRC_DIR)/engine/init/init_game.c \
 	   $(SRC_DIR)/engine/game_loop.c \
+	   $(SRC_DIR)/engine/key_handler/key_handler.c \
 	   $(SRC_DIR)/engine/renderer/render_frame.c \
 	   $(SRC_DIR)/engine/raycasting/mock_world.c \
 	   $(SRC_DIR)/engine/raycasting/raycasting.c \
 	   $(SRC_DIR)/engine/raycasting/ray_init.c \
 	   $(SRC_DIR)/engine/raycasting/ray_dda.c \
 	   $(SRC_DIR)/engine/raycasting/ray_draw.c \
+	   $(SRC_DIR)/engine/player/player_movement.c \
+	   $(SRC_DIR)/engine/player/player_rotation.c \
 	   $(SRC_DIR)/utils/cleanup.c
 
 # Object files
@@ -94,36 +100,7 @@ fclean: clean
 
 re: fclean all
 
-# Test target for parse_map module (C++)
-TEST_MAP_NAME = test_parse_map
-TEST_MAP_CXX_SRCS = tests/parse/map/test_parse_map.cpp \
-					tests/parse/map/test_map_file.cpp
-TEST_MAP_C_SRCS = $(SRC_DIR)/parse/map/parse_map.c \
-				  $(SRC_DIR)/utils/ft_strlen.c \
-				  $(SRC_DIR)/utils/ft_strndup.c \
-				  $(SRC_DIR)/utils/read_map.c \
-				  $(SRC_DIR)/utils/free_map.c
-TEST_MAP_INCLUDES = -I./includes -I./includes/parse -I./includes/utils -I./tests/parse/map -I$(MLX_PATH)
-TEST_MAP_CXX_OBJS = $(TEST_MAP_CXX_SRCS:.cpp=.o)
-TEST_MAP_C_OBJS = $(TEST_MAP_C_SRCS:.c=.o)
-TEST_MAP_OBJS = $(TEST_MAP_CXX_OBJS) $(TEST_MAP_C_OBJS)
-CXX = c++
-CXXFLAGS = -Wall -Wextra -Werror -std=c++11
+test: 
+	$(MAKE) -C tests
 
-tests/parse/map/%.o: tests/parse/map/%.cpp
-	@mkdir -p $(dir $@)
-	$(CXX) $(CXXFLAGS) $(TEST_MAP_INCLUDES) -c $< -o $@
-
-srcs/parse/map/%.o: srcs/parse/map/%.c
-	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) $(TEST_MAP_INCLUDES) -c $< -o $@
-
-srcs/utils/%.o: srcs/utils/%.c
-	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) $(TEST_MAP_INCLUDES) -c $< -o $@
-
-test_parse_map: $(TEST_MAP_OBJS)
-	$(CXX) $(CXXFLAGS) $(TEST_MAP_OBJS) -o $(TEST_MAP_NAME)
-	./$(TEST_MAP_NAME)
-
-.PHONY: all clean fclean re test_parse_map
+.PHONY: all clean fclean re test

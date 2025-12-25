@@ -6,7 +6,7 @@
 /*   By: rnakatan <rnakatan@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/06 00:00:00 by rnakatan          #+#    #+#             */
-/*   Updated: 2025/12/13 20:10:28 by rnakatan         ###   ########.fr       */
+/*   Updated: 2025/12/20 12:37:48 by rnakatan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,6 @@
 
 /* Static function prototypes */
 
-/**
- * @brief 行の先頭から識別子を検出する
- */
-static t_identifier	detect_identifier(const char *line);
-
-/**
- * @brief 識別子のインデックスを取得する
- */
 /**
  * @brief seen_flagsを初期化する
  */
@@ -56,11 +48,6 @@ static int			validate_identifier_line(const char *line,
  * @brief 識別子のインデックスを取得する
  */
 static int			get_identifier_index(t_identifier id);
-
-/**
- * @brief seen_flagsを初期化する
- */
-static void			init_seen_flags(t_seen_flags seen_flags);
 
 /* Main function */
 
@@ -125,28 +112,6 @@ static int	get_identifier_index(t_identifier id)
 	else if (id == ID_C)
 		return (5);
 	return (-1);
-}
-
-static t_identifier	detect_identifier(const char *line)
-{
-	int	i;
-
-	i = 0;
-	while (ft_isspace(line[i]))
-		i++;
-	if (ft_strncmp(&line[i], "NO", 2) == 0 && ft_isspace(line[i + 2]))
-		return (ID_NO);
-	if (ft_strncmp(&line[i], "SO", 2) == 0 && ft_isspace(line[i + 2]))
-		return (ID_SO);
-	if (ft_strncmp(&line[i], "WE", 2) == 0 && ft_isspace(line[i + 2]))
-		return (ID_WE);
-	if (ft_strncmp(&line[i], "EA", 2) == 0 && ft_isspace(line[i + 2]))
-		return (ID_EA);
-	if (line[i] == 'F' && line[i + 1] && ft_isspace(line[i + 1]))
-		return (ID_F);
-	if (line[i] == 'C' && line[i + 1] && ft_isspace(line[i + 1]))
-		return (ID_C);
-	return (ID_UNKNOWN);
 }
 
 static int	validate_texture_format(const char *line, t_identifier id)

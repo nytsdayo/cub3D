@@ -105,8 +105,8 @@ void	init_hardcoded_map(t_game *game)
 */
 void	init_player(t_game *game)
 {
-	game->player.pos_x = 4.5;
-	game->player.pos_y = 4.5;
+	game->player.pos_x = 3.5;
+	game->player.pos_y = 3.5;
 	game->player.dir_x = -1.0;
 	game->player.dir_y = 0.0;
 	game->player.plane_x = 0.0;
@@ -118,7 +118,7 @@ void	init_player(t_game *game)
 ■ 1. pos_x, pos_y - プレイヤーの位置
 
 マップ（上から見た図）:
-  0   1   2   3   4   5   6   7
+0   1   2   3   4   5   6   7
 0 1   1   1   1   1   1   1   1
 1 1   0   0   0   0   0   0   1
 2 1   0   1   0   0   1   0   1

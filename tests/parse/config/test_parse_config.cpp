@@ -6,7 +6,7 @@
 /*   By: rnakatan <rnakatan@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/13 00:00:00 by rnakatan          #+#    #+#             */
-/*   Updated: 2025/12/13 00:00:00 by rnakatan         ###   ########.fr       */
+/*   Updated: 2025/12/20 00:46:24 by rnakatan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,18 +65,18 @@ int main() {
 
 	// 有効なConfigのテスト
 	std::cout << "--- Valid Configs ---" << std::endl;
-	tester.testValidateConfigFile("test_data/valid_config.cub",
+	tester.testValidateConfigFile("test_data/config/valid_config.cub",
 								  "Valid: Standard config", true);
-	tester.testValidateConfigFile("test_data/config_with_blanks.cub",
+	tester.testValidateConfigFile("test_data/config/config_with_blanks.cub",
 								  "Valid: Config with blank lines", true);
 
 	// 無効なConfigのテスト
 	std::cout << "\n--- Invalid Configs ---" << std::endl;
-	tester.testValidateConfigFile("test_data/invalid_duplicate.cub",
+	tester.testValidateConfigFile("test_data/config/invalid_duplicate.cub",
 								  "Invalid: Duplicate identifier", false);
-	tester.testValidateConfigFile("test_data/invalid_rgb.cub",
+	tester.testValidateConfigFile("test_data/config/invalid_rgb.cub",
 								  "Invalid: RGB value out of range", false);
-	tester.testValidateConfigFile("test_data/missing_identifier.cub",
+	tester.testValidateConfigFile("test_data/config/missing_identifier.cub",
 								  "Invalid: Missing identifier (EA)", false);
 
 	stats.printSummary();

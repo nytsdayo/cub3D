@@ -6,7 +6,7 @@
 /*   By: rnakatan <rnakatan@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/06 00:00:00 by rnakatan          #+#    #+#             */
-/*   Updated: 2025/12/19 21:42:23 by rnakatan         ###   ########.fr       */
+/*   Updated: 2025/12/20 01:16:05 by rnakatan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,56 @@
 #define MIN_MAP_SIZE 3
 #define MAX_MAP_SIZE 1000
 
+static bool		is_valid_char(char c);
+static size_t	count_map_lines(char **input_data, size_t line_index);
+static size_t	get_max_line_length(char **input_data, size_t line_index, size_t map_lines);
+static int		validate_invalid_chars(
+					char **input_data, size_t line_index, size_t map_lines);
+static int		validate_map_size(char **input_data,
+					size_t line_index, size_t map_lines, size_t max_len);
+static int		validate_player_start(char **input_data,
+					size_t line_index, size_t map_lines);
+static char		get_char_at(char **input_data,
+					size_t line_index, size_t row, size_t col);
+static int		validate_surrounded_by_walls(
+					char **input_data, size_t line_index, size_t map_lines, size_t max_len);
+static int		validate_spaces(
+					char **input_data, size_t line_index, size_t map_lines, size_t max_len);
+
+/**
+ * @brief マップセクションの構文を検証する（メモリ確保なし）
+ * @param input_data 入力データの行配列
+ * @param line_index マップの開始行インデックス
+ * @return 成功: 0 / 失敗: -1
+ */
+int	validate_map(char **input_data, size_t line_index)
+{
+	size_t	map_lines;
+	size_t	max_len;
+
+	if (!input_data || !input_data[line_index])
+		return (-1);
+	map_lines = count_map_lines(input_data, line_index);
+	if (map_lines < MIN_MAP_SIZE)
+	{
+		fprintf(stderr, "Error: Map must have at least %d lines\n", MIN_MAP_SIZE);
+		return (-1);
+	}
+	max_len = get_max_line_length(input_data, line_index, map_lines);
+	if (validate_invalid_chars(input_data, line_index, map_lines) != 0)
+		return (-1);
+	if (validate_map_size(input_data, line_index, map_lines, max_len) != 0)
+		return (-1);
+	if (validate_player_start(input_data, line_index, map_lines) != 0)
+		return (-1);
+	if (validate_surrounded_by_walls(input_data, line_index, map_lines, max_len) != 0)
+		return (-1);
+	if (validate_spaces(input_data, line_index, map_lines, max_len) != 0)
+		return (-1);
+	return (0);
+}
+
+
 /**
  * @brief 文字が有効なマップ文字かを判定する
  * @param c 判定する文字
@@ -27,8 +77,8 @@
  */
 static bool	is_valid_char(char c)
 {
-	return (c == '0' || c == '1' || c == 'N' || c == 'S' ||
-			c == 'E' || c == 'W' || c == ' ');
+	return (c == '0' || c == '1' || c == 'N' || c == 'S'
+		|| c == 'E' || c == 'W' || c == ' ');
 }
 
 /**
@@ -310,88 +360,4 @@ static size_t	get_max_line_length(char **input_data, size_t line_index, size_t m
 		i++;
 	}
 	return (max_len);
-}
-
-/**
- * @brief マップセクションの構文を検証する（メモリ確保なし）
- * @param input_data 入力データの行配列
- * @param line_index マップの開始行インデックス
- * @return 成功: 0 / 失敗: -1
- */
-int	validate_map(char **input_data, size_t line_index)
-{
-	size_t	map_lines;
-	size_t	max_len;
-
-	if (!input_data || !input_data[line_index])
-		return (-1);
-	map_lines = count_map_lines(input_data, line_index);
-	if (map_lines < MIN_MAP_SIZE)
-	{
-		fprintf(stderr, "Error: Map must have at least %d lines\n", MIN_MAP_SIZE);
-		return (-1);
-	}
-	max_len = get_max_line_length(input_data, line_index, map_lines);
-	if (validate_invalid_chars(input_data, line_index, map_lines) != 0)
-		return (-1);
-	if (validate_map_size(input_data, line_index, map_lines, max_len) != 0)
-		return (-1);
-	if (validate_player_start(input_data, line_index, map_lines) != 0)
-		return (-1);
-	if (validate_surrounded_by_walls(input_data, line_index, map_lines, max_len) != 0)
-		return (-1);
-	if (validate_spaces(input_data, line_index, map_lines, max_len) != 0)
-		return (-1);
-	return (0);
-}
-
-/**
- * @brief マップデータをメモリに読み込む
- * @param input_data 入力データの行配列
- * @param line_index マップの開始行インデックス
- * @param map_data マップデータを格納する構造体
- * @return 成功: 0 / 失敗: -1
- */
-int	load_map(char **input_data, size_t line_index, t_map_data *map_data)
-{
-	size_t	map_lines;
-	size_t	max_len;
-	size_t	i;
-	size_t	j;
-
-	if (!input_data || !map_data)
-		return (-1);
-	if (validate_map(input_data, line_index) != 0)
-		return (-1);
-	map_lines = count_map_lines(input_data, line_index);
-	max_len = get_max_line_length(input_data, line_index, map_lines);
-	map_data->map = malloc(sizeof(char *) * (map_lines + 1));
-	if (!map_data->map)
-		return (-1);
-	i = 0;
-	while (i < map_lines)
-	{
-		map_data->map[i] = calloc(max_len + 1, sizeof(char));
-		if (!map_data->map[i])
-		{
-			while (i > 0)
-				free(map_data->map[--i]);
-			free(map_data->map);
-			map_data->map = NULL;
-			return (-1);
-		}
-		j = 0;
-		while (j < max_len)
-		{
-			if (j < ft_strlen(input_data[line_index + i]))
-				map_data->map[i][j] = input_data[line_index + i][j];
-			else
-				map_data->map[i][j] = ' ';
-			j++;
-		}
-		map_data->map[i][max_len] = '\0';
-		i++;
-	}
-	map_data->map[map_lines] = NULL;
-	return (0);
 }
