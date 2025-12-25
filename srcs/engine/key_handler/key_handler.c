@@ -10,58 +10,53 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
 #include "key_handler.h"
+#include "cub3d.h"
 #include "player.h"
 #include "utils.h"
 #include <stdlib.h>
 
-static void	platform_close(t_game *game);
+static void platform_close(t_game *game);
 
-int	close_window(t_game *game)
-{
-	platform_close(game);
-	return (0);
+int close_window(t_game *game) {
+  platform_close(game);
+  return (0);
 }
 
-int	handle_keypress(int keycode, t_game *game)
-{
-	if (keycode == KEY_ESC)
-		close_window(game);
-	else if (keycode >= 0 && keycode < KEY_STATE_SIZE)
-		game->keys[keycode] = 1;
-	return (0);
+int handle_keypress(int keycode, t_game *game) {
+  if (keycode == KEY_ESC)
+    close_window(game);
+  else if (keycode >= 0 && keycode < KEY_STATE_SIZE)
+    game->keys[keycode] = 1;
+  return (0);
 }
 
-int	handle_keyrelease(int keycode, t_game *game)
-{
-	if (keycode >= 0 && keycode < KEY_STATE_SIZE)
-		game->keys[keycode] = 0;
-	return (0);
+int handle_keyrelease(int keycode, t_game *game) {
+  if (keycode >= 0 && keycode < KEY_STATE_SIZE)
+    game->keys[keycode] = 0;
+  return (0);
 }
 
-void	process_held_keys(t_game *game)
-{
-	if (game->keys[KEY_W])
-		move_forward(game);
-	if (game->keys[KEY_S])
-		move_backward(game);
-	if (game->keys[KEY_A])
-		move_left(game);
-	if (game->keys[KEY_D])
-		move_right(game);
-	if (game->keys[KEY_LEFT])
-		rotate_left(game);
-	if (game->keys[KEY_RIGHT])
-		rotate_right(game);
+void process_held_keys(t_game *game) {
+  if (game->keys[KEY_W])
+    move_forward(game);
+  if (game->keys[KEY_S])
+    move_backward(game);
+  if (game->keys[KEY_A])
+    move_left(game);
+  if (game->keys[KEY_D])
+    move_right(game);
+  if (game->keys[KEY_LEFT])
+    rotate_left(game);
+  if (game->keys[KEY_RIGHT])
+    rotate_right(game);
 }
 
-static void	platform_close(t_game *game)
-{
+static void platform_close(t_game *game) {
 #ifdef __linux__
-	mlx_loop_end(game->mlx);
+  mlx_loop_end(game->mlx);
 #else
-	cleanup_game(game);
-	exit(0);
+  cleanup_game(game);
+  exit(0);
 #endif
 }

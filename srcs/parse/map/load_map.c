@@ -21,12 +21,11 @@
  * @param map_data マップデータを格納する構造体
  * @return 成功: 0 / 失敗: -1
  */
-int	load_map(char **input_data, size_t line_index, t_map_data *map_data)
-{
-	(void)input_data;
-	(void)line_index;
-	(void)map_data;
-	return (0);
+int load_map(char **input_data, size_t line_index, t_map_data *map_data) {
+  (void)input_data;
+  (void)line_index;
+  (void)map_data;
+  return (0);
 }
 
 // /**
@@ -68,10 +67,8 @@ int	load_map(char **input_data, size_t line_index, t_map_data *map_data)
 // 		while (j < max_len)
 // 		{
 // 			if (j < ft_strlen(input_data[line_index + i]))
-// 				map_data->map[i][j] = input_data[line_index + i][j];
-// 			else
-// 				map_data->map[i][j] = ' ';
-// 			j++;
+// 				map_data->map[i][j] = input_data[line_index +
+// i][j]; 			else 				map_data->map[i][j] = ' '; 			j++;
 // 		}
 // 		map_data->map[i][max_len] = '\0';
 // 		i++;
