@@ -31,7 +31,6 @@ void	init_game(t_game *game)
 
 	game->mlx = NULL;
 	game->win = NULL;
-	game->map = NULL;
 	i = 0;
 	while (i < 256)
 		game->keys[i++] = 0;

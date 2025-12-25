@@ -15,6 +15,7 @@
 #include "parse.h"
 #include "utils.h"
 #include <stdlib.h>
+#include <string.h>
 
 static int	valid_args(int argc, char *argv[]);
 
@@ -22,6 +23,7 @@ int	main(int argc, char *argv[])
 {
 	t_game	game;
 
+	memset(&game, 0, sizeof(t_game));
 	if (valid_args(argc, argv) != 0)
 		return (EXIT_FAILURE);
 	game.map = (char **)read_map(argv[1]);
