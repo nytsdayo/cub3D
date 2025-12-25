@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rnakatan <rnakatan@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: mkawano <mkawano@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 19:05:14 by mkawano           #+#    #+#             */
-/*   Updated: 2025/12/13 21:23:53 by rnakatan         ###   ########.fr       */
+/*   Updated: 2025/12/25 19:47:48 by mkawano          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,55 +82,56 @@
 /* Player Structure */
 typedef struct s_player
 {
-	double	pos_x;
-	double	pos_y;
-	double	dir_x;
-	double	dir_y;
-	double	plane_x;
-	double	plane_y;
-}			t_player;
+	double		pos_x;
+	double		pos_y;
+	double		dir_x;
+	double		dir_y;
+	double		plane_x;
+	double		plane_y;
+}				t_player;
 
 /* Image Structure */
 typedef struct s_img
 {
-	void	*img;
-	char	*addr;
-	int		bits_per_pixel;
-	int		line_length;
-	int		endian;
-}			t_img;
+	void		*img;
+	char		*addr;
+	int			bits_per_pixel;
+	int			line_length;
+	int			endian;
+}				t_img;
 
 /* Texture Structure */
 typedef struct s_texture
 {
-	t_img	north;
-	t_img	south;
-	t_img	east;
-	t_img	west;
-	int		width;
-	int		height;
-}			t_texture;
+	t_img		north;
+	t_img		south;
+	t_img		east;
+	t_img		west;
+	int			width;
+	int			height;
+}				t_texture;
 
 /* Color Structure for Floor/Ceiling */
 typedef struct s_color
 {
-	int		r;
-	int		g;
-	int		b;
-}			t_color;
+	int			r;
+	int			g;
+	int			b;
+}				t_color;
 
 /* Game Structure */
-typedef struct s_game {
-	void *mlx;
-	void *win;
-	char **map;
-	int   world_map[MAP_HEIGHT][MAP_WIDTH];
-	t_player player;
-	t_img img;
-	t_texture textures;
-	t_color floor_color;
-	t_color ceiling_color;
-	int keys[KEY_STATE_SIZE];
-}			t_game;
+typedef struct s_game
+{
+	void		*mlx;
+	void		*win;
+	char		**map;
+	int			world_map[MAP_HEIGHT][MAP_WIDTH];
+	t_player	player;
+	t_img		img;
+	t_texture	textures;
+	t_color		floor_color;
+	t_color		ceiling_color;
+	int			keys[KEY_STATE_SIZE];
+}				t_game;
 
 #endif
