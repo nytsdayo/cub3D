@@ -16,7 +16,7 @@
 # include "cub3d.h"
 
 /* Init */
-void	init_game(t_game *game);
+int		init_game(t_game *game);
 
 /* Game Loop */
 void	run_game_loop(t_game *game);
