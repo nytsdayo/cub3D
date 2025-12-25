@@ -18,7 +18,7 @@
 
 | 関数名 | 説明 | 引数 | 戻り値 |
 |--------|------|------|--------|
-| `init_game` | ゲーム構造体を初期化し、MLXを初期化する | `t_game *game` | `void` |
+| `init_game` | ゲーム構造体を初期化し、MLXを初期化する | `t_game *game` | `int` (0: 成功, 1: 失敗) |
 | `run_game_loop` | イベントフックを設定し、ゲームループを起動する | `t_game *game` | `void` |
 | `render_frame` | 1フレームをレンダリングする（MLXループフック） | `t_game *game` | `int` |
 
