@@ -6,7 +6,7 @@
 /*   By: rnakatan <rnakatan@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 19:05:14 by mkawano           #+#    #+#             */
-/*   Updated: 2025/12/20 00:42:57 by rnakatan         ###   ########.fr       */
+/*   Updated: 2025/12/27 05:40:37 by rnakatan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@
 # define FOV 60.0
 # define MOVE_SPEED 0.1
 # define ROT_SPEED 0.05
-# define COLLISION_MARGIN 0.2
 
 /* Key State Array Size (large enough for X11 KeySym values) */
 # define KEY_STATE_SIZE 70000
@@ -57,11 +56,6 @@
 #  define KEY_LEFT XK_Left
 #  define KEY_RIGHT XK_Right
 # endif
-
-/* Events */
-# define ON_KEYDOWN 2
-# define ON_KEYUP 3
-# define ON_DESTROY 17
 
 /* Player Structure */
 typedef struct s_player
