@@ -16,38 +16,17 @@
 #include <stdbool.h>
 #include <unistd.h>
 
+/* External function prototypes (from validate_format.c) */
+int			validate_texture_format(const char *line, t_identifier id);
+int			validate_rgb_format(const char *line);
+
 /* Static function prototypes */
 
-/**
- * @brief seen_flagsを初期化する
- */
-static void			init_seen_flags(t_seen_flags seen_flags);
-
-/**
- * @brief テクスチャパスのフォーマットを検証する（.xpm拡張子チェック）
- */
-static int			validate_texture_format(const char *line, t_identifier id);
-
-/**
- * @brief RGB値のフォーマットを検証する（R,G,B形式、0-255範囲チェック）
- */
-static int			validate_rgb_format(const char *line);
-
-/**
- * @brief すべての識別子が1回ずつ見つかったかを確認する
- */
-static bool			all_identifiers_found(t_seen_flags seen_flags);
-
-/**
- * @brief 識別子の行を検証する
- */
-static int			validate_identifier_line(const char *line,
-						t_seen_flags seen_flags, t_identifier id);
-
-/**
- * @brief 識別子のインデックスを取得する
- */
-static int			get_identifier_index(t_identifier id);
+static void	init_seen_flags(t_seen_flags seen_flags);
+static bool	all_identifiers_found(t_seen_flags seen_flags);
+static int	validate_identifier_line(const char *line,
+				t_seen_flags seen_flags, t_identifier id);
+static int	get_identifier_index(t_identifier id);
 
 /* Main function */
 
@@ -112,62 +91,6 @@ static int	get_identifier_index(t_identifier id)
 	else if (id == ID_C)
 		return (5);
 	return (-1);
-}
-
-static int	validate_texture_format(const char *line, t_identifier id)
-{
-	int	i;
-	int	start;
-	int	len;
-
-	i = 0;
-	if (id >= ID_NO && id <= ID_EA)
-		i += 2;
-	else
-		i += 1;
-	while (ft_isspace(line[i]))
-		i++;
-	start = i;
-	while (line[i] && !ft_isspace(line[i]) && line[i] != '\n')
-		i++;
-	len = i - start;
-	if (len < 4)
-		return (-1);
-	if (ft_strncmp(&line[start + len - 4], ".xpm", 4) != 0)
-		return (-1);
-	return (0);
-}
-
-static int	parse_rgb_component(const char *str, int *idx)
-{
-	int	value;
-	int	digits;
-
-	value = 0;
-	digits = 0;
-	while (ft_isdigit(str[*idx]) && digits < 3)
-	{
-		value = value * 10 + (str[*idx] - '0');
-		(*idx)++;
-		digits++;
-	}
-	if (digits == NON_NUM || value > RGB_MAX)
-		return (-1);
-	return (value);
-}
-
-static int	validate_rgb_format(const char *line)
-{
-	int	i;
-
-	i = 0;
-	while (ft_isspace(line[i]))
-		i++;
-	if (parse_rgb_component(line, &i) == -1 || line[i++] != ','
-		|| parse_rgb_component(line, &i) == -1 || line[i++] != ','
-		|| parse_rgb_component(line, &i) == -1)
-		return (-1);
-	return (0);
 }
 
 static bool	all_identifiers_found(t_seen_flags seen_flags)

@@ -72,7 +72,6 @@ int	validate_map(char **input_data, size_t line_index)
 	return (0);
 }
 
-
 /**
  * @brief 文字が有効なマップ文字かを判定する
  * @param c 判定する文字
@@ -92,8 +91,8 @@ static bool	is_valid_char(char c)
  * @param max_len 最大行長
  * @return 成功: 0 / 失敗: -1
  */
-static int	validate_map_size(char **input_data, size_t line_index, 
-							size_t map_lines, size_t max_len)
+static int	validate_map_size(char **input_data, size_t line_index,
+				size_t map_lines, size_t max_len)
 {
 	(void)input_data;
 	(void)line_index;
@@ -147,23 +146,23 @@ static int	validate_surrounded_by_walls(char **input_data, size_t line_index,
 	size_t	j;
 	char	c;
 
-	/* top / bottom: first and last non-space chars must be '1' */
 	i = 0;
 	while (i < max_len)
 	{
 		c = get_char_at(input_data, line_index, 0, i);
 		if (c != ' ' && c != '1')
-			return (fprintf(stderr, "Error: Top border must be all walls at column %zu\n", i), -1);
+			return (fprintf(stderr,
+					"Error: Top border must be all walls at column %zu\n", i), -1);
 		c = get_char_at(input_data, line_index, map_lines - 1, i);
 		if (c != ' ' && c != '1')
-			return (fprintf(stderr, "Error: Bottom border must be all walls at column %zu\n", i), -1);
+			return (fprintf(stderr,
+					"Error: Bottom border must be all walls at column %zu\n",
+					i), -1);
 		i++;
 	}
-	/* left / right: first and last non-space chars in each row must be '1' */
 	j = 0;
 	while (j < map_lines)
 	{
-		/* Check first non-space character from left */
 		i = 0;
 		while (i < max_len)
 		{
@@ -171,12 +170,13 @@ static int	validate_surrounded_by_walls(char **input_data, size_t line_index,
 			if (c != ' ')
 			{
 				if (c != '1')
-					return (fprintf(stderr, "Error: Left border must be all walls at row %zu\n", j), -1);
-				break;
+					return (fprintf(stderr,
+							"Error: Left border must be all walls at row %zu\n",
+							j), -1);
+				break ;
 			}
 			i++;
 		}
-		/* Check first non-space character from right */
 		i = max_len;
 		while (i > 0)
 		{
@@ -184,8 +184,10 @@ static int	validate_surrounded_by_walls(char **input_data, size_t line_index,
 			if (c != ' ')
 			{
 				if (c != '1')
-					return (fprintf(stderr, "Error: Right border must be all walls at row %zu\n", j), -1);
-				break;
+					return (fprintf(stderr,
+							"Error: Right border must be all walls at row %zu\n",
+							j), -1);
+				break ;
 			}
 			i--;
 		}
