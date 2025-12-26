@@ -15,35 +15,30 @@
 #include "utils.h"
 #include <stdlib.h>
 
-static void	cleanup_mlx(void *mlx);
+static void cleanup_mlx(void *mlx);
 
-void	cleanup_game(t_game *game)
-{
-	if (game->mlx && game->textures.north.img)
-		cleanup_textures(game);
-	if (game->mlx && game->img.img)
-		mlx_destroy_image(game->mlx, game->img.img);
-	if (game->mlx && game->win)
-		mlx_destroy_window(game->mlx, game->win);
-	if (game->map)
-		free_map((void **)game->map);
-	if (game->mlx)
-		cleanup_mlx(game->mlx);
+void cleanup_game(t_game *game) {
+  if (game->mlx && game->textures.north.img)
+    cleanup_textures(game);
+  if (game->mlx && game->img.img)
+    mlx_destroy_image(game->mlx, game->img.img);
+  if (game->mlx && game->win)
+    mlx_destroy_window(game->mlx, game->win);
+  if (game->map)
+    free_map((void **)game->map);
+  if (game->mlx)
+    cleanup_mlx(game->mlx);
 }
 
 #ifdef __linux__
 
-static void	cleanup_mlx(void *mlx)
-{
-	mlx_destroy_display(mlx);
-	free(mlx);
+static void cleanup_mlx(void *mlx) {
+  mlx_destroy_display(mlx);
+  free(mlx);
 }
 
 #else
 
-static void	cleanup_mlx(void *mlx)
-{
-	free(mlx);
-}
+static void cleanup_mlx(void *mlx) { free(mlx); }
 
 #endif
