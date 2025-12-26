@@ -22,7 +22,8 @@
 
 static bool		is_valid_char(char c);
 static size_t	count_map_lines(char **input_data, size_t line_index);
-static size_t	get_max_line_length(char **input_data, size_t line_index, size_t map_lines);
+static size_t	get_max_line_length(char **input_data,
+					size_t line_index, size_t map_lines);
 static int		validate_invalid_chars(
 					char **input_data, size_t line_index, size_t map_lines);
 static int		validate_map_size(char **input_data,
@@ -31,10 +32,10 @@ static int		validate_player_start(char **input_data,
 					size_t line_index, size_t map_lines);
 static char		get_char_at(char **input_data,
 					size_t line_index, size_t row, size_t col);
-static int		validate_surrounded_by_walls(
-					char **input_data, size_t line_index, size_t map_lines, size_t max_len);
-static int		validate_spaces(
-					char **input_data, size_t line_index, size_t map_lines, size_t max_len);
+static int		validate_surrounded_by_walls(char **input_data,
+					size_t line_index, size_t map_lines, size_t max_len);
+static int		validate_spaces(char **input_data,
+					size_t line_index, size_t map_lines, size_t max_len);
 
 /**
  * @brief マップセクションの構文を検証する（メモリ確保なし）
@@ -52,7 +53,8 @@ int	validate_map(char **input_data, size_t line_index)
 	map_lines = count_map_lines(input_data, line_index);
 	if (map_lines < MIN_MAP_SIZE)
 	{
-		fprintf(stderr, "Error: Map must have at least %d lines\n", MIN_MAP_SIZE);
+		fprintf(stderr, "Error: Map must have at least %d lines\n",
+			MIN_MAP_SIZE);
 		return (-1);
 	}
 	max_len = get_max_line_length(input_data, line_index, map_lines);
@@ -62,7 +64,8 @@ int	validate_map(char **input_data, size_t line_index)
 		return (-1);
 	if (validate_player_start(input_data, line_index, map_lines) != 0)
 		return (-1);
-	if (validate_surrounded_by_walls(input_data, line_index, map_lines, max_len) != 0)
+	if (validate_surrounded_by_walls(input_data, line_index, map_lines,
+			max_len) != 0)
 		return (-1);
 	if (validate_spaces(input_data, line_index, map_lines, max_len) != 0)
 		return (-1);

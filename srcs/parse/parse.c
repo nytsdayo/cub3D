@@ -41,7 +41,6 @@ int	parse(const char *filepath, t_game_data *game_data)
 		ret = -1;
 	else
 		ret = load_data((const char **)input_data, game_data);
-	// get_map_data(input_data, &game_data->map);
 	free_map((void **)input_data);
 	return (ret);
 }

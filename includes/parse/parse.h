@@ -69,7 +69,7 @@ t_identifier	detect_identifier(const char *line);
 int				validate_map(char **input_data, size_t line_index);
 
 int				load_data(const char **input_data, void *data);
-int				load_config(const char *filepath, t_config_data *config);
+int				load_config(const char **input_data, t_config_data *config);
 int				load_map(char **input_data, size_t line_index,
 					t_map_data *map_data);
 
