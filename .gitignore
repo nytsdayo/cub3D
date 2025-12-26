@@ -61,9 +61,16 @@ test
 test_parse_config
 test_parse_map
 
+# Test artifacts
 tests/*.o
+tests/**/*.o
 tests/*.out
 tests/cub3D
+
+# Valgrind output
+valgrind_output.txt
+vgcore.*
+*.valgrind
 
 # macOS
 .DS_Store

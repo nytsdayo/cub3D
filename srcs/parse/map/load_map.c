@@ -83,6 +83,8 @@ int	load_map(char **input_data, size_t line_index, t_map_data *map_data)
 
 	if (!input_data || !map_data)
 		return (-1);
+	if (validate_map(input_data, line_index) != 0)
+		return (-1);
 	map_lines = count_map_lines(input_data, line_index);
 	max_len = get_max_line_length(input_data, line_index, map_lines);
 	map_data->map = malloc(sizeof(char *) * (map_lines + 1));

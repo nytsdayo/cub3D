@@ -31,6 +31,8 @@ PARSE_CONFIG_CPP = $(TEST_DIR)/parse/config/test_parse_config.cpp \
 
 # C source files (library code)
 PARSE_CONFIG_C_SRCS = $(SRC_DIR)/parse/config/parse_config.c \
+					  $(SRC_DIR)/parse/config/detect_identifier.c \
+					  $(SRC_DIR)/parse/config/validate_format.c \
 					  $(SRC_DIR)/utils/ft_strlen.c \
 					  $(SRC_DIR)/utils/ft_strcmp.c \
 					  $(SRC_DIR)/utils/ft_strncmp.c \
@@ -48,6 +50,7 @@ PARSE_CONFIG_C_OBJS = $(PARSE_CONFIG_C_SRCS:.c=.o)
 TEST_MAP_CXX_SRCS = $(TEST_DIR)/parse/map/test_parse_map.cpp \
 					$(TEST_DIR)/parse/map/test_map_file.cpp
 TEST_MAP_C_SRCS = $(SRC_DIR)/parse/map/parse_map.c \
+				  $(SRC_DIR)/parse/map/load_map.c \
 				  $(SRC_DIR)/utils/ft_strlen.c \
 				  $(SRC_DIR)/utils/ft_strndup.c \
 				  $(SRC_DIR)/utils/read_map.c \

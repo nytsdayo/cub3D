@@ -44,6 +44,7 @@ SRCS = $(SRC_DIR)/main.c \
 	   $(SRC_DIR)/utils/is_blank_line.c \
 	   $(SRC_DIR)/utils/read_map.c \
 	   $(SRC_DIR)/utils/free_map.c \
+	   $(SRC_DIR)/utils/free_config_data.c \
 	   $(SRC_DIR)/engine/init/init_game.c \
 	   $(SRC_DIR)/engine/game_loop.c \
 	   $(SRC_DIR)/engine/key_handler/key_handler.c \

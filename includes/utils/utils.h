@@ -14,6 +14,7 @@
 # define UTILS_H
 
 # include "cub3d.h"
+# include "parse.h"
 # include <stddef.h>
 
 size_t		ft_strlen(const char *s);
@@ -28,5 +29,6 @@ void		free_map(void **map);
 
 /* Cleanup */
 void		cleanup_game(t_game *game);
+void		free_config_data(t_config_data *config);
 
 #endif

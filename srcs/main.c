@@ -31,15 +31,18 @@ int	main(int argc, char *argv[])
 	if (parse(argv[1], &game_data) != 0)
 	{
 		write(2, "Error\nFailed to parse map\n", 26);
+		free_config_data(&game_data.config);
 		return (EXIT_FAILURE);
 	}
 	game.map = game_data.map.map;
 	if (init_game(&game) != 0)
 	{
 		free_map((void **)game.map);
+		free_config_data(&game_data.config);
 		return (EXIT_FAILURE);
 	}
 	run_game_loop(&game);
+	free_config_data(&game_data.config);
 	return (EXIT_SUCCESS);
 }
 
