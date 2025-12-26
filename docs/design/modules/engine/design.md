@@ -18,7 +18,7 @@
 
 | 関数名 | 説明 | 引数 | 戻り値 |
 |--------|------|------|--------|
-| `init_game` | ゲーム構造体を初期化し、MLXを初期化する | `t_game *game` | `void` |
+| `init_game` | ゲーム構造体を初期化し、MLXを初期化する | `t_game *game` | `int` (0: 成功, 1: 失敗) |
 | `run_game_loop` | イベントフックを設定し、ゲームループを起動する | `t_game *game` | `void` |
 | `render_frame` | 1フレームをレンダリングする（MLXループフック） | `t_game *game` | `int` |
 
@@ -41,6 +41,7 @@
 - **renderer/**: レンダリング処理
 - **raycasting/**: レイキャスティングアルゴリズム（実装済み）
 - **player/**: プレイヤー移動・回転・衝突検出（実装済み）
+- **texture/**: テクスチャ読み込み・サンプリング・破棄（実装済み）
 
 ## 内部設計
 
@@ -104,8 +105,10 @@ cleanup_game()
 - ✅ プレイヤー操作（player/）
 - ✅ 連続キー押下処理
 - ✅ 衝突判定改善（バウンディングボックス、X/Y軸分離）
-- ⏳ テクスチャマッピング（未実装）
-- ⏳ パーサー統合（進行中）
+- ✅ テクスチャマッピング（texture/ - 2025-12-19実装完了）
+- ✅ スマート壁スライディング（player/ - 2025-12-20実装完了）
+- ✅ 配列インデックスバグ修正（raycasting/ - 2025-12-20修正完了）
+- ⏳ パーサー統合（パートナー担当、進行中）
 
 ## 参照
 
@@ -115,5 +118,9 @@ cleanup_game()
 - [renderer設計](./renderer/design.md)
 - [player設計](./player/design.md)
 - [raycasting設計](./raycasting/design.md)
+- [texture設計](./texture/design.md)
 - [ADR-0002: main.cのリファクタリング](../../../decisions/0002-main-refactoring-separation-of-concerns.md)
 - [ADR-0003: プレイヤー移動・回転の実装方針](../../../decisions/0003-player-movement-implementation.md)
+- [ADR-0004: テクスチャマッピングの実装方針](../../../decisions/0004-texture-mapping-implementation.md)
+- [ADR-0005: world_map配列インデックスの修正](../../../decisions/0005-fix-world-map-array-indexing.md)
+- [ADR-0006: スマート壁スライディングの実装](../../../decisions/0006-smart-wall-sliding-implementation.md)

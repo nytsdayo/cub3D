@@ -6,7 +6,7 @@
 /*   By: rnakatan <rnakatan@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 19:29:11 by rnakatan          #+#    #+#             */
-/*   Updated: 2025/12/27 05:41:20 by rnakatan         ###   ########.fr       */
+/*   Updated: 2025/12/27 05:47:28 by rnakatan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define PARSE_H
 
 # include <stddef.h>
+# include "cub3d.h"
 
 # define RGB_MAX 255
 # define NON_NUM 0
@@ -30,14 +31,6 @@ typedef enum e_identifier
 }	t_identifier;
 
 typedef int	t_seen_flags[6];
-
-/* データ構造 */
-typedef struct s_color
-{
-	int	r;
-	int	g;
-	int	b;
-}	t_color;
 
 typedef struct s_config_data
 {

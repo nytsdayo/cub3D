@@ -6,7 +6,7 @@
 /*   By: rnakatan <rnakatan@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 10:00:00 by rnakatan          #+#    #+#             */
-/*   Updated: 2025/12/09 15:51:28 by rnakatan         ###   ########.fr       */
+/*   Updated: 2025/12/27 05:48:48 by rnakatan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "parse.h"
 #include "utils.h"
 #include <stdlib.h>
+#include <string.h>
 
 static int	valid_args(int argc, char *argv[]);
 
@@ -23,20 +24,21 @@ int	main(int argc, char *argv[])
 	t_game		game;
 	t_game_data	game_data;
 
+	memset(&game, 0, sizeof(t_game));
+	memset(&game_data, 0, sizeof(t_game_data));
 	if (valid_args(argc, argv) != 0)
 		return (EXIT_FAILURE);
 	if (parse(argv[1], &game_data) != 0)
 	{
-		write(2, "Error\nFailed to parse map\n", 27);
+		write(2, "Error\nFailed to parse map\n", 26);
 		return (EXIT_FAILURE);
 	}
-	game.map = (char **)read_map(argv[1]);
-	if (game.map == NULL)
+	game.map = game_data.map.map;
+	if (init_game(&game) != 0)
 	{
-		write(2, "Error\nFailed to read map\n", 25);
+		free_map((void **)game.map);
 		return (EXIT_FAILURE);
 	}
-	init_game(&game);
 	run_game_loop(&game);
 	return (EXIT_SUCCESS);
 }

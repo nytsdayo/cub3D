@@ -12,6 +12,7 @@
 
 #include "cub3d.h"
 #include "raycasting.h"
+#include "texture.h"
 
 /*
 ** ピクセルを描画
@@ -28,22 +29,38 @@ void	put_pixel(t_game *game, int x, int y, int color)
 }
 
 /*
-** 垂直線を描画（天井、壁、床）
+** RGB値から色を作成
+*/
+static int	create_rgb_color(t_color color)
+{
+	return ((color.r << 16) | (color.g << 8) | color.b);
+}
+
+/*
+** 垂直線を描画（天井、テクスチャ壁、床）
 */
 void	draw_vertical_line(t_game *game, t_ray *ray, int x)
 {
-	int	y;
-	int	wall_color;
+	int		y;
+	int		tex_y;
+	double	step;
+	double	tex_pos;
+	t_img	*texture;
 
 	y = 0;
 	while (y < ray->draw_start)
-		put_pixel(game, x, y++, 0x87CEEB);
-	if (ray->side == 1)
-		wall_color = 0x999999;
-	else
-		wall_color = 0x666666;
+		put_pixel(game, x, y++, create_rgb_color(game->ceiling_color));
+	texture = select_wall_texture(game, ray);
+	step = (double)TEX_HEIGHT / ray->line_height;
+	tex_pos = (ray->draw_start - WINDOW_HEIGHT / 2
+			+ ray->line_height / 2) * step;
 	while (y <= ray->draw_end)
-		put_pixel(game, x, y++, wall_color);
+	{
+		tex_y = (int)tex_pos & (TEX_HEIGHT - 1);
+		tex_pos += step;
+		put_pixel(game, x, y++, get_texture_pixel(texture,
+				ray->tex_x, tex_y));
+	}
 	while (y < WINDOW_HEIGHT)
-		put_pixel(game, x, y++, 0x228B22);
+		put_pixel(game, x, y++, create_rgb_color(game->floor_color));
 }

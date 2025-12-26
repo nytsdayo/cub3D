@@ -32,6 +32,7 @@ SRCS = $(SRC_DIR)/main.c \
 	   $(SRC_DIR)/parse/config/parse_config.c \
 	   $(SRC_DIR)/parse/config/load_config.c \
 	   $(SRC_DIR)/parse/config/detect_identifier.c \
+	   $(SRC_DIR)/parse/config/validate_format.c \
 	   $(SRC_DIR)/parse/map/parse_map.c \
 	   $(SRC_DIR)/parse/map/load_map.c \
 	   $(SRC_DIR)/utils/ft_strlen.c \
@@ -52,8 +53,13 @@ SRCS = $(SRC_DIR)/main.c \
 	   $(SRC_DIR)/engine/raycasting/ray_init.c \
 	   $(SRC_DIR)/engine/raycasting/ray_dda.c \
 	   $(SRC_DIR)/engine/raycasting/ray_draw.c \
+	   $(SRC_DIR)/engine/raycasting/texture_coords.c \
 	   $(SRC_DIR)/engine/player/player_movement.c \
 	   $(SRC_DIR)/engine/player/player_rotation.c \
+	   $(SRC_DIR)/engine/player/player_slide.c \
+	   $(SRC_DIR)/engine/texture/texture_init.c \
+	   $(SRC_DIR)/engine/texture/texture_utils.c \
+	   $(SRC_DIR)/engine/texture/texture_cleanup.c \
 	   $(SRC_DIR)/utils/cleanup.c
 
 # Object files
