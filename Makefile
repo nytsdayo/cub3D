@@ -28,11 +28,24 @@ LIB_DIR = libraries
 # Source files
 SRCS = $(SRC_DIR)/main.c \
 	   $(SRC_DIR)/parse/parse.c \
+	   $(SRC_DIR)/parse/load_data.c \
+	   $(SRC_DIR)/parse/config/parse_config.c \
+	   $(SRC_DIR)/parse/config/load_config.c \
+	   $(SRC_DIR)/parse/config/detect_identifier.c \
+	   $(SRC_DIR)/parse/config/validate_format.c \
+	   $(SRC_DIR)/parse/map/parse_map.c \
+	   $(SRC_DIR)/parse/map/load_map.c \
 	   $(SRC_DIR)/utils/ft_strlen.c \
 	   $(SRC_DIR)/utils/ft_strcmp.c \
+	   $(SRC_DIR)/utils/ft_strncmp.c \
 	   $(SRC_DIR)/utils/ft_strndup.c \
+	   $(SRC_DIR)/utils/ft_memcpy.c \
+	   $(SRC_DIR)/utils/ft_isspace.c \
+	   $(SRC_DIR)/utils/ft_isdigit.c \
+	   $(SRC_DIR)/utils/is_blank_line.c \
 	   $(SRC_DIR)/utils/read_map.c \
 	   $(SRC_DIR)/utils/free_map.c \
+	   $(SRC_DIR)/utils/free_config_data.c \
 	   $(SRC_DIR)/engine/init/init_game.c \
 	   $(SRC_DIR)/engine/game_loop.c \
 	   $(SRC_DIR)/engine/key_handler/key_handler.c \
@@ -95,4 +108,7 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+test:
+	$(MAKE) -C tests test
+
+.PHONY: all clean fclean re test
