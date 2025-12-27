@@ -48,8 +48,12 @@ int	validate_map(char **input_data, size_t line_index)
 	size_t	map_lines;
 	size_t	max_len;
 
-	if (!input_data || !input_data[line_index])
+	if (!input_data)
 		return (-1);
+	while (input_data[line_index] && is_blank_line(input_data[line_index]))
+		line_index++;
+	if (!input_data[line_index])
+		return (fprintf(stderr, "Error: Map not found after config\n"), -1);
 	map_lines = count_map_lines(input_data, line_index);
 	if (map_lines < MIN_MAP_SIZE)
 	{
@@ -145,15 +149,24 @@ static int	validate_surrounded_by_walls(char **input_data, size_t line_index,
 	size_t	i;
 	size_t	j;
 	char	c;
+	size_t	left_idx;
+	size_t	right_idx;
+	size_t	row_len;
 
+	(void)max_len;
 	i = 0;
-	while (i < max_len)
+	while (input_data[line_index][i])
 	{
-		c = get_char_at(input_data, line_index, 0, i);
+		c = input_data[line_index][i];
 		if (c != ' ' && c != '1')
 			return (fprintf(stderr,
 					"Error: Top border must be all walls at column %zu\n", i), -1);
-		c = get_char_at(input_data, line_index, map_lines - 1, i);
+		i++;
+	}
+	i = 0;
+	while (input_data[line_index + map_lines - 1][i])
+	{
+		c = input_data[line_index + map_lines - 1][i];
 		if (c != ' ' && c != '1')
 			return (fprintf(stderr,
 					"Error: Bottom border must be all walls at column %zu\n",
@@ -163,34 +176,29 @@ static int	validate_surrounded_by_walls(char **input_data, size_t line_index,
 	j = 0;
 	while (j < map_lines)
 	{
+		row_len = ft_strlen(input_data[line_index + j]);
+		/* find first/last non-space indices for this row (using real row_len) */
 		i = 0;
-		while (i < max_len)
-		{
-			c = get_char_at(input_data, line_index, j, i);
-			if (c != ' ')
-			{
-				if (c != '1')
-					return (fprintf(stderr,
-							"Error: Left border must be all walls at row %zu\n",
-							j), -1);
-				break ;
-			}
+		while (i < row_len && input_data[line_index + j][i] == ' ')
 			i++;
-		}
-		i = max_len;
-		while (i > 0)
+		left_idx = i;
+		if (row_len == 0 || left_idx == row_len)
 		{
-			c = get_char_at(input_data, line_index, j, i - 1);
-			if (c != ' ')
-			{
-				if (c != '1')
-					return (fprintf(stderr,
-							"Error: Right border must be all walls at row %zu\n",
-							j), -1);
-				break ;
-			}
-			i--;
+			j++;
+			continue ;
 		}
+		i = row_len;
+		while (i > left_idx && input_data[line_index + j][i - 1] == ' ')
+			i--;
+		right_idx = (i == 0) ? 0 : i - 1;
+		if (input_data[line_index + j][left_idx] != '1')
+			return (fprintf(stderr,
+					"Error: Left border must be walls at row %zu (col %zu, got '%c')\n",
+					j, left_idx, input_data[line_index + j][left_idx]), -1);
+		if (input_data[line_index + j][right_idx] != '1')
+			return (fprintf(stderr,
+					"Error: Right border must be walls at row %zu (col %zu, got '%c')\n",
+					j, right_idx, input_data[line_index + j][right_idx]), -1);
 		j++;
 	}
 	return (0);
