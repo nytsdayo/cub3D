@@ -192,13 +192,11 @@ static int	validate_surrounded_by_walls(char **input_data, size_t line_index,
 			i--;
 		right_idx = (i == 0) ? 0 : i - 1;
 		if (input_data[line_index + j][left_idx] != '1')
-			return (fprintf(stderr,
-					"Error: Left border must be walls at row %zu (col %zu, got '%c')\n",
-					j, left_idx, input_data[line_index + j][left_idx]), -1);
+			return (fprintf(stderr, "Error: Left border at row %zu\\n",
+					j), -1);
 		if (input_data[line_index + j][right_idx] != '1')
-			return (fprintf(stderr,
-					"Error: Right border must be walls at row %zu (col %zu, got '%c')\n",
-					j, right_idx, input_data[line_index + j][right_idx]), -1);
+			return (fprintf(stderr, "Error: Right border at row %zu\\n",
+					j), -1);
 		j++;
 	}
 	return (0);
