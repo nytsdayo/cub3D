@@ -21,7 +21,9 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y \
+          build-essential \
           valgrind \
+          xorg \
           libx11-dev \
           libxext-dev \
           libxrandr-dev \
@@ -29,14 +31,9 @@ jobs:
           libxinerama-dev \
           libxi-dev \
           libxpm-dev \
-          libxcursor-dev
+          libxcursor-dev \
+          zlib1g-dev \
+          libbsd-dev
     
-    - name: Build project
-      run: make
-    
-    - name: Run memory leak check
-      run: |
-        # Run the comprehensive leak check test script
-        # This script tests all good maps with valgrind
-        chmod +x tests/run_leak_check.sh
-        ./tests/run_leak_check.sh
+    - name: Run test suite
+      run: make test

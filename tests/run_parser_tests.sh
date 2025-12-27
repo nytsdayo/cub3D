@@ -19,7 +19,11 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 # Paths
-CUB3D_BIN="${PROJECT_ROOT}/cub3D"
+if [ -n "$PARSER_BIN" ]; then
+    CUB3D_BIN="$PARSER_BIN"
+else
+    CUB3D_BIN="${PROJECT_ROOT}/cub3D"
+fi
 SUCCESS_MAPS_DIR="${PROJECT_ROOT}/assets/maps/success"
 FAILED_MAPS_DIR="${PROJECT_ROOT}/assets/maps/failed"
 
@@ -46,9 +50,9 @@ if [ -d "$SUCCESS_MAPS_DIR" ]; then
         map_name="${map_file#$SUCCESS_MAPS_DIR/}"
         echo -n "Testing $map_name ... "
         
-        if [ -f "$CUB3D_BIN" ]; then
-            # Run the parser with timeout to prevent hanging
-            if timeout 10s "$CUB3D_BIN" "$map_file" &> /dev/null; then
+        if [ -x "$CUB3D_BIN" ]; then
+            # Run the parser only (skip rendering) with timeout, from project root
+            if timeout 10s sh -c "cd '$PROJECT_ROOT' && '$CUB3D_BIN' '$map_file'" &> /dev/null; then
                 echo -e "${GREEN}✓ PASSED${NC}"
                 PASSED_TESTS=$((PASSED_TESTS + 1))
             else
@@ -75,9 +79,9 @@ if [ -d "$FAILED_MAPS_DIR" ]; then
         map_name="${map_file#$FAILED_MAPS_DIR/}"
         echo -n "Testing $map_name ... "
         
-        if [ -f "$CUB3D_BIN" ]; then
-            # Run the parser - should fail (timeout also counts as failure)
-            if timeout 10s "$CUB3D_BIN" "$map_file" &> /dev/null; then
+        if [ -x "$CUB3D_BIN" ]; then
+            # Run the parser only (skip rendering) - should fail (timeout also counts as failure)
+            if timeout 10s sh -c "cd '$PROJECT_ROOT' && '$CUB3D_BIN' '$map_file'" &> /dev/null; then
                 echo -e "${RED}✗ FAILED (should have failed)${NC}"
                 FAILED_TESTS=$((FAILED_TESTS + 1))
             else
