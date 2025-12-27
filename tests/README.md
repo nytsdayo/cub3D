@@ -4,49 +4,45 @@
 
 ## ファイル構成
 
-- `run_parser_tests.sh` - パーサーのテストを自動実行するシェルスクリプト
+- `Makefile` - ユニットテスト、パーサーテスト、リークチェックをまとめて実行
+- `run_parser_tests.sh` - 成功/失敗マップを使ったパーサーテスト一式
+- `run_leak_check.sh` - Valgrind を使ったリークチェック
+- `test_data/` - ユニットテスト用のミニマルな .cub サンプル
 
 ## 使い方
 
-### ローカルでの実行
+### ローカルでまとめて実行
 
 ```bash
-# プロジェクトのルートディレクトリから
-bash ./test/run_parser_tests.sh
-
-# または、実行権限を設定してから
-chmod +x ./test/run_parser_tests.sh
-./test/run_parser_tests.sh
+# プロジェクトルートから
+make test
 ```
 
-または
-
+もしくは個別に実行:
 ```bash
-# testディレクトリから
-cd test
-bash ./run_parser_tests.sh
+cd tests
+make unit          # C++ユニットテスト（設定・マップ）
+make parser-tests  # assets/maps を使った総合パーサーテスト
+make leak-check    # Valgrindリークチェック
 ```
-
-### 前提条件
-
-- cub3Dバイナリがビルドされていること（`make`コマンドでビルド）
-- パーサーが実装されていない場合は、テストはスキップされます
 
 ## テストの内容
 
-テストスクリプトは以下のテストを実行します：
+`make test` は以下を順に実行します：
 
-1. **成功ケース** (`assets/maps/success/`内のすべての.cubファイル)
-   - これらのマップは正常にパースされるべきです
-   - パーサーが終了コード0で終了することを期待
+1. **ユニットテスト** (`tests/test_data/`を使用)
+   - 設定パース: 重複・RGBフォーマット・境界値(0/255)など
+   - マップパース: 最小サイズ、壁囲み、スペース、プレイヤー数など
 
-2. **失敗ケース** (`assets/maps/failed/`内のすべての.cubファイル)
-   - これらのマップはエラーになるべきです
-   - パーサーが非ゼロの終了コードで終了することを期待
+2. **パーサーテスト** (`assets/maps/` を対象)
+   - 成功ケースは終了コード0、失敗ケースは非0を期待
+
+3. **リークチェック** (`tests/run_leak_check.sh`)
+   - Valgrind による良いマップ群のリーク確認
 
 ## 出力
 
-テストスクリプトは以下の情報を表示します：
+各ステージで以下を表示します：
 
 - 各テストケースの結果（PASSED/FAILED/SKIPPED）
 - テスト結果のサマリー（合計、成功、失敗の数）
@@ -54,13 +50,7 @@ bash ./run_parser_tests.sh
 
 ## GitHub Actions
 
-このテストはGitHub Actionsでも実行できます：
-
-1. GitHubリポジトリの "Actions" タブに移動
-2. "Parser Test" ワークフローを選択
-3. "Run workflow" ボタンをクリック
-
-手動トリガーのため、必要なときに実行できます。
+`make test` が CI のワークフロー（parser-test / memory-leak-check）でも実行されます。手動実行時も同じコマンドを使えば再現できます。
 
 ## テストケースの詳細
 

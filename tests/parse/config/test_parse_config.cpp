@@ -67,6 +67,8 @@ int main() {
 	std::cout << "--- Valid Configs ---" << std::endl;
 	tester.testValidateConfigFile("test_data/config/valid_config.cub",
 								  "Valid: Standard config", true);
+	tester.testValidateConfigFile("test_data/config/valid_rgb_bounds.cub",
+								  "Valid: RGB boundary values (0/255)", true);
 	tester.testValidateConfigFile("test_data/config/config_with_blanks.cub",
 								  "Valid: Config with blank lines", true);
 
