@@ -13,6 +13,7 @@
 #include "parse.h"
 #include "utils.h"
 #include <stdlib.h>
+#include <unistd.h>
 
 static char	*extract_texture_path(const char *line, t_identifier id)
 {
@@ -80,14 +81,36 @@ static int	parse_rgb_color(const char *line, t_color *color)
 static int	store_config_value(t_identifier id, const char *line,
 				t_config_data *config)
 {
+	char	*path;
+
 	if (id == ID_NO)
-		config->north_texture_path = extract_texture_path(line, id);
+	{
+		path = extract_texture_path(line, id);
+		if (!path || access(path, R_OK) != 0)
+			return (free(path), -1);
+		config->north_texture_path = path;
+	}
 	else if (id == ID_SO)
-		config->south_texture_path = extract_texture_path(line, id);
+	{
+		path = extract_texture_path(line, id);
+		if (!path || access(path, R_OK) != 0)
+			return (free(path), -1);
+		config->south_texture_path = path;
+	}
 	else if (id == ID_WE)
-		config->west_texture_path = extract_texture_path(line, id);
+	{
+		path = extract_texture_path(line, id);
+		if (!path || access(path, R_OK) != 0)
+			return (free(path), -1);
+		config->west_texture_path = path;
+	}
 	else if (id == ID_EA)
-		config->east_texture_path = extract_texture_path(line, id);
+	{
+		path = extract_texture_path(line, id);
+		if (!path || access(path, R_OK) != 0)
+			return (free(path), -1);
+		config->east_texture_path = path;
+	}
 	else if (id == ID_F)
 		return (parse_rgb_color(line + 1, &config->floor_color));
 	else if (id == ID_C)
