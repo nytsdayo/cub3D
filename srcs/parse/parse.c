@@ -11,13 +11,13 @@
 /* ************************************************************************** */
 
 #include "parse.h"
+#include <fcntl.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <fcntl.h>
 
 /* Utils function prototypes */
-char	**read_map(const char *filename);
-void	free_map(void **map);
+char **read_map(const char *filename);
+void free_map(void **map);
 
 /**
  * @brief メインのパース関数（検証のみ）
@@ -25,22 +25,21 @@ void	free_map(void **map);
  * @param game_data パース結果を格納する構造体（未使用、将来の拡張用）
  * @return 成功: 0 / 失敗: エラーコード
  */
-int	parse(const char *filepath, t_game_data *game_data)
-{
-	char	**input_data;
-	size_t	line_index;
-	int		ret;
+int parse(const char *filepath, t_game_data *game_data) {
+  char **input_data;
+  size_t line_index;
+  int ret;
 
-	(void)game_data;
-	line_index = 0;
-	input_data = read_map(filepath);
-	if (input_data == NULL)
-		return (-1);
-	if (validate_config(input_data, &line_index) != 0
-		|| validate_map(input_data, line_index) != 0)
-		ret = -1;
-	else
-		ret = load_data((const char **)input_data, game_data);
-	free_map((void **)input_data);
-	return (ret);
+  (void)game_data;
+  line_index = 0;
+  input_data = read_map(filepath);
+  if (input_data == NULL)
+    return (-1);
+  if (validate_config(input_data, &line_index) != 0 ||
+      validate_map(input_data, line_index) != 0)
+    ret = -1;
+  else
+    ret = load_data((const char **)input_data, game_data);
+  free_map((void **)input_data);
+  return (ret);
 }
