@@ -35,5 +35,8 @@ jobs:
           zlib1g-dev \
           libbsd-dev
     
+    - name: Build project (including miniLibX)
+      run: make
+    
     - name: Run test suite
       run: make test
