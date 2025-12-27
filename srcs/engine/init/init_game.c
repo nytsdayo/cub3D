@@ -13,8 +13,9 @@
 #include "cub3d.h"
 #include "engine.h"
 #include "raycasting.h"
+#include "texture.h"
 
-static void	init_mlx(t_game *game);
+static int	init_mlx(t_game *game);
 static void	init_image(t_game *game);
 
 /*
@@ -24,31 +25,40 @@ static void	init_image(t_game *game);
 ** TODO: init_hardcoded_map()とinit_player()はテスト用の仮実装。
 ** 統合時にパーサーが設定したデータを使用するため、これらの呼び出しは削除する。
 */
-void	init_game(t_game *game)
+int	init_game(t_game *game)
 {
+	int	i;
+
 	game->mlx = NULL;
 	game->win = NULL;
-	game->map = NULL;
-	init_mlx(game);
+	i = 0;
+	while (i < 256)
+		game->keys[i++] = 0;
+	if (init_mlx(game) != 0)
+		return (1);
 	init_image(game);
+	init_textures(game);
+	init_colors(game);
 	init_hardcoded_map(game);
 	init_player(game);
+	return (0);
 }
 
-static void	init_mlx(t_game *game)
+static int	init_mlx(t_game *game)
 {
 	game->mlx = mlx_init();
 	if (!game->mlx)
 	{
 		write(2, "Error\nMLX init failed\n", 22);
-		exit(EXIT_FAILURE);
+		return (1);
 	}
 	game->win = mlx_new_window(game->mlx, WINDOW_WIDTH, WINDOW_HEIGHT, TITLE);
 	if (!game->win)
 	{
 		write(2, "Error\nWindow creation failed\n", 29);
-		exit(EXIT_FAILURE);
+		return (1);
 	}
+	return (0);
 }
 
 static void	init_image(t_game *game)

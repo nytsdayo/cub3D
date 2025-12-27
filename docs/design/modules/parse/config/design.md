@@ -83,51 +83,63 @@ digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
 
 ## 入力と前提
 
-- 入力: `char **input_data, size_t *line_index`（NULL 終端）
-- 先頭・途中に空行混在を許容し、空白行は無視
-- 行順は任意、識別子は最大1回ずつ
+- 入力：`char **input_data, size_t *line_index` (NULL 終端の行配列)
+- 先頭およびセクション途中に空行が混在する
+- 空行/空白のみの行は config 処理では無視する
+- 行の順序は任意。識別子 `NO|SO|WE|EA|F|C` の出現回数は最大1回
 
-## 成果物
+## 成果物（戻り値のみ）
 
-- テクスチャ4種: 相対/絶対パス文字列を保持（存在確認は後段、拡張子 `.xpm` のみここで検知）
-- `F` / `C`: `R,G,B` の3整数を抽出し 0-255 を保証して格納（例: `t_color`）
-- 6要素が揃ったら `t_config_data` とともに次のモジュールへ制御を渡す
+このモジュールは**値を保持せず**、検証結果のみを返す:
 
-## パースフロー（箇条書き）
+- **成功時**: `0` を返す（構文が正しい）
+- **失敗時**: `-1` を返す（標準エラー出力にメッセージ表示済み）
 
-- `skip_reading_blank_lines()`
-- while (!all_identifiers_consumed)
-  - 現在行を評価: NULL なら `MISSING_IDENTIFIER`、空行なら skip
-  - `detect_identifier(line)`: unknown/duplicate は即エラー
-  - dispatch(line_after_id):
-    - texture: `.xpm` 拡張子を確認しパスを保存
-    - rgb: `split(',')` で3要素、整数化し 0-255 範囲を確認
-  - フラグをインクリメント（既に1なら `DUPLICATE_IDENTIFIER`）
-  - line_index++、次の非空行へ
+実際の値の確保は、別の`load`モジュールが行う。
 
-### ヘルパー関数メモ
+## パースフロー（検証のみ）
+
+```text
+1. skip_reading_blank_lines()
+2. while (!all_identifiers_found && line != NULL)
+    2.1 empty line -> skip
+    2.2 detect_identifier(line)
+         - unknown -> ERROR (-1を返す)
+         - duplicate -> ERROR (-1を返す)
+    2.3 validate_format(line, identifier)
+         - texture: `.xpm`拡張子チェックのみ
+         - rgb: 形式チェック、0-255範囲チェック
+    2.4 mark identifier as seen
+    2.5 次行へ進む(line_index++)
+3. all_identifiers_found? 
+    - YES -> return 0
+    - NO -> return -1 (MISSING_IDENTIFIER)
+```
+
+### ヘルパー関数（検証のみ）
 
 - `bool is_blank_line(const char *line)`
 - `t_identifier detect_identifier(const char *line)`
-	- 先頭トークンのみ比較 (`NO`, `SO`, `WE`, `EA`, `F`, `C`). それ以外は即エラー。
-- `char *extract_path(const char *line)`
-	- 先頭識別子の後ろの空白を1個以上許可。`.xpm` 拡張子必須。ここではファイルを開かず、文字列コピーのみ。
-- `t_color parse_rgb(const char *line)`
-	- `split(',')` で3トークン。各トークンは `ft_isdigit` で検査し `ft_atoi`。0-255 以外はエラー。
-- `bool all_identifiers_consumed(int flags[6])`
-	- `NO,SO,WE,EA,F,C` をインデックス化した配列で進捗を管理。
+- `int validate_texture_format(const char *line)`
+  - `.xpm`で終わるかのみチェック
+  - **文字列のコピーはしない**
+- `int validate_rgb_format(const char *line)`
+  - `R,G,B`形式かチェック
+  - 0-255範囲かチェック
+  - **値の保存はしない**
+- `bool all_identifiers_found(int flags[6])`
 
-## 状態管理
+## 状態管理（検証用のみ）
 
-- `t_config_state`:
-  - `char *textures[4];` // NO, SO, WE, EA
-  - `t_color floor;`
-  - `t_color ceiling;`
-  - `int seen_flags[6];` // 各識別子の消費回数
-  - `size_t line_idx;`   // 現在位置
-- `seen_flags` は 0 初期化、処理ごとに `++`
-- `seen_flags[idx] > 1` で即 `DUPLICATE_IDENTIFIER`
-- ループ終了条件 `min(seen_flags[]) == 1`。0 が残ったまま NULL 行に到達したら `MISSING_IDENTIFIER`
+```c
+typedef struct s_validation_state {
+    int  seen_flags[6];    // 各識別子を見つけたか（0 or 1）
+    size_t line_idx;       // input_data 上の現在位置
+} t_validation_state;
+```
+
+**注意**: この構造体は関数内のローカル変数として使用し、
+テクスチャパスや RGB 値は保持しない。
 
 ## エラーハンドリング
 

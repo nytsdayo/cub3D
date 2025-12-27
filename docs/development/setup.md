@@ -2,17 +2,19 @@
 
 ## 必要要件
 
-<!-- 開発に必要な環境・ツールを記述してください -->
-
 ### OS
 
-- 
+- Linux (Ubuntu 20.04以降推奨)
+- macOS (MinilibX OpenGL版使用時)
 
 ### ツール
 
 | ツール名 | バージョン | 用途 |
 |----------|-----------|------|
-|          |           |      |
+| gcc/clang | 9.0+ | Cコンパイラ |
+| g++/clang++ | 9.0+ | C++コンパイラ（テスト用） |
+| make | 4.0+ | ビルドツール |
+| git | 2.0+ | バージョン管理 |
 
 ## インストール手順
 
@@ -45,9 +47,35 @@ make
 ./cub3D <map_file>
 ```
 
+## テストの実行
+
+### マップパーサーテスト
+
+```bash
+make test_parse_map
+```
+
+テストはC++で実装されています。詳細は[テストガイド](testing.md)を参照してください。
+
 ## トラブルシューティング
 
-<!-- よくある問題と解決方法を記述してください -->
+### MinilibXのコンパイルエラー
+
+**Linux**: X11開発ライブラリのインストールが必要
+```bash
+sudo apt-get install libx11-dev libxext-dev
+```
+
+### テストのコンパイルエラー
+
+C++コンパイラが必要です：
+```bash
+# Ubuntu/Debian
+sudo apt-get install g++
+
+# macOS (Xcode Command Line Tools)
+xcode-select --install
+```
 
 ### 問題1
 

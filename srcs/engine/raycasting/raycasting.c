@@ -12,6 +12,7 @@
 
 #include "cub3d.h"
 #include "raycasting.h"
+#include "texture.h"
 
 /*
 ** レイキャスティングメイン関数
@@ -29,6 +30,7 @@ void	cast_rays(t_game *game)
 		perform_dda(game, &ray);
 		calc_wall_distance(game, &ray);
 		calc_line_height(&ray);
+		calc_texture_coords(game, &ray);
 		draw_vertical_line(game, &ray, x);
 		x++;
 	}

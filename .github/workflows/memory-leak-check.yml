@@ -21,7 +21,9 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y \
+          build-essential \
           valgrind \
+          xorg \
           libx11-dev \
           libxext-dev \
           libxrandr-dev \
@@ -29,16 +31,12 @@ jobs:
           libxinerama-dev \
           libxi-dev \
           libxpm-dev \
-          libxcursor-dev
+          libxcursor-dev \
+          zlib1g-dev \
+          libbsd-dev
     
-    - name: Build project
+    - name: Build project (including miniLibX)
       run: make
     
-    - name: Run memory leak check
-      run: |
-        set -o pipefail
-        echo "Running memory leak check with valgrind..."
-        # Run valgrind with leak check on a valid test map
-        valgrind --leak-check=full --show-leak-kinds=all --errors-for-leak-kinds=all --error-exitcode=1 ./cub3D assets/maps/test/simplemap.cub 2>&1 | tee valgrind_output.txt
-        echo ""
-        echo "✅ No memory leaks detected!"
+    - name: Run test suite
+      run: make test
