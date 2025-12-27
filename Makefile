@@ -39,6 +39,7 @@ SRCS = $(SRC_DIR)/main.c \
 	   $(SRC_DIR)/utils/ft_strcmp.c \
 	   $(SRC_DIR)/utils/ft_strncmp.c \
 	   $(SRC_DIR)/utils/ft_strndup.c \
+	   $(SRC_DIR)/utils/ft_memcpy.c \
 	   $(SRC_DIR)/utils/ft_isspace.c \
 	   $(SRC_DIR)/utils/ft_isdigit.c \
 	   $(SRC_DIR)/utils/is_blank_line.c \
@@ -107,7 +108,7 @@ fclean: clean
 
 re: fclean all
 
-test: 
-	$(MAKE) -C tests
+test:
+	$(MAKE) -C tests test
 
 .PHONY: all clean fclean re test

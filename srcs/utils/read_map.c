@@ -20,11 +20,11 @@
 #define ERROR 1
 #define SUCCESS 0
 
-static int	process_buffer_lines(char ***map, char *buf);
-static void	*free_and_return_error(char **map);
-static void	*ft_realloc(void *ptr, size_t old_size, size_t new_size);
+static int		append_char(char **line, size_t *len, size_t *cap, char c);
+static int		append_line(char ***map, const char *line, size_t len);
+static void		*free_and_return_error(char **map, char *line_buf);
+static void		*ft_realloc(void *ptr, size_t old_size, size_t new_size);
 
-static int	g_bytes_read;
 static int	g_line_count = 0;
 
 const char	**read_map(const char *filename)
@@ -32,20 +32,47 @@ const char	**read_map(const char *filename)
 	const int	fd = open(filename, O_RDONLY);
 	char		**map;
 	char		buf[BUFFER_SIZE];
+	char		*line_buf;
+	size_t		line_len;
+	size_t		line_cap;
+	int			bytes_read;
+	int			i;
 
 	if (fd < 0)
 		return (NULL);
 	map = NULL;
-	g_bytes_read = read(fd, buf, READ_SIZE);
-	while (g_bytes_read > 0)
+	line_buf = NULL;
+	line_len = 0;
+	line_cap = 0;
+	bytes_read = read(fd, buf, READ_SIZE);
+	while (bytes_read > 0)
 	{
-		if (process_buffer_lines(&map, buf) == ERROR)
-			return ((const char **)free_and_return_error(map));
-		g_bytes_read = read(fd, buf, READ_SIZE);
+		i = 0;
+		while (i < bytes_read)
+		{
+			if (buf[i] == '\n')
+			{
+				if (line_len > 0 && line_buf[line_len - 1] == '\r')
+					line_len--;
+				if (append_line(&map, line_buf, line_len) == ERROR)
+					return ((const char **)free_and_return_error(map, line_buf));
+				line_len = 0;
+			}
+			else if (append_char(&line_buf, &line_len, &line_cap, buf[i]) == ERROR)
+				return ((const char **)free_and_return_error(map, line_buf));
+			i++;
+		}
+		bytes_read = read(fd, buf, READ_SIZE);
 	}
 	close(fd);
-	if (g_bytes_read < 0)
-		return ((const char **)free_and_return_error(map));
+	if (bytes_read < 0)
+		return ((const char **)free_and_return_error(map, line_buf));
+	if (line_len > 0)
+	{
+		if (append_line(&map, line_buf, line_len) == ERROR)
+			return ((const char **)free_and_return_error(map, line_buf));
+	}
+	free(line_buf);
 	map = (char **)ft_realloc(map, sizeof(char *) * g_line_count,
 			sizeof(char *) * (g_line_count + 1));
 	if (map == NULL)
@@ -55,41 +82,56 @@ const char	**read_map(const char *filename)
 	return ((const char **)map);
 }
 
-static int	process_buffer_lines(char ***map, char *buf)
+static int	append_char(char **line, size_t *len, size_t *cap, char c)
 {
-	int	i;
-	int	line_start;
+	char	*tmp;
 
-	buf[g_bytes_read] = '\0';
-	i = 0;
-	line_start = 0;
-	while (i < g_bytes_read)
+	if (*len + 1 >= *cap)
 	{
-		if (buf[i] == '\n')
-		{
-			*map = (char **)ft_realloc(*map, sizeof(char *) * g_line_count,
-					sizeof(char *) * (g_line_count + 1));
-			if (*map == NULL)
-				return (ERROR);
-			(*map)[g_line_count] = ft_strndup(&buf[line_start],
-					i - line_start);
-			if ((*map)[g_line_count] == NULL)
-				return (ERROR);
-			g_line_count++;
-			line_start = i + 1;
-		}
-		i++;
+		if (*cap == 0)
+			*cap = 64;
+		else
+			*cap *= 2;
+		tmp = malloc(*cap);
+		if (tmp == NULL)
+			return (ERROR);
+		if (*line)
+			ft_memcpy(tmp, *line, *len);
+		free(*line);
+		*line = tmp;
 	}
+	(*line)[*len] = c;
+	(*len)++;
 	return (SUCCESS);
 }
 
-static void	*free_and_return_error(char **map)
+static int	append_line(char ***map, const char *line, size_t len)
+{
+	char	*dup;
+
+	*map = (char **)ft_realloc(*map, sizeof(char *) * g_line_count,
+			sizeof(char *) * (g_line_count + 1));
+	if (*map == NULL)
+		return (ERROR);
+	dup = malloc(len + 1);
+	if (dup == NULL)
+		return (ERROR);
+	if (len > 0)
+		ft_memcpy(dup, line, len);
+	dup[len] = '\0';
+	(*map)[g_line_count] = dup;
+	g_line_count++;
+	return (SUCCESS);
+}
+
+static void	*free_and_return_error(char **map, char *line_buf)
 {
 	if (map != NULL)
 	{
 		map[g_line_count] = NULL;
 		free_map((void **)map);
 	}
+	free(line_buf);
 	g_line_count = 0;
 	return (NULL);
 }
@@ -98,7 +140,6 @@ static void	*ft_realloc(void *ptr, size_t old_size, size_t new_size)
 {
 	void	*new_ptr;
 	size_t	copy_size;
-	size_t	i;
 
 	if (new_size == 0)
 		return (free(ptr), NULL);
@@ -111,12 +152,7 @@ static void	*ft_realloc(void *ptr, size_t old_size, size_t new_size)
 			copy_size = old_size;
 		else
 			copy_size = new_size;
-		i = 0;
-		while (i < copy_size)
-		{
-			((char *)new_ptr)[i] = ((char *)ptr)[i];
-			i++;
-		}
+		ft_memcpy(new_ptr, ptr, copy_size);
 		free(ptr);
 	}
 	return (new_ptr);
