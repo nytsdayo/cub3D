@@ -14,6 +14,7 @@
 # define PARSE_H
 
 # include <stddef.h>
+# include <stdbool.h>
 # include "cub3d.h"
 
 # define RGB_MAX 255
@@ -65,5 +66,22 @@ int				load_data(const char **input_data, void *data);
 int				load_config(const char **input_data, t_config_data *config);
 int				load_map(char **input_data, size_t line_index,
 					t_map_data *map_data);
+
+bool			is_valid_char(char c);
+size_t			count_map_lines(char **input_data, size_t line_index);
+size_t			get_max_line_length(char **input_data, size_t line_index,
+					size_t map_lines);
+char			get_char_at(char **input_data, size_t line_index,
+					size_t row, size_t col);
+int				validate_map_size(char **input_data, size_t line_index,
+					size_t map_lines, size_t max_len);
+int				validate_player_start(char **input_data, size_t line_index,
+					size_t map_lines);
+int				validate_invalid_chars(char **input_data, size_t line_index,
+					size_t map_lines);
+int				validate_surrounded_by_walls(char **input_data,
+					size_t line_index, size_t map_lines, size_t max_len);
+int				validate_spaces(char **input_data, size_t line_index,
+					size_t map_lines, size_t max_len);
 
 #endif
