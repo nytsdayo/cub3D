@@ -67,6 +67,10 @@ int				load_config(const char **input_data, t_config_data *config);
 int				load_map(char **input_data, size_t line_index,
 					t_map_data *map_data);
 
+char			*extract_texture_path(const char *line, t_identifier id);
+int				parse_rgb_component(const char *str, int *idx);
+int				parse_rgb_color(const char *line, t_color *color);
+
 bool			is_valid_char(char c);
 size_t			count_map_lines(char **input_data, size_t line_index);
 size_t			get_max_line_length(char **input_data, size_t line_index,

@@ -31,6 +31,7 @@ SRCS = $(SRC_DIR)/main.c \
 	   $(SRC_DIR)/parse/load_data.c \
 	   $(SRC_DIR)/parse/config/parse_config.c \
 	   $(SRC_DIR)/parse/config/load_config.c \
+	   $(SRC_DIR)/parse/config/load_config_utils.c \
 	   $(SRC_DIR)/parse/config/detect_identifier.c \
 	   $(SRC_DIR)/parse/config/validate_format.c \
 	   $(SRC_DIR)/parse/map/parse_map.c \

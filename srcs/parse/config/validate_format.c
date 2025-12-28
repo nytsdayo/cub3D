@@ -41,27 +41,6 @@ int	validate_texture_format(const char *line, t_identifier id)
 }
 
 /**
- * @brief RGB成分をパースする
- */
-int	parse_rgb_component(const char *str, int *idx)
-{
-	int	value;
-	int	digits;
-
-	value = 0;
-	digits = 0;
-	while (ft_isdigit(str[*idx]) && digits < 3)
-	{
-		value = value * 10 + (str[*idx] - '0');
-		(*idx)++;
-		digits++;
-	}
-	if (digits == NON_NUM || value > RGB_MAX)
-		return (-1);
-	return (value);
-}
-
-/**
  * @brief RGB値のフォーマットを検証する（R,G,B形式、0-255範囲チェック）
  */
 int	validate_rgb_format(const char *line)
