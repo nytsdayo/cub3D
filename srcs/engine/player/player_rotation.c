@@ -26,8 +26,8 @@ void	rotate_left(t_game *game)
 	double	cos_rot;
 	double	sin_rot;
 
-	cos_rot = cos(ROT_SPEED);
-	sin_rot = sin(ROT_SPEED);
+	cos_rot = cos(ROT_PER_FRAME);
+	sin_rot = sin(ROT_PER_FRAME);
 	old_dir_x = game->player.dir_x;
 	game->player.dir_x = game->player.dir_x * cos_rot
 		- game->player.dir_y * sin_rot;
@@ -51,8 +51,8 @@ void	rotate_right(t_game *game)
 	double	cos_rot;
 	double	sin_rot;
 
-	cos_rot = cos(-ROT_SPEED);
-	sin_rot = sin(-ROT_SPEED);
+	cos_rot = cos(-ROT_PER_FRAME);
+	sin_rot = sin(-ROT_PER_FRAME);
 	old_dir_x = game->player.dir_x;
 	game->player.dir_x = game->player.dir_x * cos_rot
 		- game->player.dir_y * sin_rot;
