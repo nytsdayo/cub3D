@@ -12,7 +12,6 @@
 
 #include "cub3d.h"
 #include "player.h"
-#include <math.h>
 
 /*
 ** rotate_left

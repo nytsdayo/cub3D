@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rnakatan <rnakatan@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: mkawano <mkawano@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 10:00:00 by rnakatan          #+#    #+#             */
-/*   Updated: 2025/12/27 05:48:48 by rnakatan         ###   ########.fr       */
+/*   Updated: 2025/12/28 20:20:29 by mkawano          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,16 @@
 #include "engine.h"
 #include "parse.h"
 #include "utils.h"
-#include <stdlib.h>
-#include <string.h>
 
 static int	valid_args(int argc, char *argv[]);
+static void	init_structs(t_game *game, t_game_data *game_data);
 
 int	main(int argc, char *argv[])
 {
 	t_game		game;
 	t_game_data	game_data;
 
-	memset(&game, 0, sizeof(t_game));
-	memset(&game_data, 0, sizeof(t_game_data));
+	init_structs(&game, &game_data);
 	if (valid_args(argc, argv) != 0)
 		return (EXIT_FAILURE);
 	if (parse(argv[1], &game_data) != 0)
@@ -44,6 +42,18 @@ int	main(int argc, char *argv[])
 	run_game_loop(&game);
 	free_config_data(&game_data.config);
 	return (EXIT_SUCCESS);
+}
+
+static void	init_structs(t_game *game, t_game_data *game_data)
+{
+	int	i;
+
+	i = 0;
+	while (i < (int) sizeof(t_game))
+		((char *)game)[i++] = 0;
+	i = 0;
+	while (i < (int) sizeof(t_game_data))
+		((char *)game_data)[i++] = 0;
 }
 
 static int	valid_args(int argc, char *argv[])

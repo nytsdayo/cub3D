@@ -13,7 +13,6 @@
 #include "cub3d.h"
 #include "texture.h"
 #include "utils.h"
-#include <stdlib.h>
 
 static void	cleanup_mlx(void *mlx);
 

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
+#include "cub3d.h"
 
 void	get_map_dimensions(char **map, int *width, int *height)
 {

@@ -10,16 +10,17 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <unistd.h>
-#include "../../includes/utils/utils.h"
-#include <fcntl.h>
+#include "utils.h"
 
 #define BUFFER_SIZE 4096
 
+char		*duplicate_line(const char *start, const char *end);
+char		*resize_buffer(char *old, int old_size, int new_size);
+char		**resize_map(char **old, int old_size, int new_size);
+const char	*process_line(char ***map, int *lines,
+				const char *start, const char *end);
 static char	*read_entire_file(int fd);
 static char	**split_lines(const char *content, int *count);
-static char	*duplicate_line(const char *start, const char *end);
 
 const char	**read_map(const char *filename)
 {
@@ -54,7 +55,7 @@ static char	*read_entire_file(int fd)
 	while (bytes > 0)
 	{
 		buf[bytes] = '\0';
-		result = realloc(result, total + bytes + 1);
+		result = resize_buffer(result, total, total + bytes + 1);
 		if (!result)
 			return (NULL);
 		ft_memcpy(result + total, buf, bytes + 1);
@@ -74,40 +75,19 @@ static char	**split_lines(const char *content, int *count)
 	int			lines;
 
 	lines = 0;
+	map = NULL;
 	start = content;
 	while (*start)
 	{
 		end = start;
 		while (*end && *end != '\n')
 			end++;
-		map = realloc(map, sizeof(char *) * (lines + 2));
-		map[lines] = duplicate_line(start, end);
-		if (!map[lines++])
-			return (free_map((void **)map), NULL);
-		if (*end == '\n')
-			start = end + 1;
-		else
-			start = end;
+		start = process_line(&map, &lines, start, end);
+		if (!start)
+			return (NULL);
 	}
 	map[lines] = NULL;
 	if (count)
 		*count = lines;
 	return (map);
-}
-
-static char	*duplicate_line(const char *start, const char *end)
-{
-	size_t	len;
-	char	*dup;
-
-	len = end - start;
-	if (len > 0 && start[len - 1] == '\r')
-		len--;
-	dup = malloc(len + 1);
-	if (!dup)
-		return (NULL);
-	if (len > 0)
-		ft_memcpy(dup, start, len);
-	dup[len] = '\0';
-	return (dup);
 }
