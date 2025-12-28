@@ -30,8 +30,10 @@
 # define TITLE "cub3D"
 
 /* Raycasting Constants */
-/* Per-frame movement (in grid units) and rotation (in radians) */
-/* フレームあたりの移動量(グリッド単位)と回転量(ラジアン) */
+/* - FOV(Field of View) */
+/* - 視野角
+/* - Per-frame movement (in grid units) and rotation (in radians) */
+/* - フレームあたりの移動量(グリッド単位)と回転量(ラジアン) */
 # define FOV 60.0
 # define MOVE_PER_FRAME 0.1
 # define ROT_PER_FRAME 0.05
