@@ -47,14 +47,6 @@
 # define TEX_EAST_PATH "assets/textures/cub3_east_cookie.xpm"
 # define TEX_WEST_PATH "assets/textures/cub3_west_snowflake.xpm"
 
-/* Temporary RGB values (until parser is ready) */
-# define CEILING_R 10
-# define CEILING_G 15
-# define CEILING_B 35
-# define FLOOR_R 230
-# define FLOOR_G 240
-# define FLOOR_B 250
-
 /* Key State Array Size (large enough for X11 KeySym values) */
 # define KEY_STATE_SIZE 70000
 
