@@ -12,10 +12,56 @@
 
 #include "cub3d.h"
 #include "raycasting.h"
+#include <stdlib.h>
 
 static int	find_player_position(char **map, int *x, int *y, char *dir);
 static void	set_player_direction(t_player *player, char direction);
 static void	set_player_dir_ew(t_player *player, char direction);
+
+static void	get_map_dimensions(char **map, int *width, int *height)
+{
+	int	h;
+	int	w;
+	int	max_w;
+
+	h = 0;
+	max_w = 0;
+	while (map[h])
+	{
+		w = 0;
+		while (map[h][w])
+			w++;
+		if (w > max_w)
+			max_w = w;
+		h++;
+	}
+	*width = max_w;
+	*height = h;
+}
+
+static int	**allocate_world_map(int width, int height)
+{
+	int	**world_map;
+	int	i;
+
+	world_map = malloc(sizeof(int *) * height);
+	if (!world_map)
+		return (NULL);
+	i = 0;
+	while (i < height)
+	{
+		world_map[i] = malloc(sizeof(int) * width);
+		if (!world_map[i])
+		{
+			while (i > 0)
+				free(world_map[--i]);
+			free(world_map);
+			return (NULL);
+		}
+		i++;
+	}
+	return (world_map);
+}
 
 /*
 ** マップをint配列に変換
@@ -26,11 +72,15 @@ void	init_world_map(t_game *game)
 	int	i;
 	int	j;
 
+	get_map_dimensions(game->map, &game->map_width, &game->map_height);
+	game->world_map = allocate_world_map(game->map_width, game->map_height);
+	if (!game->world_map)
+		return ;
 	i = 0;
-	while (i < MAP_HEIGHT && game->map[i])
+	while (i < game->map_height)
 	{
 		j = 0;
-		while (j < MAP_WIDTH && game->map[i][j])
+		while (j < game->map_width && game->map[i] && game->map[i][j])
 		{
 			if (game->map[i][j] == '1')
 				game->world_map[i][j] = 1;
@@ -38,7 +88,7 @@ void	init_world_map(t_game *game)
 				game->world_map[i][j] = 0;
 			j++;
 		}
-		while (j < MAP_WIDTH)
+		while (j < game->map_width)
 			game->world_map[i][j++] = 0;
 		i++;
 	}

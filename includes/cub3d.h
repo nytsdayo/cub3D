@@ -125,7 +125,9 @@ typedef struct s_game
 	void		*mlx;
 	void		*win;
 	char		**map;
-	int			world_map[MAP_HEIGHT][MAP_WIDTH];
+	int			**world_map;
+	int			map_width;
+	int			map_height;
 	t_player	player;
 	t_img		img;
 	t_texture	textures;
