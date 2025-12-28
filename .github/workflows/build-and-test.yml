@@ -1,4 +1,4 @@
-name: Parser Test
+name: Build and Test
 
 on:
   workflow_dispatch:
