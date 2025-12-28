@@ -15,69 +15,63 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-static int	store_texture_path(t_identifier id, const char *line,
-				t_config_data *config)
-{
-	char	*path;
+static int store_texture_path(t_identifier id, const char *line,
+                              t_config_data *config) {
+  char *path;
 
-	path = extract_texture_path(line, id);
-	if (!path || access(path, R_OK) != 0)
-		return (free(path), -1);
-	if (id == ID_NO)
-		config->north_texture_path = path;
-	else if (id == ID_SO)
-		config->south_texture_path = path;
-	else if (id == ID_WE)
-		config->west_texture_path = path;
-	else if (id == ID_EA)
-		config->east_texture_path = path;
-	return (0);
+  path = extract_texture_path(line, id);
+  if (!path || access(path, R_OK) != 0)
+    return (free(path), -1);
+  if (id == ID_NO)
+    config->north_texture_path = path;
+  else if (id == ID_SO)
+    config->south_texture_path = path;
+  else if (id == ID_WE)
+    config->west_texture_path = path;
+  else if (id == ID_EA)
+    config->east_texture_path = path;
+  return (0);
 }
 
-static int	store_config_value(t_identifier id, const char *line,
-				t_config_data *config)
-{
-	if (id >= ID_NO && id <= ID_EA)
-		return (store_texture_path(id, line, config));
-	else if (id == ID_F)
-		return (parse_rgb_color(line + 1, &config->floor_color));
-	else if (id == ID_C)
-		return (parse_rgb_color(line + 1, &config->ceiling_color));
-	return (0);
+static int store_config_value(t_identifier id, const char *line,
+                              t_config_data *config) {
+  if (id >= ID_NO && id <= ID_EA)
+    return (store_texture_path(id, line, config));
+  else if (id == ID_F)
+    return (parse_rgb_color(line + 1, &config->floor_color));
+  else if (id == ID_C)
+    return (parse_rgb_color(line + 1, &config->ceiling_color));
+  return (0);
 }
 
-static int	process_config_line(const char *line, t_config_data *config)
-{
-	t_identifier	id;
+static int process_config_line(const char *line, t_config_data *config) {
+  t_identifier id;
 
-	id = detect_identifier(line);
-	if (id == ID_UNKNOWN)
-		return (-1);
-	if (store_config_value(id, line, config) != 0)
-		return (-1);
-	return (0);
+  id = detect_identifier(line);
+  if (id == ID_UNKNOWN)
+    return (-1);
+  if (store_config_value(id, line, config) != 0)
+    return (-1);
+  return (0);
 }
 
-int	load_config(const char **input_data, t_config_data *config)
-{
-	size_t	i;
-	int		loaded_count;
+int load_config(const char **input_data, t_config_data *config) {
+  size_t i;
+  int loaded_count;
 
-	i = 0;
-	loaded_count = 0;
-	while (input_data[i] && loaded_count < 6)
-	{
-		if (is_blank_line(input_data[i]))
-		{
-			i++;
-			continue ;
-		}
-		if (process_config_line(input_data[i], config) != 0)
-			return (-1);
-		loaded_count++;
-		i++;
-	}
-	if (loaded_count != 6)
-		return (-1);
-	return (0);
+  i = 0;
+  loaded_count = 0;
+  while (input_data[i] && loaded_count < 6) {
+    if (is_blank_line(input_data[i])) {
+      i++;
+      continue;
+    }
+    if (process_config_line(input_data[i], config) != 0)
+      return (-1);
+    loaded_count++;
+    i++;
+  }
+  if (loaded_count != 6)
+    return (-1);
+  return (0);
 }
