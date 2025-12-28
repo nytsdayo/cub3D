@@ -53,6 +53,7 @@
 # define KEY_STATE_SIZE 70000
 
 /* Key Codes (Cross-platform) */
+/* 本来XK_Escape等コード内で使えるが、クロスプラットフォーム対応で抽象化している */
 # ifdef __APPLE__
 #  define KEY_ESC 53
 #  define KEY_W 13
@@ -72,6 +73,8 @@
 # endif
 
 /* Events */
+/* X11/MLX standard event type values */
+/* X11/MLX標準のイベントタイプ値 */
 # define ON_KEYDOWN 2
 # define ON_KEYUP 3
 # define ON_DESTROY 17
