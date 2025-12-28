@@ -2,6 +2,14 @@
 
 # Parser Test Script for cub3D
 # This script tests the parser with various map files
+#
+# Directory structure:
+#   - assets/maps/good/    -> Valid maps (should pass)
+#   - assets/maps/success/ -> Valid maps (should pass)
+#   - assets/maps/bad/     -> Invalid maps (should fail)
+#   - assets/maps/failed/  -> Invalid maps (should fail)
+#   - assets/maps/test/    -> Incomplete test maps (not tested)
+#   - assets/maps/Failed/  -> Empty directory (not tested)
 
 # Colors for output
 GREEN='\033[0;32m'
@@ -24,8 +32,16 @@ if [ -n "$PARSER_BIN" ]; then
 else
     CUB3D_BIN="${PROJECT_ROOT}/cub3D"
 fi
-SUCCESS_MAPS_DIR="${PROJECT_ROOT}/assets/maps/success"
-FAILED_MAPS_DIR="${PROJECT_ROOT}/assets/maps/failed"
+# Success case directories (should pass)
+SUCCESS_DIRS=(
+    "${PROJECT_ROOT}/assets/maps/success"
+    "${PROJECT_ROOT}/assets/maps/good"
+)
+# Failure case directories (should fail)
+FAILED_DIRS=(
+    "${PROJECT_ROOT}/assets/maps/failed"
+    "${PROJECT_ROOT}/assets/maps/bad"
+)
 
 echo "=========================================="
 echo "cub3D Parser Test Suite"
@@ -44,28 +60,34 @@ fi
 echo "----------------------------------------"
 echo "Testing SUCCESS cases (should pass):"
 echo "----------------------------------------"
-if [ -d "$SUCCESS_MAPS_DIR" ]; then
-    while IFS= read -r -d '' map_file; do
-        TOTAL_TESTS=$((TOTAL_TESTS + 1))
-        map_name="${map_file#$SUCCESS_MAPS_DIR/}"
-        echo -n "Testing $map_name ... "
-        
-        if [ -x "$CUB3D_BIN" ]; then
-            # Run the parser only (skip rendering) with timeout, from project root
-            if timeout 10s sh -c "cd '$PROJECT_ROOT' && '$CUB3D_BIN' '$map_file'" &> /dev/null; then
-                echo -e "${GREEN}✓ PASSED${NC}"
-                PASSED_TESTS=$((PASSED_TESTS + 1))
+for SUCCESS_DIR in "${SUCCESS_DIRS[@]}"; do
+    if [ -d "$SUCCESS_DIR" ]; then
+        DIR_NAME=$(basename "$SUCCESS_DIR")
+        echo ""
+        echo "Testing directory: $DIR_NAME"
+        echo "---"
+        while IFS= read -r -d '' map_file; do
+            TOTAL_TESTS=$((TOTAL_TESTS + 1))
+            map_name="${map_file#$SUCCESS_DIR/}"
+            echo -n "  $map_name ... "
+
+            if [ -x "$CUB3D_BIN" ]; then
+                # Run the parser only (skip rendering) with timeout, from project root
+                if timeout 10s sh -c "cd '$PROJECT_ROOT' && '$CUB3D_BIN' '$map_file'" &> /dev/null; then
+                    echo -e "${GREEN}✓ PASSED${NC}"
+                    PASSED_TESTS=$((PASSED_TESTS + 1))
+                else
+                    echo -e "${RED}✗ FAILED (should have succeeded)${NC}"
+                    FAILED_TESTS=$((FAILED_TESTS + 1))
+                fi
             else
-                echo -e "${RED}✗ FAILED (should have succeeded)${NC}"
-                FAILED_TESTS=$((FAILED_TESTS + 1))
+                echo -e "${YELLOW}SKIPPED (binary not found)${NC}"
             fi
-        else
-            echo -e "${YELLOW}SKIPPED (binary not found)${NC}"
-        fi
-    done < <(find "$SUCCESS_MAPS_DIR" -name "*.cub" -type f -print0 | sort -z)
-else
-    echo "Success maps directory not found: $SUCCESS_MAPS_DIR"
-fi
+        done < <(find "$SUCCESS_DIR" -name "*.cub" -type f -print0 | sort -z)
+    else
+        echo "Success maps directory not found: $SUCCESS_DIR"
+    fi
+done
 
 echo ""
 
@@ -73,28 +95,34 @@ echo ""
 echo "----------------------------------------"
 echo "Testing FAILURE cases (should fail):"
 echo "----------------------------------------"
-if [ -d "$FAILED_MAPS_DIR" ]; then
-    while IFS= read -r -d '' map_file; do
-        TOTAL_TESTS=$((TOTAL_TESTS + 1))
-        map_name="${map_file#$FAILED_MAPS_DIR/}"
-        echo -n "Testing $map_name ... "
-        
-        if [ -x "$CUB3D_BIN" ]; then
-            # Run the parser only (skip rendering) - should fail (timeout also counts as failure)
-            if timeout 10s sh -c "cd '$PROJECT_ROOT' && '$CUB3D_BIN' '$map_file'" &> /dev/null; then
-                echo -e "${RED}✗ FAILED (should have failed)${NC}"
-                FAILED_TESTS=$((FAILED_TESTS + 1))
+for FAILED_DIR in "${FAILED_DIRS[@]}"; do
+    if [ -d "$FAILED_DIR" ]; then
+        DIR_NAME=$(basename "$FAILED_DIR")
+        echo ""
+        echo "Testing directory: $DIR_NAME"
+        echo "---"
+        while IFS= read -r -d '' map_file; do
+            TOTAL_TESTS=$((TOTAL_TESTS + 1))
+            map_name="${map_file#$FAILED_DIR/}"
+            echo -n "  $map_name ... "
+
+            if [ -x "$CUB3D_BIN" ]; then
+                # Run the parser only (skip rendering) - should fail (timeout also counts as failure)
+                if timeout 10s sh -c "cd '$PROJECT_ROOT' && '$CUB3D_BIN' '$map_file'" &> /dev/null; then
+                    echo -e "${RED}✗ FAILED (should have failed)${NC}"
+                    FAILED_TESTS=$((FAILED_TESTS + 1))
+                else
+                    echo -e "${GREEN}✓ PASSED${NC}"
+                    PASSED_TESTS=$((PASSED_TESTS + 1))
+                fi
             else
-                echo -e "${GREEN}✓ PASSED${NC}"
-                PASSED_TESTS=$((PASSED_TESTS + 1))
+                echo -e "${YELLOW}SKIPPED (binary not found)${NC}"
             fi
-        else
-            echo -e "${YELLOW}SKIPPED (binary not found)${NC}"
-        fi
-    done < <(find "$FAILED_MAPS_DIR" -name "*.cub" -type f -print0 | sort -z)
-else
-    echo "Failed maps directory not found: $FAILED_MAPS_DIR"
-fi
+        done < <(find "$FAILED_DIR" -name "*.cub" -type f -print0 | sort -z)
+    else
+        echo "Failed maps directory not found: $FAILED_DIR"
+    fi
+done
 
 echo ""
 echo "=========================================="
