@@ -38,10 +38,10 @@
 /* Texture Constants */
 # define TEX_WIDTH 2048
 # define TEX_HEIGHT 2048
-# define TEX_NORTH_PATH "assets/textures/cub3_North.xpm"
-# define TEX_SOUTH_PATH "assets/textures/cub3_South.xpm"
-# define TEX_EAST_PATH "assets/textures/cub3_East.xpm"
-# define TEX_WEST_PATH "assets/textures/cub3_West.xpm"
+# define TEX_NORTH_PATH "assets/textures/cub3_north_newyear.xpm"
+# define TEX_SOUTH_PATH "assets/textures/cub3_south_xmaswreath.xpm"
+# define TEX_EAST_PATH "assets/textures/cub3_east_cookie.xpm"
+# define TEX_WEST_PATH "assets/textures/cub3_west_snowflake.xpm"
 
 /* Temporary RGB values (until parser is ready) */
 # define CEILING_R 10
