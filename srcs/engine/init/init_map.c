@@ -6,7 +6,7 @@
 /*   By: mkawano <mkawano@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/27 00:00:00 by mkawano           #+#    #+#             */
-/*   Updated: 2025/12/27 00:00:00 by mkawano          ###   ########.fr       */
+/*   Updated: 2025/12/28 00:00:00 by mkawano          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,9 @@ static int	find_player_position(char **map, int *x, int *y, char *dir);
 static void	set_player_direction(t_player *player, char direction);
 static void	set_player_dir_ew(t_player *player, char direction);
 
+void		get_map_dimensions(char **map, int *width, int *height);
+int			**allocate_world_map(int width, int height);
+
 /*
 ** マップをint配列に変換
 ** '1' = 壁、'0' or N/S/E/W = 空間
@@ -26,11 +29,15 @@ void	init_world_map(t_game *game)
 	int	i;
 	int	j;
 
+	get_map_dimensions(game->map, &game->map_width, &game->map_height);
+	game->world_map = allocate_world_map(game->map_width, game->map_height);
+	if (!game->world_map)
+		return ;
 	i = 0;
-	while (i < MAP_HEIGHT && game->map[i])
+	while (i < game->map_height)
 	{
 		j = 0;
-		while (j < MAP_WIDTH && game->map[i][j])
+		while (j < game->map_width && game->map[i] && game->map[i][j])
 		{
 			if (game->map[i][j] == '1')
 				game->world_map[i][j] = 1;
@@ -38,7 +45,7 @@ void	init_world_map(t_game *game)
 				game->world_map[i][j] = 0;
 			j++;
 		}
-		while (j < MAP_WIDTH)
+		while (j < game->map_width)
 			game->world_map[i][j++] = 0;
 		i++;
 	}
