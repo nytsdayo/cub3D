@@ -15,58 +15,52 @@
 #include "raycasting.h"
 #include "texture.h"
 
-static int	init_mlx(t_game *game);
-static void	init_image(t_game *game);
+static int init_mlx(t_game *game);
+static void init_image(t_game *game);
 
 /*
 ** ゲームの初期化
 ** MLX、画像バッファ、マップ、プレイヤーを初期化する
 ** パーサーから受け取ったconfig dataを使用してテクスチャとRGB値を設定
 */
-int	init_game(t_game *game, t_config_data *config)
-{
-	int	i;
+int init_game(t_game *game, t_config_data *config) {
+  int i;
 
-	game->mlx = NULL;
-	game->win = NULL;
-	i = 0;
-	while (i < 256)
-		game->keys[i++] = 0;
-	if (init_mlx(game) != 0)
-		return (1);
-	init_image(game);
-	init_textures(game, config);
-	init_colors(game, config);
-	init_world_map(game);
-	init_player(game);
-	return (0);
+  game->mlx = NULL;
+  game->win = NULL;
+  i = 0;
+  while (i < 256)
+    game->keys[i++] = 0;
+  if (init_mlx(game) != 0)
+    return (1);
+  init_image(game);
+  init_textures(game, config);
+  init_colors(game, config);
+  init_world_map(game);
+  init_player(game);
+  return (0);
 }
 
-static int	init_mlx(t_game *game)
-{
-	game->mlx = mlx_init();
-	if (!game->mlx)
-	{
-		write(2, "Error\nMLX init failed\n", 22);
-		return (1);
-	}
-	game->win = mlx_new_window(game->mlx, WINDOW_WIDTH, WINDOW_HEIGHT, TITLE);
-	if (!game->win)
-	{
-		write(2, "Error\nWindow creation failed\n", 29);
-		return (1);
-	}
-	return (0);
+static int init_mlx(t_game *game) {
+  game->mlx = mlx_init();
+  if (!game->mlx) {
+    write(2, "Error\nMLX init failed\n", 22);
+    return (1);
+  }
+  game->win = mlx_new_window(game->mlx, WINDOW_WIDTH, WINDOW_HEIGHT, TITLE);
+  if (!game->win) {
+    write(2, "Error\nWindow creation failed\n", 29);
+    return (1);
+  }
+  return (0);
 }
 
-static void	init_image(t_game *game)
-{
-	game->img.img = mlx_new_image(game->mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
-	if (!game->img.img)
-	{
-		write(2, "Error\nImage creation failed\n", 28);
-		exit(EXIT_FAILURE);
-	}
-	game->img.addr = mlx_get_data_addr(game->img.img, &game->img.bits_per_pixel,
-			&game->img.line_length, &game->img.endian);
+static void init_image(t_game *game) {
+  game->img.img = mlx_new_image(game->mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
+  if (!game->img.img) {
+    write(2, "Error\nImage creation failed\n", 28);
+    exit(EXIT_FAILURE);
+  }
+  game->img.addr = mlx_get_data_addr(game->img.img, &game->img.bits_per_pixel,
+                                     &game->img.line_length, &game->img.endian);
 }
