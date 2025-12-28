@@ -14,7 +14,6 @@
 #include "key_handler.h"
 #include "player.h"
 #include "utils.h"
-#include <stdlib.h>
 
 #ifdef __linux__
 

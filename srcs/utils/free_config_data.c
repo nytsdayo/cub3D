@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "parse.h"
-#include <stdlib.h>
 
 void	free_config_data(t_config_data *config)
 {

@@ -14,8 +14,6 @@
 #include "engine.h"
 #include "parse.h"
 #include "utils.h"
-#include <stdlib.h>
-#include <string.h>
 
 static int	valid_args(int argc, char *argv[]);
 
@@ -23,9 +21,14 @@ int	main(int argc, char *argv[])
 {
 	t_game		game;
 	t_game_data	game_data;
+	int			i;
 
-	memset(&game, 0, sizeof(t_game));
-	memset(&game_data, 0, sizeof(t_game_data));
+	i = 0;
+	while (i < (int)sizeof(t_game))
+		((char *)&game)[i++] = 0;
+	i = 0;
+	while (i < (int)sizeof(t_game_data))
+		((char *)&game_data)[i++] = 0;
 	if (valid_args(argc, argv) != 0)
 		return (EXIT_FAILURE);
 	if (parse(argv[1], &game_data) != 0)

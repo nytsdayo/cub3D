@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
+#include "utils.h"
 
 char	*ft_strndup(const char *s, size_t len)
 {
