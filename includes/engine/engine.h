@@ -14,9 +14,12 @@
 # define ENGINE_H
 
 # include "cub3d.h"
+# include "parse/parse.h"
 
 /* Init */
-int		init_game(t_game *game);
+int		init_game(t_game *game, t_config_data *config);
+void	init_world_map(t_game *game);
+void	init_player(t_game *game);
 
 /* Game Loop */
 void	run_game_loop(t_game *game);

@@ -14,12 +14,13 @@
 # define TEXTURE_H
 
 # include "cub3d.h"
+# include "parse/parse.h"
 # include "raycasting.h"
 
 /* Texture Loading */
-void	init_textures(t_game *game);
+void	init_textures(t_game *game, t_config_data *config);
 void	load_texture(t_game *game, t_img *texture, char *path);
-void	init_colors(t_game *game);
+void	init_colors(t_game *game, t_config_data *config);
 
 /* Texture Sampling */
 int		get_texture_pixel(t_img *texture, int x, int y);

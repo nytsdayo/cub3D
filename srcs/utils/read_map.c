@@ -6,7 +6,7 @@
 /*   By: rnakatan <rnakatan@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 19:39:26 by rnakatan          #+#    #+#             */
-/*   Updated: 2025/11/24 11:04:24 by rnakatan         ###   ########.fr       */
+/*   Updated: 2025/12/28 00:00:00 by rnakatan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,145 +15,99 @@
 #include "../../includes/utils/utils.h"
 #include <fcntl.h>
 
-#define BUFFER_SIZE 1024
-#define READ_SIZE 1023
-#define ERROR 1
-#define SUCCESS 0
+#define BUFFER_SIZE 4096
 
-static int		append_char(char **line, size_t *len, size_t *cap, char c);
-static int		append_line(char ***map, const char *line, size_t len);
-static void		*free_and_return_error(char **map, char *line_buf);
-static void		*ft_realloc(void *ptr, size_t old_size, size_t new_size);
-
-static int	g_line_count = 0;
+static char	*read_entire_file(int fd);
+static char	**split_lines(const char *content, int *count);
+static char	*duplicate_line(const char *start, const char *end);
 
 const char	**read_map(const char *filename)
 {
 	const int	fd = open(filename, O_RDONLY);
+	char		*content;
 	char		**map;
-	char		buf[BUFFER_SIZE];
-	char		*line_buf;
-	size_t		line_len;
-	size_t		line_cap;
-	int			bytes_read;
-	int			i;
 
 	if (fd < 0)
 		return (NULL);
-	map = NULL;
-	line_buf = NULL;
-	line_len = 0;
-	line_cap = 0;
-	bytes_read = read(fd, buf, READ_SIZE);
-	while (bytes_read > 0)
-	{
-		i = 0;
-		while (i < bytes_read)
-		{
-			if (buf[i] == '\n')
-			{
-				if (line_len > 0 && line_buf[line_len - 1] == '\r')
-					line_len--;
-				if (append_line(&map, line_buf, line_len) == ERROR)
-					return ((const char **)free_and_return_error(map, line_buf));
-				line_len = 0;
-			}
-			else if (append_char(&line_buf, &line_len, &line_cap, buf[i]) == ERROR)
-				return ((const char **)free_and_return_error(map, line_buf));
-			i++;
-		}
-		bytes_read = read(fd, buf, READ_SIZE);
-	}
+	content = read_entire_file(fd);
 	close(fd);
-	if (bytes_read < 0)
-		return ((const char **)free_and_return_error(map, line_buf));
-	if (line_len > 0)
-	{
-		if (append_line(&map, line_buf, line_len) == ERROR)
-			return ((const char **)free_and_return_error(map, line_buf));
-	}
-	free(line_buf);
-	map = (char **)ft_realloc(map, sizeof(char *) * g_line_count,
-			sizeof(char *) * (g_line_count + 1));
-	if (map == NULL)
+	if (!content)
 		return (NULL);
-	map[g_line_count] = NULL;
-	g_line_count = 0;
+	map = split_lines(content, NULL);
+	free(content);
 	return ((const char **)map);
 }
 
-static int	append_char(char **line, size_t *len, size_t *cap, char c)
+static char	*read_entire_file(int fd)
 {
-	char	*tmp;
+	char	*result;
+	char	buf[BUFFER_SIZE + 1];
+	int		total;
+	int		bytes;
 
-	if (*len + 1 >= *cap)
+	result = malloc(1);
+	if (!result)
+		return (NULL);
+	result[0] = '\0';
+	total = 0;
+	bytes = read(fd, buf, BUFFER_SIZE);
+	while (bytes > 0)
 	{
-		if (*cap == 0)
-			*cap = 64;
-		else
-			*cap *= 2;
-		tmp = malloc(*cap);
-		if (tmp == NULL)
-			return (ERROR);
-		if (*line)
-			ft_memcpy(tmp, *line, *len);
-		free(*line);
-		*line = tmp;
+		buf[bytes] = '\0';
+		result = realloc(result, total + bytes + 1);
+		if (!result)
+			return (NULL);
+		ft_memcpy(result + total, buf, bytes + 1);
+		total += bytes;
+		bytes = read(fd, buf, BUFFER_SIZE);
 	}
-	(*line)[*len] = c;
-	(*len)++;
-	return (SUCCESS);
+	if (bytes < 0)
+		return (free(result), NULL);
+	return (result);
 }
 
-static int	append_line(char ***map, const char *line, size_t len)
+static char	**split_lines(const char *content, int *count)
 {
+	char		**map;
+	const char	*start;
+	const char	*end;
+	int			lines;
+
+	lines = 0;
+	start = content;
+	while (*start)
+	{
+		end = start;
+		while (*end && *end != '\n')
+			end++;
+		map = realloc(map, sizeof(char *) * (lines + 2));
+		map[lines] = duplicate_line(start, end);
+		if (!map[lines++])
+			return (free_map((void **)map), NULL);
+		if (*end == '\n')
+			start = end + 1;
+		else
+			start = end;
+	}
+	map[lines] = NULL;
+	if (count)
+		*count = lines;
+	return (map);
+}
+
+static char	*duplicate_line(const char *start, const char *end)
+{
+	size_t	len;
 	char	*dup;
 
-	*map = (char **)ft_realloc(*map, sizeof(char *) * g_line_count,
-			sizeof(char *) * (g_line_count + 1));
-	if (*map == NULL)
-		return (ERROR);
+	len = end - start;
+	if (len > 0 && start[len - 1] == '\r')
+		len--;
 	dup = malloc(len + 1);
-	if (dup == NULL)
-		return (ERROR);
-	if (len > 0)
-		ft_memcpy(dup, line, len);
-	dup[len] = '\0';
-	(*map)[g_line_count] = dup;
-	g_line_count++;
-	return (SUCCESS);
-}
-
-static void	*free_and_return_error(char **map, char *line_buf)
-{
-	if (map != NULL)
-	{
-		map[g_line_count] = NULL;
-		free_map((void **)map);
-	}
-	free(line_buf);
-	g_line_count = 0;
-	return (NULL);
-}
-
-static void	*ft_realloc(void *ptr, size_t old_size, size_t new_size)
-{
-	void	*new_ptr;
-	size_t	copy_size;
-
-	if (new_size == 0)
-		return (free(ptr), NULL);
-	new_ptr = malloc(new_size);
-	if (new_ptr == NULL)
+	if (!dup)
 		return (NULL);
-	if (ptr != NULL)
-	{
-		if (old_size < new_size)
-			copy_size = old_size;
-		else
-			copy_size = new_size;
-		ft_memcpy(new_ptr, ptr, copy_size);
-		free(ptr);
-	}
-	return (new_ptr);
+	if (len > 0)
+		ft_memcpy(dup, start, len);
+	dup[len] = '\0';
+	return (dup);
 }

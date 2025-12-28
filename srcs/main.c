@@ -35,7 +35,7 @@ int	main(int argc, char *argv[])
 		return (EXIT_FAILURE);
 	}
 	game.map = game_data.map.map;
-	if (init_game(&game) != 0)
+	if (init_game(&game, &game_data.config) != 0)
 	{
 		free_map((void **)game.map);
 		free_config_data(&game_data.config);

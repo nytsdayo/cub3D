@@ -41,8 +41,6 @@ typedef struct s_ray
 
 /* Raycasting Functions */
 void		cast_rays(t_game *game);
-void		init_hardcoded_map(t_game *game);
-void		init_player(t_game *game);
 
 /* Ray Initialization */
 void		init_ray(t_game *game, t_ray *ray, int x);

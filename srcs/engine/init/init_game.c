@@ -21,11 +21,9 @@ static void	init_image(t_game *game);
 /*
 ** ゲームの初期化
 ** MLX、画像バッファ、マップ、プレイヤーを初期化する
-**
-** TODO: init_hardcoded_map()とinit_player()はテスト用の仮実装。
-** 統合時にパーサーが設定したデータを使用するため、これらの呼び出しは削除する。
+** パーサーから受け取ったconfig dataを使用してテクスチャとRGB値を設定
 */
-int	init_game(t_game *game)
+int	init_game(t_game *game, t_config_data *config)
 {
 	int	i;
 
@@ -37,9 +35,9 @@ int	init_game(t_game *game)
 	if (init_mlx(game) != 0)
 		return (1);
 	init_image(game);
-	init_textures(game);
-	init_colors(game);
-	init_hardcoded_map(game);
+	init_textures(game, config);
+	init_colors(game, config);
+	init_world_map(game);
 	init_player(game);
 	return (0);
 }

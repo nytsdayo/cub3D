@@ -31,9 +31,14 @@ SRCS = $(SRC_DIR)/main.c \
 	   $(SRC_DIR)/parse/load_data.c \
 	   $(SRC_DIR)/parse/config/parse_config.c \
 	   $(SRC_DIR)/parse/config/load_config.c \
+	   $(SRC_DIR)/parse/config/load_config_utils.c \
 	   $(SRC_DIR)/parse/config/detect_identifier.c \
 	   $(SRC_DIR)/parse/config/validate_format.c \
 	   $(SRC_DIR)/parse/map/parse_map.c \
+	   $(SRC_DIR)/parse/map/parse_map_utils.c \
+	   $(SRC_DIR)/parse/map/parse_map_validate.c \
+	   $(SRC_DIR)/parse/map/parse_map_walls.c \
+	   $(SRC_DIR)/parse/map/parse_map_spaces.c \
 	   $(SRC_DIR)/parse/map/load_map.c \
 	   $(SRC_DIR)/utils/ft_strlen.c \
 	   $(SRC_DIR)/utils/ft_strcmp.c \
@@ -47,10 +52,10 @@ SRCS = $(SRC_DIR)/main.c \
 	   $(SRC_DIR)/utils/free_map.c \
 	   $(SRC_DIR)/utils/free_config_data.c \
 	   $(SRC_DIR)/engine/init/init_game.c \
+	   $(SRC_DIR)/engine/init/init_map.c \
 	   $(SRC_DIR)/engine/game_loop.c \
 	   $(SRC_DIR)/engine/key_handler/key_handler.c \
 	   $(SRC_DIR)/engine/renderer/render_frame.c \
-	   $(SRC_DIR)/engine/raycasting/mock_world.c \
 	   $(SRC_DIR)/engine/raycasting/raycasting.c \
 	   $(SRC_DIR)/engine/raycasting/ray_init.c \
 	   $(SRC_DIR)/engine/raycasting/ray_dda.c \

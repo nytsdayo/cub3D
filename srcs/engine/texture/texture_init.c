@@ -30,22 +30,22 @@ void	load_texture(t_game *game, t_img *texture, char *path)
 			&texture->endian);
 }
 
-void	init_textures(t_game *game)
+void	init_textures(t_game *game, t_config_data *config)
 {
 	game->textures.width = TEX_WIDTH;
 	game->textures.height = TEX_HEIGHT;
-	load_texture(game, &game->textures.north, TEX_NORTH_PATH);
-	load_texture(game, &game->textures.south, TEX_SOUTH_PATH);
-	load_texture(game, &game->textures.east, TEX_EAST_PATH);
-	load_texture(game, &game->textures.west, TEX_WEST_PATH);
+	load_texture(game, &game->textures.north, config->north_texture_path);
+	load_texture(game, &game->textures.south, config->south_texture_path);
+	load_texture(game, &game->textures.east, config->east_texture_path);
+	load_texture(game, &game->textures.west, config->west_texture_path);
 }
 
-void	init_colors(t_game *game)
+void	init_colors(t_game *game, t_config_data *config)
 {
-	game->ceiling_color.r = CEILING_R;
-	game->ceiling_color.g = CEILING_G;
-	game->ceiling_color.b = CEILING_B;
-	game->floor_color.r = FLOOR_R;
-	game->floor_color.g = FLOOR_G;
-	game->floor_color.b = FLOOR_B;
+	game->ceiling_color.r = config->ceiling_color.r;
+	game->ceiling_color.g = config->ceiling_color.g;
+	game->ceiling_color.b = config->ceiling_color.b;
+	game->floor_color.r = config->floor_color.r;
+	game->floor_color.g = config->floor_color.g;
+	game->floor_color.b = config->floor_color.b;
 }

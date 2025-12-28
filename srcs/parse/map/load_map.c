@@ -14,35 +14,6 @@
 #include "utils.h"
 #include <stdlib.h>
 
-static size_t	count_map_lines(char **input_data, size_t line_index)
-{
-	size_t	count;
-
-	count = 0;
-	while (input_data[line_index + count])
-		count++;
-	return (count);
-}
-
-static size_t	get_max_line_length(char **input_data,
-				size_t line_index, size_t map_lines)
-{
-	size_t	i;
-	size_t	max_len;
-	size_t	current_len;
-
-	max_len = 0;
-	i = 0;
-	while (i < map_lines)
-	{
-		current_len = ft_strlen(input_data[line_index + i]);
-		if (current_len > max_len)
-			max_len = current_len;
-		i++;
-	}
-	return (max_len);
-}
-
 static void	free_partial_map(char **map, size_t count)
 {
 	size_t	i;
