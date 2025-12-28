@@ -68,7 +68,12 @@ PARSER_SRCS = $(SRC_DIR)/parse/parse.c \
 			  $(SRC_DIR)/parse/config/detect_identifier.c \
 			  $(SRC_DIR)/parse/config/validate_format.c \
 			  $(SRC_DIR)/parse/config/load_config.c \
+			  $(SRC_DIR)/parse/config/load_config_utils.c \
 			  $(SRC_DIR)/parse/map/parse_map.c \
+			  $(SRC_DIR)/parse/map/parse_map_utils.c \
+			  $(SRC_DIR)/parse/map/parse_map_validate.c \
+			  $(SRC_DIR)/parse/map/parse_map_walls.c \
+			  $(SRC_DIR)/parse/map/parse_map_spaces.c \
 			  $(SRC_DIR)/parse/map/load_map.c \
 			  $(SRC_DIR)/utils/ft_strlen.c \
 			  $(SRC_DIR)/utils/ft_strcmp.c \
