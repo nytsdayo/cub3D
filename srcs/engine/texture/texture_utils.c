@@ -13,31 +13,26 @@
 #include "cub3d.h"
 #include "texture.h"
 
-int	get_texture_pixel(t_img *texture, int x, int y)
-{
-	char	*pixel;
+int get_texture_pixel(t_img *texture, int x, int y) {
+  char *pixel;
 
-	if (x < 0 || x >= TEX_WIDTH || y < 0 || y >= TEX_HEIGHT)
-		return (0);
-	pixel = texture->addr + (y * texture->line_length
-			+ x * (texture->bits_per_pixel / 8));
-	return (*(unsigned int *)pixel);
+  if (x < 0 || x >= TEX_WIDTH || y < 0 || y >= TEX_HEIGHT)
+    return (0);
+  pixel = texture->addr +
+          (y * texture->line_length + x * (texture->bits_per_pixel / 8));
+  return (*(unsigned int *)pixel);
 }
 
-t_img	*select_wall_texture(t_game *game, t_ray *ray)
-{
-	if (ray->side == 0)
-	{
-		if (ray->step_x > 0)
-			return (&game->textures.east);
-		else
-			return (&game->textures.west);
-	}
-	else
-	{
-		if (ray->step_y > 0)
-			return (&game->textures.south);
-		else
-			return (&game->textures.north);
-	}
+t_img *select_wall_texture(t_game *game, t_ray *ray) {
+  if (ray->side == 0) {
+    if (ray->step_x > 0)
+      return (&game->textures.east);
+    else
+      return (&game->textures.west);
+  } else {
+    if (ray->step_y > 0)
+      return (&game->textures.south);
+    else
+      return (&game->textures.north);
+  }
 }
