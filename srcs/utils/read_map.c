@@ -15,6 +15,10 @@
 #define BUFFER_SIZE 4096
 
 char		*duplicate_line(const char *start, const char *end);
+char		*resize_buffer(char *old, int old_size, int new_size);
+char		**resize_map(char **old, int old_size, int new_size);
+const char	*process_line(char ***map, int *lines,
+				const char *start, const char *end);
 static char	*read_entire_file(int fd);
 static char	**split_lines(const char *content, int *count);
 
@@ -33,24 +37,6 @@ const char	**read_map(const char *filename)
 	map = split_lines(content, NULL);
 	free(content);
 	return ((const char **)map);
-}
-
-static char	*resize_buffer(char *old, int old_size, int new_size)
-{
-	char	*new;
-	int		i;
-
-	new = malloc(new_size);
-	if (!new)
-		return (free(old), NULL);
-	i = 0;
-	while (i < old_size)
-	{
-		new[i] = old[i];
-		i++;
-	}
-	free(old);
-	return (new);
 }
 
 static char	*read_entire_file(int fd)
@@ -81,24 +67,6 @@ static char	*read_entire_file(int fd)
 	return (result);
 }
 
-static char	**resize_map(char **old, int old_size, int new_size)
-{
-	char	**new;
-	int		i;
-
-	new = malloc(sizeof(char *) * new_size);
-	if (!new)
-		return (free_map((void **)old), NULL);
-	i = 0;
-	while (i < old_size)
-	{
-		new[i] = old[i];
-		i++;
-	}
-	free(old);
-	return (new);
-}
-
 static char	**split_lines(const char *content, int *count)
 {
 	char		**map;
@@ -114,16 +82,9 @@ static char	**split_lines(const char *content, int *count)
 		end = start;
 		while (*end && *end != '\n')
 			end++;
-		map = resize_map(map, lines, lines + 2);
-		if (!map)
+		start = process_line(&map, &lines, start, end);
+		if (!start)
 			return (NULL);
-		map[lines] = duplicate_line(start, end);
-		if (!map[lines++])
-			return (free_map((void **)map), NULL);
-		if (*end == '\n')
-			start = end + 1;
-		else
-			start = end;
 	}
 	map[lines] = NULL;
 	if (count)

@@ -28,3 +28,53 @@ char	*duplicate_line(const char *start, const char *end)
 	dup[len] = '\0';
 	return (dup);
 }
+
+char	*resize_buffer(char *old, int old_size, int new_size)
+{
+	char	*new;
+	int		i;
+
+	new = malloc(new_size);
+	if (!new)
+		return (free(old), NULL);
+	i = 0;
+	while (i < old_size)
+	{
+		new[i] = old[i];
+		i++;
+	}
+	free(old);
+	return (new);
+}
+
+char	**resize_map(char **old, int old_size, int new_size)
+{
+	char	**new;
+	int		i;
+
+	new = malloc(sizeof(char *) * new_size);
+	if (!new)
+		return (free_map((void **)old), NULL);
+	i = 0;
+	while (i < old_size)
+	{
+		new[i] = old[i];
+		i++;
+	}
+	free(old);
+	return (new);
+}
+
+const char	*process_line(char ***map, int *lines,
+				const char *start, const char *end)
+{
+	*map = resize_map(*map, *lines, *lines + 2);
+	if (!*map)
+		return (NULL);
+	(*map)[*lines] = duplicate_line(start, end);
+	if (!(*map)[(*lines)++])
+		return (free_map((void **)*map), *map = NULL, NULL);
+	if (*end == '\n')
+		return (end + 1);
+	return (end);
+}
