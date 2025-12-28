@@ -14,9 +14,9 @@
 
 #define BUFFER_SIZE 4096
 
+char		*duplicate_line(const char *start, const char *end);
 static char	*read_entire_file(int fd);
 static char	**split_lines(const char *content, int *count);
-static char	*duplicate_line(const char *start, const char *end);
 
 const char	**read_map(const char *filename)
 {
@@ -129,21 +129,4 @@ static char	**split_lines(const char *content, int *count)
 	if (count)
 		*count = lines;
 	return (map);
-}
-
-static char	*duplicate_line(const char *start, const char *end)
-{
-	size_t	len;
-	char	*dup;
-
-	len = end - start;
-	if (len > 0 && start[len - 1] == '\r')
-		len--;
-	dup = malloc(len + 1);
-	if (!dup)
-		return (NULL);
-	if (len > 0)
-		ft_memcpy(dup, start, len);
-	dup[len] = '\0';
-	return (dup);
 }

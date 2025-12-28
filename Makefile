@@ -5,8 +5,8 @@
 #                                                     +:+ +:+         +:+      #
 #    By: rnakatan <rnakatan@student.42tokyo.jp>     +#+  +:+       +#+        #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/11/18 00:00:00 by rnakatan          #+#    #+#              #
-#    Updated: 2025/11/24 11:11:27 by rnakatan         ###   ########.fr        #
+#    Created: 2025/11/18 11:11:27 by rnakatan          #+#    #+#              #
+#    Updated: 2025/12/28 20:18:26 by rnakatan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,6 +49,7 @@ SRCS = $(SRC_DIR)/main.c \
 	   $(SRC_DIR)/utils/ft_isdigit.c \
 	   $(SRC_DIR)/utils/is_blank_line.c \
 	   $(SRC_DIR)/utils/read_map.c \
+	   $(SRC_DIR)/utils/read_map_utils.c \
 	   $(SRC_DIR)/utils/free_map.c \
 	   $(SRC_DIR)/utils/free_config_data.c \
 	   $(SRC_DIR)/engine/init/init_game.c \
