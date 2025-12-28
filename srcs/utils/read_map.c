@@ -73,6 +73,7 @@ static char	**split_lines(const char *content, int *count)
 	const char	*end;
 	int			lines;
 
+	map = NULL;
 	lines = 0;
 	start = content;
 	while (*start)
