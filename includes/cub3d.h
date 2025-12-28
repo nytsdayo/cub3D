@@ -24,13 +24,12 @@
 #  include <X11/keysym.h>
 # endif
 
+/* Window Configuration */
 # define WINDOW_WIDTH 800
 # define WINDOW_HEIGHT 600
 # define TITLE "cub3D"
 
 /* Raycasting Constants */
-# define MAP_WIDTH 8
-# define MAP_HEIGHT 8
 # define FOV 60.0
 # define MOVE_SPEED 0.1
 # define ROT_SPEED 0.05
