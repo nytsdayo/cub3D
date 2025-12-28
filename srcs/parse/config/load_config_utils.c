@@ -63,11 +63,19 @@ int	parse_rgb_color(const char *line, t_color *color)
 	while (ft_isspace(line[i]))
 		i++;
 	r = parse_rgb_component(line, &i);
+	while (ft_isspace(line[i]))
+		i++;
 	if (r == -1 || line[i++] != ',')
 		return (-1);
+	while (ft_isspace(line[i]))
+		i++;
 	g = parse_rgb_component(line, &i);
+	while (ft_isspace(line[i]))
+		i++;
 	if (g == -1 || line[i++] != ',')
 		return (-1);
+	while (ft_isspace(line[i]))
+		i++;
 	b = parse_rgb_component(line, &i);
 	if (b == -1)
 		return (-1);

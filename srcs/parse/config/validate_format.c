@@ -50,9 +50,23 @@ int	validate_rgb_format(const char *line)
 	i = 0;
 	while (ft_isspace(line[i]))
 		i++;
-	if (parse_rgb_component(line, &i) == -1 || line[i++] != ','
-		|| parse_rgb_component(line, &i) == -1 || line[i++] != ','
-		|| parse_rgb_component(line, &i) == -1)
+	if (parse_rgb_component(line, &i) == -1)
+		return (-1);
+	while (ft_isspace(line[i]))
+		i++;
+	if (line[i++] != ',')
+		return (-1);
+	while (ft_isspace(line[i]))
+		i++;
+	if (parse_rgb_component(line, &i) == -1)
+		return (-1);
+	while (ft_isspace(line[i]))
+		i++;
+	if (line[i++] != ',')
+		return (-1);
+	while (ft_isspace(line[i]))
+		i++;
+	if (parse_rgb_component(line, &i) == -1)
 		return (-1);
 	return (0);
 }
