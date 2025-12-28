@@ -60,6 +60,7 @@ obj/
 test
 test_parse_config
 test_parse_map
+parser_cli
 
 # Test artifacts
 tests/*.o
