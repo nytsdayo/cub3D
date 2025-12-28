@@ -48,6 +48,8 @@
 # define TEX_WEST_PATH "assets/textures/cub3_west_snowflake.xpm"
 
 /* Key State Array Size (large enough for X11 KeySym values) */
+/* キー状態配列のサイズ(Linux X11 KeySym値の最大値約65000より大きく設定) */
+/* メリット: シンプルで高速, デメリット: メモリ無駄遣い, 余力あれば: ハッシュマップを使う */
 # define KEY_STATE_SIZE 70000
 
 /* Key Codes (Cross-platform) */
