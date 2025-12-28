@@ -49,11 +49,11 @@ static void	init_structs(t_game *game, t_game_data *game_data)
 	int	i;
 
 	i = 0;
-	while (i < (int)sizeof(t_game))
-		((char *)game) [i++] = 0;
+	while (i < (int) sizeof(t_game))
+		((char *)game)[i++] = 0;
 	i = 0;
-	while (i < (int)sizeof(t_game_data))
-		((char *)game_data) [i++] = 0;
+	while (i < (int) sizeof(t_game_data))
+		((char *)game_data)[i++] = 0;
 }
 
 static int	valid_args(int argc, char *argv[])
