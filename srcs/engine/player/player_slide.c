@@ -74,7 +74,7 @@ static int	is_wall(t_game *game, double x, double y)
 	x2 = (int)(x + COLLISION_MARGIN);
 	y1 = (int)(y - COLLISION_MARGIN);
 	y2 = (int)(y + COLLISION_MARGIN);
-	if (x1 < 0 || x2 >= MAP_WIDTH || y1 < 0 || y2 >= MAP_HEIGHT)
+	if (x1 < 0 || x2 >= game->map_width || y1 < 0 || y2 >= game->map_height)
 		return (1);
 	if (game->world_map[y1][x1] != 0)
 		return (1);
