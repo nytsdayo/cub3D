@@ -32,4 +32,8 @@ void		free_map(void **map);
 void		cleanup_game(t_game *game);
 void		free_config_data(t_config_data *config);
 
+/* Error handling */
+int			error_msg(const char *msg);
+int			error_msg_format(const char *format, ...);
+
 #endif

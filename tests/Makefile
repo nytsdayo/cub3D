@@ -39,6 +39,7 @@ PARSE_CONFIG_CPP = $(TEST_DIR)/parse/config/test_parse_config.cpp \
 PARSE_CONFIG_C_SRCS = $(SRC_DIR)/parse/config/parse_config.c \
 					  $(SRC_DIR)/parse/config/detect_identifier.c \
 					  $(SRC_DIR)/parse/config/validate_format.c \
+					  $(SRC_DIR)/parse/config/load_config_utils.c \
 					  $(SRC_DIR)/utils/ft_strlen.c \
 					  $(SRC_DIR)/utils/ft_strcmp.c \
 					  $(SRC_DIR)/utils/ft_strncmp.c \
@@ -48,19 +49,25 @@ PARSE_CONFIG_C_SRCS = $(SRC_DIR)/parse/config/parse_config.c \
 					  $(SRC_DIR)/utils/ft_isdigit.c \
 					  $(SRC_DIR)/utils/is_blank_line.c \
 					  $(SRC_DIR)/utils/read_map.c \
-					  $(SRC_DIR)/utils/free_map.c
+					  $(SRC_DIR)/utils/free_map.c \
+					  $(SRC_DIR)/utils/error_msg.c
 
 TEST_MAP_CXX_SRCS = $(TEST_DIR)/parse/map/test_parse_map.cpp \
 					$(TEST_DIR)/parse/map/test_map_file.cpp
 TEST_MAP_C_SRCS = $(SRC_DIR)/parse/map/parse_map.c \
 				  $(SRC_DIR)/parse/map/load_map.c \
+				  $(SRC_DIR)/parse/map/parse_map_utils.c \
+				  $(SRC_DIR)/parse/map/parse_map_validate.c \
+				  $(SRC_DIR)/parse/map/parse_map_walls.c \
+				  $(SRC_DIR)/parse/map/parse_map_spaces.c \
 				  $(SRC_DIR)/utils/ft_strlen.c \
 				  $(SRC_DIR)/utils/ft_strndup.c \
 				  $(SRC_DIR)/utils/ft_memcpy.c \
 				  $(SRC_DIR)/utils/is_blank_line.c \
 				  $(SRC_DIR)/utils/ft_isspace.c \
 				  $(SRC_DIR)/utils/read_map.c \
-				  $(SRC_DIR)/utils/free_map.c
+				  $(SRC_DIR)/utils/free_map.c \
+				  $(SRC_DIR)/utils/error_msg.c
 
 PARSER_SRCS = $(SRC_DIR)/parse/parse.c \
 			  $(SRC_DIR)/parse/load_data.c \
@@ -86,6 +93,7 @@ PARSER_SRCS = $(SRC_DIR)/parse/parse.c \
 			  $(SRC_DIR)/utils/read_map.c \
 			  $(SRC_DIR)/utils/free_map.c \
 			  $(SRC_DIR)/utils/free_config_data.c \
+			  $(SRC_DIR)/utils/error_msg.c \
 			  $(TEST_DIR)/parser_cli.c
 
 # Object files

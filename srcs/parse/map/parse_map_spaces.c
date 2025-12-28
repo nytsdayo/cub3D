@@ -61,9 +61,9 @@ static int	check_dir(char **input_data, size_t line_index,
 
 	adj = get_char_at(input_data, line_index, i, j);
 	if (adj == ' ')
-		return (fprintf(stderr,
+		return (error_msg_format(
 				"Error: Open space adjacent to void at (%zu, %zu)\n",
-				i - 1, j - 1), -1);
+				i - 1, j - 1));
 	return (0);
 }
 
