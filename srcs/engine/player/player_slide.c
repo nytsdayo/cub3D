@@ -26,8 +26,8 @@ void	try_wall_slide(t_game *game, double new_x, double new_y, t_vec move)
 
 	s.new_x = new_x;
 	s.new_y = new_y;
-	s.dx = move.x * MOVE_SPEED;
-	s.dy = move.y * MOVE_SPEED;
+	s.dx = move.x * MOVE_PER_FRAME;
+	s.dy = move.y * MOVE_PER_FRAME;
 	if (s.dx < 0)
 		s.dx = -s.dx;
 	if (s.dy < 0)

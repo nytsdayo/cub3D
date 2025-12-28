@@ -26,8 +26,8 @@ void	move_forward(t_game *game)
 	double	new_y;
 	t_vec	move;
 
-	new_x = game->player.pos_x + game->player.dir_x * MOVE_SPEED;
-	new_y = game->player.pos_y + game->player.dir_y * MOVE_SPEED;
+	new_x = game->player.pos_x + game->player.dir_x * MOVE_PER_FRAME;
+	new_y = game->player.pos_y + game->player.dir_y * MOVE_PER_FRAME;
 	if (!is_wall(game, new_x, new_y))
 	{
 		game->player.pos_x = new_x;
@@ -49,8 +49,8 @@ void	move_backward(t_game *game)
 	double	new_y;
 	t_vec	move;
 
-	new_x = game->player.pos_x - game->player.dir_x * MOVE_SPEED;
-	new_y = game->player.pos_y - game->player.dir_y * MOVE_SPEED;
+	new_x = game->player.pos_x - game->player.dir_x * MOVE_PER_FRAME;
+	new_y = game->player.pos_y - game->player.dir_y * MOVE_PER_FRAME;
 	if (!is_wall(game, new_x, new_y))
 	{
 		game->player.pos_x = new_x;
@@ -74,8 +74,8 @@ void	move_left(t_game *game)
 	double	new_y;
 	t_vec	move;
 
-	new_x = game->player.pos_x - game->player.plane_x * MOVE_SPEED;
-	new_y = game->player.pos_y - game->player.plane_y * MOVE_SPEED;
+	new_x = game->player.pos_x - game->player.plane_x * MOVE_PER_FRAME;
+	new_y = game->player.pos_y - game->player.plane_y * MOVE_PER_FRAME;
 	if (!is_wall(game, new_x, new_y))
 	{
 		game->player.pos_x = new_x;
@@ -99,8 +99,8 @@ void	move_right(t_game *game)
 	double	new_y;
 	t_vec	move;
 
-	new_x = game->player.pos_x + game->player.plane_x * MOVE_SPEED;
-	new_y = game->player.pos_y + game->player.plane_y * MOVE_SPEED;
+	new_x = game->player.pos_x + game->player.plane_x * MOVE_PER_FRAME;
+	new_y = game->player.pos_y + game->player.plane_y * MOVE_PER_FRAME;
 	if (!is_wall(game, new_x, new_y))
 	{
 		game->player.pos_x = new_x;

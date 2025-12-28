@@ -30,31 +30,30 @@
 # define TITLE "cub3D"
 
 /* Raycasting Constants */
+/* - FOV(Field of View) */
+/* - 視野角
+/* - Per-frame movement (in grid units) and rotation (in radians) */
+/* - フレームあたりの移動量(グリッド単位)と回転量(ラジアン) */
 # define FOV 60.0
-# define MOVE_SPEED 0.1
-# define ROT_SPEED 0.05
+# define MOVE_PER_FRAME 0.1
+# define ROT_PER_FRAME 0.05
 # define COLLISION_MARGIN 0.2
 
 /* Texture Constants */
 # define TEX_WIDTH 2048
 # define TEX_HEIGHT 2048
-# define TEX_NORTH_PATH "assets/textures/cub3_North.xpm"
-# define TEX_SOUTH_PATH "assets/textures/cub3_South.xpm"
-# define TEX_EAST_PATH "assets/textures/cub3_East.xpm"
-# define TEX_WEST_PATH "assets/textures/cub3_West.xpm"
-
-/* Temporary RGB values (until parser is ready) */
-# define CEILING_R 10
-# define CEILING_G 15
-# define CEILING_B 35
-# define FLOOR_R 230
-# define FLOOR_G 240
-# define FLOOR_B 250
+# define TEX_NORTH_PATH "assets/textures/cub3_north_newyear.xpm"
+# define TEX_SOUTH_PATH "assets/textures/cub3_south_xmaswreath.xpm"
+# define TEX_EAST_PATH "assets/textures/cub3_east_cookie.xpm"
+# define TEX_WEST_PATH "assets/textures/cub3_west_snowflake.xpm"
 
 /* Key State Array Size (large enough for X11 KeySym values) */
+/* キー状態配列のサイズ(Linux X11 KeySym値の最大値約65000より大きく設定) */
+/* メリット: シンプルで高速, デメリット: メモリ無駄遣い, 余力あれば: ハッシュマップを使う */
 # define KEY_STATE_SIZE 70000
 
 /* Key Codes (Cross-platform) */
+/* 本来XK_Escape等コード内で使えるが、クロスプラットフォーム対応で抽象化している */
 # ifdef __APPLE__
 #  define KEY_ESC 53
 #  define KEY_W 13
@@ -74,6 +73,8 @@
 # endif
 
 /* Events */
+/* X11/MLX standard event type values */
+/* X11/MLX標準のイベントタイプ値 */
 # define ON_KEYDOWN 2
 # define ON_KEYUP 3
 # define ON_DESTROY 17
