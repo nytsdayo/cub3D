@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   error_msg.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: copilot <copilot@github.com>                +#+  +:+       +#+        */
+/*   By: rnakatan <rnakatan@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/28 00:00:00 by copilot           #+#    #+#             */
-/*   Updated: 2025/12/28 00:00:00 by copilot          ###   ########.fr       */
+/*   Created: 2025/12/29 00:00:00 by rnakatan          #+#    #+#             */
+/*   Updated: 2025/12/29 00:00:00 by rnakatan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "error.h"
 #include "utils.h"
 #include <unistd.h>
 #include <stdarg.h>

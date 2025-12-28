@@ -15,6 +15,7 @@
 
 # include "cub3d.h"
 # include "parse.h"
+# include "error.h"
 # include <stddef.h>
 
 size_t		ft_strlen(const char *s);
@@ -31,9 +32,5 @@ void		free_map(void **map);
 /* Cleanup */
 void		cleanup_game(t_game *game);
 void		free_config_data(t_config_data *config);
-
-/* Error handling */
-int			error_msg(const char *msg);
-int			error_msg_format(const char *format, ...);
 
 #endif

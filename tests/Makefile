@@ -20,7 +20,7 @@ CXX = c++
 CXXFLAGS = -Wall -Wextra -Werror -g -std=c++11
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g
-INCLUDES = -I$(ROOT_DIR)/includes -I$(ROOT_DIR)/includes/parse -I$(ROOT_DIR)/includes/utils -I$(ROOT_DIR)/libraries/minilibx-linux -I./
+INCLUDES = -I$(ROOT_DIR)/includes -I$(ROOT_DIR)/includes/parse -I$(ROOT_DIR)/includes/utils -I$(ROOT_DIR)/includes/error -I$(ROOT_DIR)/libraries/minilibx-linux -I./
 
 # Test executables
 TEST_PARSE_CONFIG = test_parse_config
@@ -50,7 +50,7 @@ PARSE_CONFIG_C_SRCS = $(SRC_DIR)/parse/config/parse_config.c \
 					  $(SRC_DIR)/utils/is_blank_line.c \
 					  $(SRC_DIR)/utils/read_map.c \
 					  $(SRC_DIR)/utils/free_map.c \
-					  $(SRC_DIR)/utils/error_msg.c
+					  $(SRC_DIR)/error/error_msg.c
 
 TEST_MAP_CXX_SRCS = $(TEST_DIR)/parse/map/test_parse_map.cpp \
 					$(TEST_DIR)/parse/map/test_map_file.cpp
@@ -67,7 +67,7 @@ TEST_MAP_C_SRCS = $(SRC_DIR)/parse/map/parse_map.c \
 				  $(SRC_DIR)/utils/ft_isspace.c \
 				  $(SRC_DIR)/utils/read_map.c \
 				  $(SRC_DIR)/utils/free_map.c \
-				  $(SRC_DIR)/utils/error_msg.c
+				  $(SRC_DIR)/error/error_msg.c
 
 PARSER_SRCS = $(SRC_DIR)/parse/parse.c \
 			  $(SRC_DIR)/parse/load_data.c \
@@ -93,7 +93,7 @@ PARSER_SRCS = $(SRC_DIR)/parse/parse.c \
 			  $(SRC_DIR)/utils/read_map.c \
 			  $(SRC_DIR)/utils/free_map.c \
 			  $(SRC_DIR)/utils/free_config_data.c \
-			  $(SRC_DIR)/utils/error_msg.c \
+			  $(SRC_DIR)/error/error_msg.c \
 			  $(TEST_DIR)/parser_cli.c
 
 # Object files
