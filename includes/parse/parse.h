@@ -16,6 +16,7 @@
 # include <stddef.h>
 # include <stdbool.h>
 # include "cub3d.h"
+# include "error.h"
 
 # define RGB_MAX 255
 # define NON_NUM 0
@@ -55,6 +56,8 @@ typedef struct s_game_data
 }	t_game_data;
 
 int				parse(const char *filepath, t_game_data *game_data);
+void			set_parse_error(t_error_code error_code);
+t_error_code	get_parse_error(void);
 int				validate_config(char **input_data, size_t *line_index);
 /**
  * @brief 行の先頭から識別子を検出する

@@ -56,7 +56,8 @@ PARSE_CONFIG_C_SRCS = $(SRC_DIR)/parse/config/parse_config.c \
 					  $(SRC_DIR)/error/error_exit.c \
 					  $(SRC_DIR)/error/error_messages.c \
 					  $(SRC_DIR)/error/error_cleanup.c \
-					  $(SRC_DIR)/error/error_warning.c
+					  $(SRC_DIR)/error/error_warning.c \
+					  $(SRC_DIR)/error/error_status.c
 
 TEST_MAP_CXX_SRCS = $(TEST_DIR)/parse/map/test_parse_map.cpp \
 					$(TEST_DIR)/parse/map/test_map_file.cpp
@@ -79,9 +80,11 @@ TEST_MAP_C_SRCS = $(SRC_DIR)/parse/map/parse_map.c \
 				  $(SRC_DIR)/error/error_exit.c \
 				  $(SRC_DIR)/error/error_messages.c \
 				  $(SRC_DIR)/error/error_cleanup.c \
-				  $(SRC_DIR)/error/error_warning.c
+				  $(SRC_DIR)/error/error_warning.c \
+				  $(SRC_DIR)/error/error_status.c
 
 PARSER_SRCS = $(SRC_DIR)/parse/parse.c \
+			  $(SRC_DIR)/parse/parse_error.c \
 			  $(SRC_DIR)/parse/load_data.c \
 			  $(SRC_DIR)/parse/config/parse_config.c \
 			  $(SRC_DIR)/parse/config/detect_identifier.c \
@@ -111,6 +114,7 @@ PARSER_SRCS = $(SRC_DIR)/parse/parse.c \
 			  $(SRC_DIR)/error/error_messages.c \
 			  $(SRC_DIR)/error/error_cleanup.c \
 			  $(SRC_DIR)/error/error_warning.c \
+			  $(SRC_DIR)/error/error_status.c \
 			  $(TEST_DIR)/parser_cli.c
 
 # Object files

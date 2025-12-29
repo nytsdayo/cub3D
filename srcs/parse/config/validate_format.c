@@ -40,19 +40,46 @@ int	validate_texture_format(const char *line, t_identifier id)
 	return (0);
 }
 
+static int	parse_component_with_spaces(const char *line, int *idx)
+{
+	int	value;
+
+	while (ft_isspace(line[*idx]))
+		(*idx)++;
+	value = parse_rgb_component(line, idx);
+	if (value < 0)
+		return (-1);
+	while (ft_isspace(line[*idx]))
+		(*idx)++;
+	return (value);
+}
+
+static int	expect_comma(const char *line, int *idx)
+{
+	if (line[*idx] != ',')
+		return (-1);
+	(*idx)++;
+	return (0);
+}
+
 /**
  * @brief RGB値のフォーマットを検証する（R,G,B形式、0-255範囲チェック）
+ *        数値やカンマの前後に空白があっても許容する
  */
 int	validate_rgb_format(const char *line)
 {
 	int	i;
 
 	i = 0;
+	if (parse_component_with_spaces(line, &i) < 0
+		|| expect_comma(line, &i) < 0
+		|| parse_component_with_spaces(line, &i) < 0
+		|| expect_comma(line, &i) < 0
+		|| parse_component_with_spaces(line, &i) < 0)
+		return (-1);
 	while (ft_isspace(line[i]))
 		i++;
-	if (parse_rgb_component(line, &i) == -1 || line[i++] != ','
-		|| parse_rgb_component(line, &i) == -1 || line[i++] != ','
-		|| parse_rgb_component(line, &i) == -1)
+	if (line[i] != '\0')
 		return (-1);
 	return (0);
 }

@@ -12,6 +12,7 @@
 
 #include "parse.h"
 #include "utils.h"
+#include "error.h"
 #include <stdlib.h>
 #include <stdbool.h>
 #include <unistd.h>
@@ -50,7 +51,11 @@ int	validate_config(char **input_data, size_t *line_index)
 		}
 		id = detect_identifier(input_data[*line_index]);
 		if (id == ID_UNKNOWN)
-			return (error_msg("Error\nUnknown identifier\n"));
+		{
+			error_msg("Error\nUnknown identifier\n");
+			set_error_status(ERR_UNKNOWN_IDENTIFIER);
+			return (-1);
+		}
 		result = validate_identifier_line(input_data[*line_index],
 				seen_flags, id);
 		if (result != 0)
@@ -58,7 +63,11 @@ int	validate_config(char **input_data, size_t *line_index)
 		(*line_index)++;
 	}
 	if (!all_identifiers_found(seen_flags))
-		return (error_msg("Error\nMissing identifier\n"));
+	{
+		error_msg("Error\nMissing identifier\n");
+		set_error_status(ERR_MISSING_IDENTIFIER);
+		return (-1);
+	}
 	return (0);
 }
 
@@ -114,18 +123,30 @@ static int	validate_identifier_line(const char *line,
 
 	idx = get_identifier_index(id);
 	if (seen_flags[idx] > 0)
-		return (error_msg("Error\nDuplicate identifier\n"));
+	{
+		error_msg("Error\nDuplicate identifier\n");
+		set_error_status(ERR_DUPLICATE_IDENTIFIER);
+		return (-1);
+	}
 	while (ft_isspace(*line))
 		line++;
 	if (id >= ID_NO && id <= ID_EA)
 	{
 		if (validate_texture_format(line + 2, id) != 0)
-			return (error_msg("Error\nInvalid texture path\n"));
+		{
+			error_msg("Error\nInvalid texture path\n");
+			set_error_status(ERR_SYNTAX_TEXTURE);
+			return (-1);
+		}
 	}
 	else
 	{
 		if (validate_rgb_format(line + 1) != 0)
-			return (error_msg("Error\nInvalid RGB value\n"));
+		{
+			error_msg("Error\nInvalid RGB value\n");
+			set_error_status(ERR_SYNTAX_RGB);
+			return (-1);
+		}
 	}
 	seen_flags[idx]++;
 	return (0);

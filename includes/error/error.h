@@ -100,4 +100,21 @@ void	error_exit_simple(t_error_code error_code);
  */
 void	error_warning(t_warning_code warning_code, const char *context);
 
+/**
+ * @brief Set global error status
+ * @param error_code Error code to set
+ */
+void	set_error_status(t_error_code error_code);
+
+/**
+ * @brief Get global error status
+ * @return Current error status
+ */
+t_error_code	get_error_status(void);
+
+/**
+ * @brief Clear global error status
+ */
+void	clear_error_status(void);
+
 #endif

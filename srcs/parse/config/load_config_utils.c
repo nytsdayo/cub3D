@@ -14,19 +14,51 @@
 #include "utils.h"
 #include <stdlib.h>
 
-char	*extract_texture_path(const char *line, t_identifier id)
+static int	skip_to_value_start(const char *line, t_identifier id)
 {
-	int		i;
-	int		start;
-	int		len;
+	int	i;
 
 	i = 0;
+	while (ft_isspace(line[i]))
+		i++;
 	if (id >= ID_NO && id <= ID_EA)
 		i += 2;
 	else
 		i += 1;
 	while (ft_isspace(line[i]))
 		i++;
+	return (i);
+}
+
+static int	parse_component_with_spaces(const char *line, int *idx)
+{
+	int	value;
+
+	while (ft_isspace(line[*idx]))
+		(*idx)++;
+	value = parse_rgb_component(line, idx);
+	if (value < 0)
+		return (-1);
+	while (ft_isspace(line[*idx]))
+		(*idx)++;
+	return (value);
+}
+
+static int	expect_comma(const char *line, int *idx)
+{
+	if (line[*idx] != ',')
+		return (-1);
+	(*idx)++;
+	return (0);
+}
+
+char	*extract_texture_path(const char *line, t_identifier id)
+{
+	int		i;
+	int		start;
+	int		len;
+
+	i = skip_to_value_start(line, id);
 	start = i;
 	while (line[i] && !ft_isspace(line[i]) && line[i] != '\n')
 		i++;
@@ -60,16 +92,18 @@ int	parse_rgb_color(const char *line, t_color *color)
 	int	b;
 
 	i = 0;
+	r = parse_component_with_spaces(line, &i);
+	if (r == -1 || expect_comma(line, &i) != 0)
+		return (-1);
+	g = parse_component_with_spaces(line, &i);
+	if (g == -1 || expect_comma(line, &i) != 0)
+		return (-1);
+	b = parse_component_with_spaces(line, &i);
+	if (b == -1)
+		return (-1);
 	while (ft_isspace(line[i]))
 		i++;
-	r = parse_rgb_component(line, &i);
-	if (r == -1 || line[i++] != ',')
-		return (-1);
-	g = parse_rgb_component(line, &i);
-	if (g == -1 || line[i++] != ',')
-		return (-1);
-	b = parse_rgb_component(line, &i);
-	if (b == -1)
+	if (line[i] != '\0')
 		return (-1);
 	color->r = r;
 	color->g = g;

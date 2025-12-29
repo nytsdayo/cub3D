@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "parse.h"
+#include "error.h"
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
@@ -35,12 +36,23 @@ int	parse(const char *filepath, t_game_data *game_data)
 	line_index = 0;
 	input_data = read_map(filepath);
 	if (input_data == NULL)
+	{
+		set_error_status(ERR_FILE_NOT_FOUND);
 		return (-1);
-	if (validate_config(input_data, &line_index) != 0
-		|| validate_map(input_data, line_index) != 0)
-		ret = -1;
-	else
-		ret = load_data((const char **)input_data, game_data);
+	}
+	ret = validate_config(input_data, &line_index);
+	if (ret != 0)
+	{
+		free_map((void **)input_data);
+		return (-1);
+	}
+	ret = validate_map(input_data, line_index);
+	if (ret != 0)
+	{
+		free_map((void **)input_data);
+		return (-1);
+	}
+	ret = load_data((const char **)input_data, game_data);
 	free_map((void **)input_data);
 	return (ret);
 }

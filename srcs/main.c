@@ -23,11 +23,13 @@ int	main(int argc, char *argv[])
 {
 	t_game		game;
 	t_game_data	game_data;
+	int			ret;
 
 	init_structs(&game, &game_data);
 	valid_args(argc, argv);
-	if (parse(argv[1], &game_data) != 0)
-		error_exit_simple(ERR_GENERIC);
+	ret = parse(argv[1], &game_data);
+	if (ret != 0)
+		error_exit_simple(get_error_status());
 	game.map = game_data.map.map;
 	if (init_game(&game, &game_data.config) != 0)
 	{

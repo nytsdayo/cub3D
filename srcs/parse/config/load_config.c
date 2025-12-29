@@ -15,6 +15,22 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+static const char	*get_value_ptr(const char *line, t_identifier id)
+{
+	int	i;
+
+	i = 0;
+	while (ft_isspace(line[i]))
+		i++;
+	if (id >= ID_NO && id <= ID_EA)
+		i += 2;
+	else
+		i += 1;
+	while (ft_isspace(line[i]))
+		i++;
+	return (line + i);
+}
+
 static int	store_texture_path(t_identifier id, const char *line,
 				t_config_data *config)
 {
@@ -40,9 +56,11 @@ static int	store_config_value(t_identifier id, const char *line,
 	if (id >= ID_NO && id <= ID_EA)
 		return (store_texture_path(id, line, config));
 	else if (id == ID_F)
-		return (parse_rgb_color(line + 1, &config->floor_color));
+		return (parse_rgb_color(get_value_ptr(line, id),
+				&config->floor_color));
 	else if (id == ID_C)
-		return (parse_rgb_color(line + 1, &config->ceiling_color));
+		return (parse_rgb_color(get_value_ptr(line, id),
+				&config->ceiling_color));
 	return (0);
 }
 

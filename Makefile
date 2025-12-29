@@ -28,6 +28,7 @@ LIB_DIR = libraries
 # Source files
 SRCS = $(SRC_DIR)/main.c \
 	   $(SRC_DIR)/parse/parse.c \
+	   $(SRC_DIR)/parse/parse_error.c \
 	   $(SRC_DIR)/parse/load_data.c \
 	   $(SRC_DIR)/parse/config/parse_config.c \
 	   $(SRC_DIR)/parse/config/load_config.c \
@@ -57,6 +58,7 @@ SRCS = $(SRC_DIR)/main.c \
 	   $(SRC_DIR)/error/error_messages.c \
 	   $(SRC_DIR)/error/error_cleanup.c \
 	   $(SRC_DIR)/error/error_warning.c \
+	   $(SRC_DIR)/error/error_status.c \
 	   $(SRC_DIR)/engine/init/init_game.c \
 	   $(SRC_DIR)/engine/init/init_map.c \
 	   $(SRC_DIR)/engine/init/init_map_utils.c \

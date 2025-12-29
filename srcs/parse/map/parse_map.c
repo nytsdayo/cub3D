@@ -35,6 +35,21 @@ static int	run_validations(char **input_data, size_t line_index,
 	return (0);
 }
 
+static int	validate_no_empty_lines(char **input_data, size_t line_index,
+		size_t map_lines)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < map_lines)
+	{
+		if (is_blank_line(input_data[line_index + i]))
+			return (error_msg("Error: Empty line inside map\n"));
+		i++;
+	}
+	return (0);
+}
+
 /**
  * @brief マップセクションの構文を検証する（メモリ確保なし）
  * @param input_data 入力データの行配列
@@ -55,6 +70,8 @@ int	validate_map(char **input_data, size_t line_index)
 	map_lines = count_map_lines(input_data, line_index);
 	if (map_lines < MIN_MAP_SIZE)
 		return (error_msg("Error: Map is too small\n"));
+	if (validate_no_empty_lines(input_data, line_index, map_lines) != 0)
+		return (-1);
 	max_len = get_max_line_length(input_data, line_index, map_lines);
 	return (run_validations(input_data, line_index, map_lines, max_len));
 }

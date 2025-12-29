@@ -16,7 +16,7 @@
 #include <stdio.h>
 
 static int	check_all_adjacent(char **input_data, size_t line_index,
-				size_t i, size_t j);
+				size_t map_lines, size_t i, size_t j);
 
 /**
  * @brief スペースが無効な位置にないことを検証する
@@ -44,7 +44,8 @@ int	validate_spaces(char **input_data, size_t line_index,
 			c = get_char_at(input_data, line_index, i, j);
 			if (c == '0' || c == 'N' || c == 'S' || c == 'E' || c == 'W')
 			{
-				if (check_all_adjacent(input_data, line_index, i, j) != 0)
+				if (check_all_adjacent(input_data, line_index,
+						map_lines, i, j) != 0)
 					return (-1);
 			}
 			j++;
@@ -55,26 +56,32 @@ int	validate_spaces(char **input_data, size_t line_index,
 }
 
 static int	check_dir(char **input_data, size_t line_index,
-				size_t i, size_t j)
+				size_t map_lines, size_t i, size_t j)
 {
+	size_t	row_len;
 	char	adj;
 
-	adj = get_char_at(input_data, line_index, i, j);
-	if (adj == ' ')
+	if (i >= map_lines)
 		return (error_msg("Error: Open space adjacent to void\n"));
+	row_len = ft_strlen(input_data[line_index + i]);
+	if (j >= row_len)
+		return (error_msg("Error: Open space adjacent to void\n"));
+	adj = input_data[line_index + i][j];
+	if (adj == ' ')
+		return (0);
 	return (0);
 }
 
 static int	check_all_adjacent(char **input_data, size_t line_index,
-		size_t i, size_t j)
+		size_t map_lines, size_t i, size_t j)
 {
-	if (i > 0 && check_dir(input_data, line_index, i - 1, j) != 0)
+	if (i > 0 && check_dir(input_data, line_index, map_lines, i - 1, j) != 0)
 		return (-1);
-	if (j > 0 && check_dir(input_data, line_index, i, j - 1) != 0)
+	if (j > 0 && check_dir(input_data, line_index, map_lines, i, j - 1) != 0)
 		return (-1);
-	if (check_dir(input_data, line_index, i + 1, j) != 0)
+	if (check_dir(input_data, line_index, map_lines, i + 1, j) != 0)
 		return (-1);
-	if (check_dir(input_data, line_index, i, j + 1) != 0)
+	if (check_dir(input_data, line_index, map_lines, i, j + 1) != 0)
 		return (-1);
 	return (0);
 }
