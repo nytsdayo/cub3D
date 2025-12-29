@@ -25,20 +25,15 @@ int	main(int argc, char *argv[])
 	t_game_data	game_data;
 
 	init_structs(&game, &game_data);
-	if (valid_args(argc, argv) != 0)
-		return (EXIT_FAILURE);
+	valid_args(argc, argv);
 	if (parse(argv[1], &game_data) != 0)
-	{
-		error_msg("Error\nFailed to parse map\n");
-		free_config_data(&game_data.config);
-		return (EXIT_FAILURE);
-	}
+		error_exit_simple(ERR_GENERIC);
 	game.map = game_data.map.map;
 	if (init_game(&game, &game_data.config) != 0)
 	{
 		free_map((void **)game.map);
 		free_config_data(&game_data.config);
-		return (EXIT_FAILURE);
+		error_exit_simple(ERR_MLX_INIT_FAILURE);
 	}
 	run_game_loop(&game);
 	free_config_data(&game_data.config);
