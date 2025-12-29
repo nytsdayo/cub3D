@@ -35,8 +35,12 @@ const char	**read_map(const char *filename)
 	close(fd);
 	if (!content)
 		return (NULL);
+	if (get_error_status() != 0)
+		return (NULL);
 	map = split_lines(content, NULL);
 	free(content);
+	if (get_error_status() != 0)
+		return (NULL);
 	return ((const char **)map);
 }
 
@@ -58,7 +62,9 @@ static char	*read_entire_file(int fd)
 		buf[bytes] = '\0';
 		result = resize_buffer(result, total, total + bytes + 1);
 		if (!result)
-			return (set_error_status(ERR_MALLOC_FAILURE), NULL);
+			return (NULL);
+		if (get_error_status() != 0)
+			return (NULL);
 		ft_memcpy(result + total, buf, bytes + 1);
 		total += bytes;
 		bytes = read(fd, buf, BUFFER_SIZE);
@@ -86,7 +92,11 @@ static char	**split_lines(const char *content, int *count)
 		start = process_line(&map, &lines, start, end);
 		if (!start)
 			return (NULL);
+		if (get_error_status() != 0)
+			return (NULL);
 	}
+	if (!map)
+		return (set_error_status(ERR_FILE_READ_PERMISSION), NULL);
 	map[lines] = NULL;
 	if (count)
 		*count = lines;

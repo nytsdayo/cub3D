@@ -57,8 +57,14 @@ int	load_map(char **input_data, size_t line_index, t_map_data *map_data)
 		return (-1);
 	if (validate_map(input_data, line_index) != 0)
 		return (-1);
+	if (get_error_status() != 0)
+		return (-1);
 	map_lines = count_map_lines(input_data, line_index);
+	if (get_error_status() != 0)
+		return (-1);
 	max_len = get_max_line_length(input_data, line_index, map_lines);
+	if (get_error_status() != 0)
+		return (-1);
 	map_data->map = malloc(sizeof(char *) * (map_lines + 1));
 	if (!map_data->map)
 		return (set_error_status(ERR_MALLOC_FAILURE), -1);
@@ -69,6 +75,8 @@ int	load_map(char **input_data, size_t line_index, t_map_data *map_data)
 		if (!map_data->map[i])
 			return (set_error_status(ERR_MALLOC_FAILURE), free_partial_map(map_data->map, i), -1);
 		copy_map_line(map_data->map[i], input_data[line_index + i], max_len);
+		if (get_error_status() != 0)
+			return (free_partial_map(map_data->map, i + 1), -1);
 		i++;
 	}
 	map_data->map[map_lines] = NULL;

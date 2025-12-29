@@ -92,6 +92,8 @@ static int	check_side_borders(char **input_data, size_t line_index,
 		result = check_row_borders(input_data, line_index, j);
 		if (result < 0)
 			return (-1);
+		if (get_error_status() != 0)
+			return (-1);
 		j++;
 	}
 	return (0);

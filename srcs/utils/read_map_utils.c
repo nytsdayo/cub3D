@@ -72,7 +72,11 @@ const char	*process_line(char ***map, int *lines,
 	*map = resize_map(*map, *lines, *lines + 2);
 	if (!*map)
 		return (NULL);
+	if (get_error_status() != 0)
+		return (NULL);
 	(*map)[*lines] = duplicate_line(start, end);
+	if (get_error_status() != 0)
+		return (free_map((void **)*map), *map = NULL, NULL);
 	if (!(*map)[(*lines)++])
 		return (free_map((void **)*map), *map = NULL, NULL);
 	if (*end == '\n')

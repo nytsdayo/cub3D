@@ -47,6 +47,8 @@ int	validate_spaces(char **input_data, size_t line_index,
 				if (check_all_adjacent(input_data, line_index,
 						map_lines, i, j) != 0)
 					return (-1);
+				if (get_error_status() != 0)
+					return (-1);
 			}
 			j++;
 		}
@@ -77,11 +79,19 @@ static int	check_all_adjacent(char **input_data, size_t line_index,
 {
 	if (i > 0 && check_dir(input_data, line_index, map_lines, i - 1, j) != 0)
 		return (-1);
+	if (get_error_status() != 0)
+		return (-1);
 	if (j > 0 && check_dir(input_data, line_index, map_lines, i, j - 1) != 0)
+		return (-1);
+	if (get_error_status() != 0)
 		return (-1);
 	if (check_dir(input_data, line_index, map_lines, i + 1, j) != 0)
 		return (-1);
+	if (get_error_status() != 0)
+		return (-1);
 	if (check_dir(input_data, line_index, map_lines, i, j + 1) != 0)
+		return (-1);
+	if (get_error_status() != 0)
 		return (-1);
 	return (0);
 }

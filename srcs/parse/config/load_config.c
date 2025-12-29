@@ -38,6 +38,8 @@ static int	store_texture_path(t_identifier id, const char *line,
 	char	*path;
 
 	path = extract_texture_path(line, id);
+	if (get_error_status() != 0)
+		return (-1);
 	if (!path)
 		return (set_error_status(ERR_MALLOC_FAILURE), -1);
 	if (access(path, R_OK) != 0)
@@ -82,6 +84,8 @@ static int	process_config_line(const char *line, t_config_data *config)
 	t_identifier	id;
 
 	id = detect_identifier(line);
+	if (get_error_status() != 0)
+		return (-1);
 	if (id == ID_UNKNOWN)
 		return (-1);
 	store_config_value(id, line, config);

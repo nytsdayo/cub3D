@@ -48,6 +48,8 @@ static int	skip_config_lines(const char **input_data, size_t *line_index)
 	{
 		if (process_line(input_data[*line_index], &id_count, &done) != 0)
 			return (-1);
+		if (get_error_status() != 0)
+			return (-1);
 		if (!done)
 			(*line_index)++;
 	}
@@ -63,6 +65,8 @@ static int	process_line(const char *line, size_t *id_count, int *done)
 	if (is_blank_line(line))
 		return (0);
 	id = detect_identifier(line);
+	if (get_error_status() != 0)
+		return (-1);
 	if (id != ID_UNKNOWN)
 	{
 		if (*id_count >= 6)
