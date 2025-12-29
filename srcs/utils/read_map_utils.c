@@ -55,7 +55,8 @@ char	**resize_map(char **old, int old_size, int new_size)
 
 	new = malloc(sizeof(char *) * new_size);
 	if (!new)
-		return (set_error_status(ERR_MALLOC_FAILURE), free_map((void **)old), NULL);
+		return (set_error_status(ERR_MALLOC_FAILURE),
+			free_map((void **)old), NULL);
 	i = 0;
 	while (i < old_size)
 	{
