@@ -138,10 +138,11 @@ unit: $(UNIT_TESTS)
 	./$(TEST_PARSE_CONFIG)
 	./$(TEST_PARSE_MAP)
 
-parser-tests:
+parser-tests: create-forbidden-map
 	$(MAKE) $(PARSER_BIN)
 	@chmod +x ./run_parser_tests.sh
 	PARSER_BIN="$(PARSER_BIN)" ./run_parser_tests.sh
+	$(MAKE) clean-forbidden-map
 
 leak-check:
 	@if [ ! -x "$(CUB3D_BIN)" ]; then $(MAKE) -C $(ROOT_DIR); fi
@@ -166,12 +167,40 @@ $(PARSER_BIN): $(PARSER_OBJS)
 %.o: %.c
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
+create-forbidden-map:
+	@echo "Creating forbidden.cub for permission test..."
+	@echo "NO textures/wolfenstein/grey_stone.xpm" > $(ROOT_DIR)/assets/maps/Failed/forbidden.cub
+	@echo "SO textures/wolfenstein/purple_stone.xpm" >> $(ROOT_DIR)/assets/maps/Failed/forbidden.cub
+	@echo "WE textures/wolfenstein/red_brick.xpm" >> $(ROOT_DIR)/assets/maps/Failed/forbidden.cub
+	@echo "EA textures/wolfenstein/wood.xpm" >> $(ROOT_DIR)/assets/maps/Failed/forbidden.cub
+	@echo "" >> $(ROOT_DIR)/assets/maps/Failed/forbidden.cub
+	@echo "F 18,53,25" >> $(ROOT_DIR)/assets/maps/Failed/forbidden.cub
+	@echo "C 153,204,255" >> $(ROOT_DIR)/assets/maps/Failed/forbidden.cub
+	@echo "" >> $(ROOT_DIR)/assets/maps/Failed/forbidden.cub
+	@echo "111111111111" >> $(ROOT_DIR)/assets/maps/Failed/forbidden.cub
+	@echo "1         11" >> $(ROOT_DIR)/assets/maps/Failed/forbidden.cub
+	@echo "1          1" >> $(ROOT_DIR)/assets/maps/Failed/forbidden.cub
+	@echo "111111111111" >> $(ROOT_DIR)/assets/maps/Failed/forbidden.cub
+	@echo "10S000000001" >> $(ROOT_DIR)/assets/maps/Failed/forbidden.cub
+	@echo "111111111111" >> $(ROOT_DIR)/assets/maps/Failed/forbidden.cub
+	@echo "11         1" >> $(ROOT_DIR)/assets/maps/Failed/forbidden.cub
+	@echo "111111111111" >> $(ROOT_DIR)/assets/maps/Failed/forbidden.cub
+	@chmod 000 $(ROOT_DIR)/assets/maps/Failed/forbidden.cub
+
+clean-forbidden-map:
+	@if [ -f "$(ROOT_DIR)/assets/maps/Failed/forbidden.cub" ]; then \
+		chmod 644 $(ROOT_DIR)/assets/maps/Failed/forbidden.cub; \
+		rm -f $(ROOT_DIR)/assets/maps/Failed/forbidden.cub; \
+		echo "Cleaned forbidden.cub"; \
+	fi
+
 clean:
 	rm -f $(UNIT_OBJS) $(PARSER_OBJS)
 
 fclean: clean
 	rm -f $(UNIT_TESTS) $(PARSER_BIN)
+	$(MAKE) clean-forbidden-map
 
 re: fclean all
 
-.PHONY: all clean fclean re test unit parser-tests leak-check build
+.PHONY: all clean fclean re test unit parser-tests leak-check build create-forbidden-map clean-forbidden-map
