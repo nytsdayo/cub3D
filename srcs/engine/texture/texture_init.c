@@ -20,7 +20,7 @@ void	load_texture(t_game *game, t_img *texture, char *path)
 			&game->textures.width, &game->textures.height);
 	if (!texture->img)
 	{
-		error_msg_format("Error\nTexture loading failed: %s\n", path);
+		error_msg("Error\nTexture loading failed\n");
 		exit(EXIT_FAILURE);
 	}
 	texture->addr = mlx_get_data_addr(texture->img,
