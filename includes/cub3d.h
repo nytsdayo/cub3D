@@ -98,8 +98,14 @@ typedef enum e_cell_type
 /* X11/MLX標準のイベントタイプ値 */
 # define ON_KEYDOWN 2
 # define ON_KEYUP 3
+# define ON_BUTTONPRESS 4
+# define ON_BUTTONRELEASE 5
 # define ON_MOUSE_MOVE 6
 # define ON_DESTROY 17
+
+/* Mouse Buttons */
+# define MOUSE_LEFT 1
+# define MOUSE_RIGHT 3
 
 /* Player Structure */
 typedef struct s_player
@@ -156,6 +162,9 @@ typedef struct s_game
 	t_color		floor_color;
 	t_color		ceiling_color;
 	int			keys[KEY_STATE_SIZE];
+	int			mouse_pressed;
+	int			last_mouse_x;
+	int			last_mouse_y;
 }				t_game;
 
 #endif
