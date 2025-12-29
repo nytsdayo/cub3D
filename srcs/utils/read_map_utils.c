@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "utils.h"
+#include "error_manage.h"
 
 char	*duplicate_line(const char *start, const char *end)
 {
@@ -22,7 +23,7 @@ char	*duplicate_line(const char *start, const char *end)
 		len--;
 	dup = malloc(len + 1);
 	if (!dup)
-		return (NULL);
+		return (set_error_status(ERR_MALLOC_FAILURE), NULL);
 	if (len > 0)
 		ft_memcpy(dup, start, len);
 	dup[len] = '\0';
@@ -36,7 +37,7 @@ char	*resize_buffer(char *old, int old_size, int new_size)
 
 	new = malloc(new_size);
 	if (!new)
-		return (free(old), NULL);
+		return (set_error_status(ERR_MALLOC_FAILURE), free(old), NULL);
 	i = 0;
 	while (i < old_size)
 	{
@@ -54,7 +55,8 @@ char	**resize_map(char **old, int old_size, int new_size)
 
 	new = malloc(sizeof(char *) * new_size);
 	if (!new)
-		return (free_map((void **)old), NULL);
+		return (set_error_status(ERR_MALLOC_FAILURE),
+			free_map((void **)old), NULL);
 	i = 0;
 	while (i < old_size)
 	{
@@ -71,7 +73,11 @@ const char	*process_line(char ***map, int *lines,
 	*map = resize_map(*map, *lines, *lines + 2);
 	if (!*map)
 		return (NULL);
+	if (get_error_status() != 0)
+		return (NULL);
 	(*map)[*lines] = duplicate_line(start, end);
+	if (get_error_status() != 0)
+		return (free_map((void **)*map), *map = NULL, NULL);
 	if (!(*map)[(*lines)++])
 		return (free_map((void **)*map), *map = NULL, NULL);
 	if (*end == '\n')

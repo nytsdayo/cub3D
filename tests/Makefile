@@ -40,6 +40,7 @@ PARSE_CONFIG_C_SRCS = $(SRC_DIR)/parse/config/parse_config.c \
 					  $(SRC_DIR)/parse/config/detect_identifier.c \
 					  $(SRC_DIR)/parse/config/validate_format.c \
 					  $(SRC_DIR)/parse/config/load_config_utils.c \
+				  $(SRC_DIR)/parse/config/load_config_utils2.c \
 					  $(SRC_DIR)/utils/ft_strlen.c \
 					  $(SRC_DIR)/utils/ft_strcmp.c \
 					  $(SRC_DIR)/utils/ft_strncmp.c \
@@ -88,6 +89,7 @@ PARSER_SRCS = $(SRC_DIR)/parse/parse.c \
 			  $(SRC_DIR)/parse/config/validate_format.c \
 			  $(SRC_DIR)/parse/config/load_config.c \
 			  $(SRC_DIR)/parse/config/load_config_utils.c \
+			  $(SRC_DIR)/parse/config/load_config_utils2.c \
 			  $(SRC_DIR)/parse/map/parse_map.c \
 			  $(SRC_DIR)/parse/map/parse_map_utils.c \
 			  $(SRC_DIR)/parse/map/parse_map_validate.c \
@@ -141,10 +143,10 @@ unit: $(UNIT_TESTS)
 	./$(TEST_PARSE_MAP)
 
 parser-tests: create-forbidden-map
-	$(MAKE) $(PARSER_BIN)
+	@$(MAKE) $(PARSER_BIN) || ($(MAKE) clean-forbidden-map && exit 1)
 	@chmod +x ./run_parser_tests.sh
-	PARSER_BIN="$(PARSER_BIN)" ./run_parser_tests.sh
-	$(MAKE) clean-forbidden-map
+	@PARSER_BIN="$(PARSER_BIN)" ./run_parser_tests.sh || ($(MAKE) clean-forbidden-map && exit 1)
+	@$(MAKE) clean-forbidden-map
 
 leak-check:
 	@if [ ! -x "$(CUB3D_BIN)" ]; then $(MAKE) -C $(ROOT_DIR); fi

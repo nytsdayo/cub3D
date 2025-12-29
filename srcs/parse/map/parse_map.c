@@ -23,14 +23,24 @@ static int	run_validations(char **input_data, size_t line_index,
 {
 	if (validate_invalid_chars(input_data, line_index, map_lines) != 0)
 		return (-1);
+	if (get_error_status() != 0)
+		return (-1);
 	if (validate_map_size(input_data, line_index, map_lines, max_len) != 0)
 		return (-1);
+	if (get_error_status() != 0)
+		return (-1);
 	if (validate_player_start(input_data, line_index, map_lines) != 0)
+		return (-1);
+	if (get_error_status() != 0)
 		return (-1);
 	if (validate_surrounded_by_walls(input_data, line_index, map_lines,
 			max_len) != 0)
 		return (-1);
+	if (get_error_status() != 0)
+		return (-1);
 	if (validate_spaces(input_data, line_index, map_lines, max_len) != 0)
+		return (-1);
+	if (get_error_status() != 0)
 		return (-1);
 	return (0);
 }
@@ -44,10 +54,7 @@ static int	validate_no_empty_lines(char **input_data, size_t line_index,
 	while (i < map_lines)
 	{
 		if (is_blank_line(input_data[line_index + i]))
-		{
-			set_error_status(ERR_INVALID_CHARACTER);
-			return (-1);
-		}
+			return (set_error_status(ERR_INVALID_CHARACTER), -1);
 		i++;
 	}
 	return (0);
@@ -69,18 +76,18 @@ int	validate_map(char **input_data, size_t line_index)
 	while (input_data[line_index] && is_blank_line(input_data[line_index]))
 		line_index++;
 	if (!input_data[line_index])
-	{
-		set_error_status(ERR_MINIMUM_MAP_SIZE);
-		return (-1);
-	}
+		return (set_error_status(ERR_MINIMUM_MAP_SIZE), -1);
 	map_lines = count_map_lines(input_data, line_index);
-	if (map_lines < MIN_MAP_SIZE)
-	{
-		set_error_status(ERR_MINIMUM_MAP_SIZE);
+	if (get_error_status() != 0)
 		return (-1);
-	}
+	if (map_lines < MIN_MAP_SIZE)
+		return (set_error_status(ERR_MINIMUM_MAP_SIZE), -1);
 	if (validate_no_empty_lines(input_data, line_index, map_lines) != 0)
 		return (-1);
+	if (get_error_status() != 0)
+		return (-1);
 	max_len = get_max_line_length(input_data, line_index, map_lines);
+	if (get_error_status() != 0)
+		return (-1);
 	return (run_validations(input_data, line_index, map_lines, max_len));
 }

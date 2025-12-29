@@ -17,6 +17,7 @@
 
 extern "C" {
 	#include "parse.h"
+	#include "error_manage.h"
 	const char	**read_map(const char *filename);
 	void		free_map(void **map);
 }
@@ -40,11 +41,13 @@ extern "C" void	test_map_file(const char *filename, int expected_result)
 	t_map_data	map_data = {nullptr};
 	int			result;
 
+	clear_error_status();
 	std::cout << "\n=== Testing " << filename << " ===" << std::endl;
 	input_data = read_map(filename);
 	if (!input_data)
 	{
 		std::cout << "Failed to read file: " << filename << std::endl;
+		clear_error_status();
 		return;
 	}
 	result = load_map((char **)input_data, 0, &map_data);
@@ -63,7 +66,7 @@ extern "C" void	test_map_file(const char *filename, int expected_result)
 	}
 	else
 	{
-		std::cout << "✗ Test failed (expected " << expected_result 
+		std::cout << "✗ Test failed (expected " << expected_result
 			<< ", got " << result << ")" << std::endl;
 	}
 	if (map_data.map)
@@ -73,4 +76,5 @@ extern "C" void	test_map_file(const char *filename, int expected_result)
 		free(map_data.map);
 	}
 	free_map((void **)input_data);
+	clear_error_status();
 }

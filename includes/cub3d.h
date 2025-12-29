@@ -6,7 +6,7 @@
 /*   By: rnakatan <rnakatan@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 19:05:14 by mkawano           #+#    #+#             */
-/*   Updated: 2025/12/27 05:49:34 by rnakatan         ###   ########.fr       */
+/*   Updated: 2025/12/29 23:31:15 by rnakatan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,20 @@
 # define TITLE "cub3D"
 
 /* Raycasting Constants */
-/* - FOV(Field of View) */
-/* - 視野角 */
-/* - Per-frame movement (in grid units) and rotation (in radians) */
-/* - フレームあたりの移動量(グリッド単位)と回転量(ラジアン) */
-# define FOV 60.0
+/* - CAMERA_PLANE_LENGTH
+ *   - カメラ平面ベクトルの長さ
+ *   - FOVを決定: tan(FOV/2) ≈ 0.66 で FOV ≈ 66度
+ *   - 値が大きい = 広角、小さい = 狭角
+ * - MOVE_PER_FRAME:
+ *   - Per-frame movement (in grid units)
+ *   - フレームあたりの移動量/速度(グリッド単位/frame)
+ * - ROT_PER_FRAME
+ *   - Per-frame rotation (in radians)
+ *   - フレームあたりの回転量/速度（ラジアン/frame）
+ *  - COLLISION_MARGIN
+ *   - 衝突判定の余白（壁衝突を防ぐ）
+ */
+# define CAMERA_PLANE_LENGTH 0.66
 # define MOVE_PER_FRAME 0.1
 # define ROT_PER_FRAME 0.05
 # define COLLISION_MARGIN 0.2

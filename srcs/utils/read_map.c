@@ -3,22 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   read_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rnakatan <rnakatan@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rnakatan <rnakatan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 19:39:26 by rnakatan          #+#    #+#             */
-/*   Updated: 2025/12/28 00:00:00 by rnakatan         ###   ########.fr       */
+/*   Updated: 2025/12/29 22:43:45 by rnakatan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
+#include "error_manage.h"
 
 #define BUFFER_SIZE 4096
 
-char		*duplicate_line(const char *start, const char *end);
-char		*resize_buffer(char *old, int old_size, int new_size);
-char		**resize_map(char **old, int old_size, int new_size);
-const char	*process_line(char ***map, int *lines,
-				const char *start, const char *end);
 static char	*read_entire_file(int fd);
 static char	**split_lines(const char *content, int *count);
 
@@ -29,13 +25,17 @@ const char	**read_map(const char *filename)
 	char		**map;
 
 	if (fd < 0)
-		return (NULL);
+		return (set_error_status(ERR_FILE_NOT_FOUND), NULL);
 	content = read_entire_file(fd);
 	close(fd);
 	if (!content)
 		return (NULL);
+	if (get_error_status() != 0)
+		return (NULL);
 	map = split_lines(content, NULL);
 	free(content);
+	if (get_error_status() != 0)
+		return (NULL);
 	return ((const char **)map);
 }
 
@@ -48,7 +48,7 @@ static char	*read_entire_file(int fd)
 
 	result = malloc(1);
 	if (!result)
-		return (NULL);
+		return (set_error_status(ERR_MALLOC_FAILURE), NULL);
 	result[0] = '\0';
 	total = 0;
 	bytes = read(fd, buf, BUFFER_SIZE);
@@ -63,7 +63,7 @@ static char	*read_entire_file(int fd)
 		bytes = read(fd, buf, BUFFER_SIZE);
 	}
 	if (bytes < 0)
-		return (free(result), NULL);
+		return (set_error_status(ERR_FILE_READ_PERMISSION), free(result), NULL);
 	return (result);
 }
 
@@ -85,7 +85,11 @@ static char	**split_lines(const char *content, int *count)
 		start = process_line(&map, &lines, start, end);
 		if (!start)
 			return (NULL);
+		if (get_error_status() != 0)
+			return (NULL);
 	}
+	if (!map)
+		return (set_error_status(ERR_FILE_READ_PERMISSION), NULL);
 	map[lines] = NULL;
 	if (count)
 		*count = lines;

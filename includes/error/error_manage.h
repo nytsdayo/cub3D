@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_manage.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rnakatan <rnakatan@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rnakatan <rnakatan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 00:00:00 by rnakatan          #+#    #+#             */
-/*   Updated: 2025/12/29 00:00:00 by rnakatan         ###   ########.fr       */
+/*   Updated: 2025/12/29 22:40:57 by rnakatan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,26 +78,26 @@ typedef struct s_cleanup_data
  * @param context Optional context information
  * @param cleanup_data Cleanup data structure pointer
  */
-void	error_exit(t_error_code code, const char *ctx, void *cleanup);
+void			error_exit(t_error_code code, const char *ctx, void *cleanup);
 
 /**
  * @brief Simple error exit without cleanup
  * @param error_code Error code enumeration
  */
-void	error_exit_simple(t_error_code error_code);
+void			error_exit_simple(t_error_code error_code);
 
 /**
  * @brief Display warning message (program continues)
  * @param warning_code Warning code enumeration
  * @param context Optional context information
  */
-void	error_warning(t_warning_code warning_code, const char *context);
+void			error_warning(t_warning_code warning_code, const char *context);
 
 /**
  * @brief Set global error status
  * @param error_code Error code to set
  */
-void	set_error_status(t_error_code error_code);
+void			set_error_status(t_error_code error_code);
 
 /**
  * @brief Get global error status
@@ -108,6 +108,6 @@ t_error_code	get_error_status(void);
 /**
  * @brief Clear global error status
  */
-void	clear_error_status(void);
+void			clear_error_status(void);
 
 #endif

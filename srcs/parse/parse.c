@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rnakatan <rnakatan@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rnakatan <rnakatan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 19:19:59 by rnakatan          #+#    #+#             */
-/*   Updated: 2025/12/20 01:18:46 by rnakatan         ###   ########.fr       */
+/*   Updated: 2025/12/29 22:19:26 by rnakatan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,27 +32,25 @@ int	parse(const char *filepath, t_game_data *game_data)
 	size_t	line_index;
 	int		ret;
 
-	(void)game_data;
 	line_index = 0;
 	input_data = read_map(filepath);
-	if (input_data == NULL)
-	{
-		set_error_status(ERR_FILE_NOT_FOUND);
+	if (get_error_status() != 0)
 		return (-1);
-	}
-	ret = validate_config(input_data, &line_index);
-	if (ret != 0)
+	validate_config(input_data, &line_index);
+	if (get_error_status() != 0)
 	{
 		free_map((void **)input_data);
 		return (-1);
 	}
-	ret = validate_map(input_data, line_index);
-	if (ret != 0)
+	validate_map(input_data, line_index);
+	if (get_error_status() != 0)
 	{
 		free_map((void **)input_data);
 		return (-1);
 	}
 	ret = load_data((const char **)input_data, game_data);
 	free_map((void **)input_data);
+	if (get_error_status() != 0)
+		return (-1);
 	return (ret);
 }

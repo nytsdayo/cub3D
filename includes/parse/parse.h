@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rnakatan <rnakatan@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rnakatan <rnakatan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 19:29:11 by rnakatan          #+#    #+#             */
-/*   Updated: 2025/12/27 05:47:28 by rnakatan         ###   ########.fr       */
+/*   Updated: 2025/12/29 22:58:29 by rnakatan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,13 @@ typedef struct s_game_data
 	t_map_data		map;
 }	t_game_data;
 
+typedef struct s_space_check_ctx
+{
+	char	**input_data;
+	size_t	line_index;
+	size_t	map_lines;
+}	t_space_check_ctx;
+
 int				parse(const char *filepath, t_game_data *game_data);
 int				validate_config(char **input_data, size_t *line_index);
 /**
@@ -88,5 +95,8 @@ int				validate_surrounded_by_walls(char **input_data,
 					size_t line_index, size_t map_lines, size_t max_len);
 int				validate_spaces(char **input_data, size_t line_index,
 					size_t map_lines, size_t max_len);
+
+const char		*process_line(char ***map, int *lines,
+					const char *start, const char *end);
 
 #endif
