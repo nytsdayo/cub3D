@@ -84,7 +84,6 @@ TEST_MAP_C_SRCS = $(SRC_DIR)/parse/map/parse_map.c \
 				  $(SRC_DIR)/error/error_status.c
 
 PARSER_SRCS = $(SRC_DIR)/parse/parse.c \
-			  $(SRC_DIR)/parse/parse_error.c \
 			  $(SRC_DIR)/parse/load_data.c \
 			  $(SRC_DIR)/parse/config/parse_config.c \
 			  $(SRC_DIR)/parse/config/detect_identifier.c \

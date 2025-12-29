@@ -28,7 +28,6 @@ LIB_DIR = libraries
 # Source files
 SRCS = $(SRC_DIR)/main.c \
 	   $(SRC_DIR)/parse/parse.c \
-	   $(SRC_DIR)/parse/parse_error.c \
 	   $(SRC_DIR)/parse/load_data.c \
 	   $(SRC_DIR)/parse/config/parse_config.c \
 	   $(SRC_DIR)/parse/config/load_config.c \
