@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rnakatan <rnakatan@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rnakatan <rnakatan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 19:39:26 by rnakatan          #+#    #+#             */
-/*   Updated: 2025/12/28 00:00:00 by rnakatan         ###   ########.fr       */
+/*   Updated: 2025/12/29 22:43:45 by rnakatan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,6 @@
 
 #define BUFFER_SIZE 4096
 
-char		*duplicate_line(const char *start, const char *end);
-char		*resize_buffer(char *old, int old_size, int new_size);
-char		**resize_map(char **old, int old_size, int new_size);
-const char	*process_line(char ***map, int *lines,
-				const char *start, const char *end);
 static char	*read_entire_file(int fd);
 static char	**split_lines(const char *content, int *count);
 
@@ -62,8 +57,6 @@ static char	*read_entire_file(int fd)
 		buf[bytes] = '\0';
 		result = resize_buffer(result, total, total + bytes + 1);
 		if (!result)
-			return (NULL);
-		if (get_error_status() != 0)
 			return (NULL);
 		ft_memcpy(result + total, buf, bytes + 1);
 		total += bytes;

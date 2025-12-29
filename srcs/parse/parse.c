@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rnakatan <rnakatan@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rnakatan <rnakatan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 19:19:59 by rnakatan          #+#    #+#             */
-/*   Updated: 2025/12/20 01:18:46 by rnakatan         ###   ########.fr       */
+/*   Updated: 2025/12/29 22:19:26 by rnakatan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ int	parse(const char *filepath, t_game_data *game_data)
 	size_t	line_index;
 	int		ret;
 
-	(void)game_data;
 	line_index = 0;
 	input_data = read_map(filepath);
 	if (get_error_status() != 0)

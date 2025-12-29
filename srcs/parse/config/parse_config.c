@@ -52,7 +52,7 @@ int	validate_config(char **input_data, size_t *line_index)
 		if (id == ID_UNKNOWN)
 			return (set_error_status(ERR_UNKNOWN_IDENTIFIER), -1);
 		validate_identifier_line(input_data[*line_index],
-				seen_flags, id);
+			seen_flags, id);
 		if (get_error_status() != 0)
 			return (-1);
 		(*line_index)++;
