@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rnakatan <rnakatan@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rnakatan <rnakatan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 19:29:11 by rnakatan          #+#    #+#             */
-/*   Updated: 2025/12/27 05:47:28 by rnakatan         ###   ########.fr       */
+/*   Updated: 2025/12/29 22:58:29 by rnakatan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <stddef.h>
 # include <stdbool.h>
 # include "cub3d.h"
+# include "error_manage.h"
 
 # define RGB_MAX 255
 # define NON_NUM 0
@@ -39,8 +40,8 @@ typedef struct s_config_data
 	char	*south_texture_path;
 	char	*west_texture_path;
 	char	*east_texture_path;
-	t_rgb	floor_color;
-	t_rgb	ceiling_color;
+	t_color	floor_color;
+	t_color	ceiling_color;
 }	t_config_data;
 
 typedef struct s_map_data
@@ -53,6 +54,13 @@ typedef struct s_game_data
 	t_config_data	config;
 	t_map_data		map;
 }	t_game_data;
+
+typedef struct s_space_check_ctx
+{
+	char	**input_data;
+	size_t	line_index;
+	size_t	map_lines;
+}	t_space_check_ctx;
 
 int				parse(const char *filepath, t_game_data *game_data);
 int				validate_config(char **input_data, size_t *line_index);
@@ -69,7 +77,7 @@ int				load_map(char **input_data, size_t line_index,
 
 char			*extract_texture_path(const char *line, t_identifier id);
 int				parse_rgb_component(const char *str, int *idx);
-int				parse_rgb_color(const char *line, t_rgb *color);
+int				parse_rgb_color(const char *line, t_color *color);
 
 bool			is_valid_char(char c);
 size_t			count_map_lines(char **input_data, size_t line_index);
@@ -87,5 +95,8 @@ int				validate_surrounded_by_walls(char **input_data,
 					size_t line_index, size_t map_lines, size_t max_len);
 int				validate_spaces(char **input_data, size_t line_index,
 					size_t map_lines, size_t max_len);
+
+const char		*process_line(char ***map, int *lines,
+					const char *start, const char *end);
 
 #endif

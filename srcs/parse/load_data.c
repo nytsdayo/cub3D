@@ -12,10 +12,11 @@
 
 #include "parse.h"
 #include "utils.h"
+#include "error_manage.h"
 #include <stdlib.h>
 
 static int	skip_config_lines(const char **input_data, size_t *line_index);
-static int	process_line(const char *line, size_t *id_count, int *done);
+static int	process_config_line(const char *line, size_t *id_count, int *done);
 
 int	load_data(const char **input_data, void *data)
 {
@@ -23,12 +24,15 @@ int	load_data(const char **input_data, void *data)
 	size_t		line_index;
 
 	game_data = (t_game_data *)data;
-	if (load_config(input_data, &game_data->config) != 0)
+	load_config(input_data, &game_data->config);
+	if (get_error_status() != 0)
 		return (-1);
 	line_index = 0;
-	if (skip_config_lines(input_data, &line_index) != 0)
-		return (write(2, "Error\n", 6), -1);
-	if (load_map((char **)input_data, line_index, &game_data->map) != 0)
+	skip_config_lines(input_data, &line_index);
+	if (get_error_status() != 0)
+		return (-1);
+	load_map((char **)input_data, line_index, &game_data->map);
+	if (get_error_status() != 0)
 		return (-1);
 	return (0);
 }
@@ -42,32 +46,36 @@ static int	skip_config_lines(const char **input_data, size_t *line_index)
 	done = 0;
 	while (input_data[*line_index] && !done)
 	{
-		if (process_line(input_data[*line_index], &id_count, &done) != 0)
+		if (process_config_line(input_data[*line_index], &id_count, &done) != 0)
+			return (-1);
+		if (get_error_status() != 0)
 			return (-1);
 		if (!done)
 			(*line_index)++;
 	}
 	if (id_count < 6)
-		return (-1);
+		return (set_error_status(ERR_MISSING_IDENTIFIER), -1);
 	return (0);
 }
 
-static int	process_line(const char *line, size_t *id_count, int *done)
+static int	process_config_line(const char *line, size_t *id_count, int *done)
 {
 	t_identifier	id;
 
 	if (is_blank_line(line))
 		return (0);
 	id = detect_identifier(line);
+	if (get_error_status() != 0)
+		return (-1);
 	if (id != ID_UNKNOWN)
 	{
 		if (*id_count >= 6)
-			return (-1);
+			return (set_error_status(ERR_DUPLICATE_IDENTIFIER), -1);
 		(*id_count)++;
 		return (0);
 	}
 	if (*id_count < 6)
-		return (-1);
+		return (set_error_status(ERR_MISSING_IDENTIFIER), -1);
 	*done = 1;
 	return (0);
 }

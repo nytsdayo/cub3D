@@ -1,6 +1,6 @@
-SO textures/test/south.xpm
-WE textures/test/west.xpm
-EA textures/test/east.xpm
+SO assets/textures/cub3_north.xpm
+WE assets/textures/cub3_north.xpm
+EA assets/textures/cub3_north.xpm
 
 F 20,20,20
 C 200,200,200

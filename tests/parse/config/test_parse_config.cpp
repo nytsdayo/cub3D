@@ -17,6 +17,7 @@
 extern "C" {
 	#include "parse.h"
 	#include "utils.h"
+	#include "error_manage.h"
 }
 
 class ConfigTester {
@@ -40,13 +41,15 @@ private:
 public:
 	ConfigTester(TestStats& s) : stats(s) {}
 
-	void testValidateConfigFile(const std::string& filepath, 
+	void testValidateConfigFile(const std::string& filepath,
 								 const std::string& testName,
 								 bool expectedSuccess) {
+		clear_error_status();
 		char** inputData = (char**)read_map(filepath.c_str());
 		if (!inputData) {
 			std::cout << "✗ ERROR: Failed to read file: " << filepath << std::endl;
 			stats.recordTest(false);
+			clear_error_status();
 			return;
 		}
 
@@ -54,6 +57,7 @@ public:
 		int result = validate_config(inputData, &lineIndex);
 		reportTest(testName, result, expectedSuccess);
 		free_map((void**)inputData);
+		clear_error_status();
 	}
 };
 

@@ -15,7 +15,7 @@ NAME = cub3D
 # Compiler and flags
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
-INCLUDES = -I./includes -I./includes/parse -I./includes/engine -I./includes/utils
+INCLUDES = -I./includes -I./includes/parse -I./includes/engine -I./includes/utils -I./includes/error
 
 # OS Detection
 UNAME_S := $(shell uname -s)
@@ -32,6 +32,7 @@ SRCS = $(SRC_DIR)/main.c \
 	   $(SRC_DIR)/parse/config/parse_config.c \
 	   $(SRC_DIR)/parse/config/load_config.c \
 	   $(SRC_DIR)/parse/config/load_config_utils.c \
+	   $(SRC_DIR)/parse/config/load_config_utils2.c \
 	   $(SRC_DIR)/parse/config/detect_identifier.c \
 	   $(SRC_DIR)/parse/config/validate_format.c \
 	   $(SRC_DIR)/parse/map/parse_map.c \
@@ -52,6 +53,11 @@ SRCS = $(SRC_DIR)/main.c \
 	   $(SRC_DIR)/utils/read_map_utils.c \
 	   $(SRC_DIR)/utils/free_map.c \
 	   $(SRC_DIR)/utils/free_config_data.c \
+	   $(SRC_DIR)/error/error_exit.c \
+	   $(SRC_DIR)/error/error_messages.c \
+	   $(SRC_DIR)/error/error_cleanup.c \
+	   $(SRC_DIR)/error/error_warning.c \
+	   $(SRC_DIR)/error/error_status.c \
 	   $(SRC_DIR)/engine/init/init_game.c \
 	   $(SRC_DIR)/engine/init/init_map.c \
 	   $(SRC_DIR)/engine/init/init_map_utils.c \
@@ -66,7 +72,6 @@ SRCS = $(SRC_DIR)/main.c \
 	   $(SRC_DIR)/engine/player/player_movement.c \
 	   $(SRC_DIR)/engine/player/player_rotation.c \
 	   $(SRC_DIR)/engine/player/player_slide.c \
-	   $(SRC_DIR)/engine/player/player_collision.c \
 	   $(SRC_DIR)/engine/texture/texture_init.c \
 	   $(SRC_DIR)/engine/texture/texture_utils.c \
 	   $(SRC_DIR)/engine/texture/texture_cleanup.c \

@@ -2,17 +2,21 @@ name: Build and Test
 
 on:
   workflow_dispatch:
+  push:
+    branches: [ main, develop, "**" ]
+  pull_request:
+    branches: [ main, develop ]
 
 jobs:
-  parser-test:
+  build-and-test:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-    
+
     - name: Install dependencies
       run: |
         sudo apt-get update
@@ -30,6 +34,9 @@ jobs:
           libxcursor-dev \
           zlib1g-dev \
           libbsd-dev
+
+    - name: Build project
+      run: make
 
     - name: Run test suite
       run: make test

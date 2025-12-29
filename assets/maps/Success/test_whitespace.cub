@@ -6,7 +6,7 @@
 
 
 
-NO textures/test/north.xpm
+NO assets/textures/cub3_north.xpm
 
 
 
@@ -15,9 +15,9 @@ NO textures/test/north.xpm
 
 
 
-SO textures/test/south.xpm
-                        WE textures/test/west.xpm
-        EA textures/test/east.xpm            
+SO assets/textures/cub3_south.xpm
+                        WE assets/textures/cub3_west.xpm
+        EA assets/textures/cub3_east.xpm            
 
         F 20,           20,             20
 C 200,          200,200

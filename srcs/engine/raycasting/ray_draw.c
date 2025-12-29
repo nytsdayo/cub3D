@@ -31,7 +31,7 @@ void	put_pixel(t_game *game, int x, int y, int color)
 /*
 ** RGB値から色を作成
 */
-static int	create_rgb_color(t_rgb color)
+static int	create_rgb_color(t_color color)
 {
 	return ((color.r << 16) | (color.g << 8) | color.b);
 }
@@ -51,12 +51,12 @@ void	draw_vertical_line(t_game *game, t_ray *ray, int x)
 	while (y < ray->draw_start)
 		put_pixel(game, x, y++, create_rgb_color(game->ceiling_color));
 	texture = select_wall_texture(game, ray);
-	step = (double)TEX_HEIGHT / ray->line_height;
+	step = (double)texture->height / ray->line_height;
 	tex_pos = (ray->draw_start - WINDOW_HEIGHT / 2
 			+ ray->line_height / 2) * step;
 	while (y <= ray->draw_end)
 	{
-		tex_y = (int)tex_pos & (TEX_HEIGHT - 1);
+		tex_y = (int)tex_pos & (texture->height - 1);
 		tex_pos += step;
 		put_pixel(game, x, y++, get_texture_pixel(texture,
 				ray->tex_x, tex_y));

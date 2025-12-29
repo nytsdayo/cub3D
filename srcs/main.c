@@ -14,6 +14,7 @@
 #include "engine.h"
 #include "parse.h"
 #include "utils.h"
+#include "error_manage.h"
 
 static int	valid_args(int argc, char *argv[]);
 static void	init_structs(t_game *game, t_game_data *game_data);
@@ -22,22 +23,19 @@ int	main(int argc, char *argv[])
 {
 	t_game		game;
 	t_game_data	game_data;
+	int			ret;
 
 	init_structs(&game, &game_data);
-	if (valid_args(argc, argv) != 0)
-		return (EXIT_FAILURE);
-	if (parse(argv[1], &game_data) != 0)
-	{
-		write(2, "Error\nFailed to parse map\n", 26);
-		free_config_data(&game_data.config);
-		return (EXIT_FAILURE);
-	}
+	valid_args(argc, argv);
+	ret = parse(argv[1], &game_data);
+	if (ret != 0)
+		error_exit_simple(get_error_status());
 	game.map = game_data.map.map;
 	if (init_game(&game, &game_data.config) != 0)
 	{
 		free_map((void **)game.map);
 		free_config_data(&game_data.config);
-		return (EXIT_FAILURE);
+		error_exit_simple(ERR_MLX_INIT_FAILURE);
 	}
 	run_game_loop(&game);
 	free_config_data(&game_data.config);
@@ -58,10 +56,10 @@ static void	init_structs(t_game *game, t_game_data *game_data)
 
 static int	valid_args(int argc, char *argv[])
 {
-	if (argc != 2 || ft_strcmp(argv[1] + ft_strlen(argv[1]) - 4, ".cub") != 0)
-	{
-		write(2, "Error\nUsage: ./cub3D <map.cub>\n", 31);
-		return (1);
-	}
+	if (argc != 2)
+		error_exit_simple(ERR_INVALID_ARGC);
+	if (ft_strlen(argv[1]) < 4
+		|| ft_strcmp(argv[1] + ft_strlen(argv[1]) - 4, ".cub") != 0)
+		error_exit_simple(ERR_INVALID_FILE_EXTENSION);
 	return (0);
 }

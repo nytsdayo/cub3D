@@ -12,8 +12,25 @@
 
 #include "parse.h"
 #include "utils.h"
+#include "error_manage.h"
 #include <stdlib.h>
 #include <unistd.h>
+
+static const char	*get_value_ptr(const char *line, t_identifier id)
+{
+	int	i;
+
+	i = 0;
+	while (ft_isspace(line[i]))
+		i++;
+	if (id >= ID_NO && id <= ID_EA)
+		i += 2;
+	else
+		i += 1;
+	while (ft_isspace(line[i]))
+		i++;
+	return (line + i);
+}
 
 static int	store_texture_path(t_identifier id, const char *line,
 				t_config_data *config)
@@ -21,8 +38,12 @@ static int	store_texture_path(t_identifier id, const char *line,
 	char	*path;
 
 	path = extract_texture_path(line, id);
-	if (!path || access(path, R_OK) != 0)
-		return (free(path), -1);
+	if (get_error_status() != 0)
+		return (-1);
+	if (!path)
+		return (set_error_status(ERR_MALLOC_FAILURE), -1);
+	if (access(path, R_OK) != 0)
+		return (set_error_status(ERR_FILE_READ_PERMISSION), free(path), -1);
 	if (id == ID_NO)
 		config->north_texture_path = path;
 	else if (id == ID_SO)
@@ -38,11 +59,23 @@ static int	store_config_value(t_identifier id, const char *line,
 				t_config_data *config)
 {
 	if (id >= ID_NO && id <= ID_EA)
-		return (store_texture_path(id, line, config));
+	{
+		store_texture_path(id, line, config);
+		if (get_error_status() != 0)
+			return (-1);
+	}
 	else if (id == ID_F)
-		return (parse_rgb_color(line + 1, &config->floor_color));
+	{
+		parse_rgb_color(get_value_ptr(line, id), &config->floor_color);
+		if (get_error_status() != 0)
+			return (-1);
+	}
 	else if (id == ID_C)
-		return (parse_rgb_color(line + 1, &config->ceiling_color));
+	{
+		parse_rgb_color(get_value_ptr(line, id), &config->ceiling_color);
+		if (get_error_status() != 0)
+			return (-1);
+	}
 	return (0);
 }
 
@@ -51,9 +84,12 @@ static int	process_config_line(const char *line, t_config_data *config)
 	t_identifier	id;
 
 	id = detect_identifier(line);
+	if (get_error_status() != 0)
+		return (-1);
 	if (id == ID_UNKNOWN)
 		return (-1);
-	if (store_config_value(id, line, config) != 0)
+	store_config_value(id, line, config);
+	if (get_error_status() != 0)
 		return (-1);
 	return (0);
 }
@@ -72,7 +108,8 @@ int	load_config(const char **input_data, t_config_data *config)
 			i++;
 			continue ;
 		}
-		if (process_config_line(input_data[i], config) != 0)
+		process_config_line(input_data[i], config);
+		if (get_error_status() != 0)
 			return (-1);
 		loaded_count++;
 		i++;

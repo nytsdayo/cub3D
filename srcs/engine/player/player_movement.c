@@ -13,6 +13,8 @@
 #include "cub3d.h"
 #include "player.h"
 
+static int	is_wall(t_game *game, double x, double y);
+
 /*
 ** move_forward
 ** プレイヤーを前方に移動（方向ベクトルに沿って）
@@ -108,4 +110,33 @@ void	move_right(t_game *game)
 	move.x = game->player.plane_x;
 	move.y = game->player.plane_y;
 	try_wall_slide(game, new_x, new_y, move);
+}
+
+/*
+** is_wall
+** 指定位置の当たり判定をマージン付きでチェック
+** プレイヤーのバウンディングボックス四隅を確認
+*/
+static int	is_wall(t_game *game, double x, double y)
+{
+	int	x1;
+	int	x2;
+	int	y1;
+	int	y2;
+
+	x1 = (int)(x - COLLISION_MARGIN);
+	x2 = (int)(x + COLLISION_MARGIN);
+	y1 = (int)(y - COLLISION_MARGIN);
+	y2 = (int)(y + COLLISION_MARGIN);
+	if (x1 < 0 || x2 >= game->map_width || y1 < 0 || y2 >= game->map_height)
+		return (1);
+	if (game->world_map[y1][x1] != 0)
+		return (1);
+	if (game->world_map[y1][x2] != 0)
+		return (1);
+	if (game->world_map[y2][x1] != 0)
+		return (1);
+	if (game->world_map[y2][x2] != 0)
+		return (1);
+	return (0);
 }

@@ -18,13 +18,21 @@ TOTAL_TESTS=0
 PASSED_TESTS=0
 FAILED_TESTS=0
 
+# Array to store failed test details
+declare -a FAILED_TEST_DETAILS
+
 # Get the directory where this script is located
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 # Paths
 if [ -n "$PARSER_BIN" ]; then
-    CUB3D_BIN="$PARSER_BIN"
+    # Convert to absolute path if it's a relative path
+    if [[ "$PARSER_BIN" != /* ]]; then
+        CUB3D_BIN="$(cd "$(dirname "$PARSER_BIN")" && pwd)/$(basename "$PARSER_BIN")"
+    else
+        CUB3D_BIN="$PARSER_BIN"
+    fi
 else
     CUB3D_BIN="${PROJECT_ROOT}/cub3D"
 fi
@@ -35,6 +43,10 @@ SUCCESS_DIRS=(
 # Failure case directories (should fail)
 FAILED_DIRS=(
     "${PROJECT_ROOT}/assets/maps/Failed"
+)
+# Ambiguous case directories (behavior undefined, skipped)
+AMBIGUOUS_DIRS=(
+    "${PROJECT_ROOT}/assets/maps/Ambiguous"
 )
 
 echo "=========================================="
@@ -67,12 +79,15 @@ for SUCCESS_DIR in "${SUCCESS_DIRS[@]}"; do
 
             if [ -x "$CUB3D_BIN" ]; then
                 # Run the parser only (skip rendering) with timeout, from project root
-                if timeout 10s sh -c "cd '$PROJECT_ROOT' && '$CUB3D_BIN' '$map_file'" &> /dev/null; then
+                ERROR_OUTPUT=$(timeout 10s sh -c "cd '$PROJECT_ROOT' && '$CUB3D_BIN' '$map_file'" 2>&1)
+                EXIT_CODE=$?
+                if [ $EXIT_CODE -eq 0 ]; then
                     echo -e "${GREEN}✓ PASSED${NC}"
                     PASSED_TESTS=$((PASSED_TESTS + 1))
                 else
                     echo -e "${RED}✗ FAILED (should have succeeded)${NC}"
                     FAILED_TESTS=$((FAILED_TESTS + 1))
+                    FAILED_TEST_DETAILS+=("SUCCESS: $map_name|$ERROR_OUTPUT")
                 fi
             else
                 echo -e "${YELLOW}SKIPPED (binary not found)${NC}"
@@ -102,9 +117,12 @@ for FAILED_DIR in "${FAILED_DIRS[@]}"; do
 
             if [ -x "$CUB3D_BIN" ]; then
                 # Run the parser only (skip rendering) - should fail (timeout also counts as failure)
-                if timeout 10s sh -c "cd '$PROJECT_ROOT' && '$CUB3D_BIN' '$map_file'" &> /dev/null; then
+                ERROR_OUTPUT=$(timeout 10s sh -c "cd '$PROJECT_ROOT' && '$CUB3D_BIN' '$map_file'" 2>&1)
+                EXIT_CODE=$?
+                if [ $EXIT_CODE -eq 0 ]; then
                     echo -e "${RED}✗ FAILED (should have failed)${NC}"
                     FAILED_TESTS=$((FAILED_TESTS + 1))
+                    FAILED_TEST_DETAILS+=("FAILURE: $map_name|Expected failure but succeeded")
                 else
                     echo -e "${GREEN}✓ PASSED${NC}"
                     PASSED_TESTS=$((PASSED_TESTS + 1))
@@ -115,6 +133,25 @@ for FAILED_DIR in "${FAILED_DIRS[@]}"; do
         done < <(find "$FAILED_DIR" -name "*.cub" -type f -print0 | sort -z)
     else
         echo "Failed maps directory not found: $FAILED_DIR"
+    fi
+done
+
+echo ""
+
+# List ambiguous cases (not tested)
+echo "----------------------------------------"
+echo "AMBIGUOUS cases (skipped, behavior undefined):"
+echo "----------------------------------------"
+for AMBIGUOUS_DIR in "${AMBIGUOUS_DIRS[@]}"; do
+    if [ -d "$AMBIGUOUS_DIR" ]; then
+        DIR_NAME=$(basename "$AMBIGUOUS_DIR")
+        echo ""
+        echo "Directory: $DIR_NAME"
+        echo "---"
+        while IFS= read -r -d '' map_file; do
+            map_name="${map_file#$AMBIGUOUS_DIR/}"
+            echo -e "  $map_name ... ${YELLOW}SKIPPED (ambiguous)${NC}"
+        done < <(find "$AMBIGUOUS_DIR" -name "*.cub" -type f -print0 | sort -z)
     fi
 done
 
@@ -132,6 +169,22 @@ if [ -f "$CUB3D_BIN" ]; then
         echo -e "${GREEN}All tests passed! 🎉${NC}"
         exit 0
     else
+        echo ""
+        echo "=========================================="
+        echo "Failed Test Details"
+        echo "=========================================="
+        for detail in "${FAILED_TEST_DETAILS[@]}"; do
+            # Split by special delimiter (first line is test name, rest is error)
+            test_name="${detail%%|*}"
+            error_msg="${detail#*|}"
+            echo ""
+            echo -e "${RED}▸ $test_name${NC}"
+            echo "  Error output:"
+            # Indent error message
+            echo "$error_msg" | sed 's/^/    /'
+        done
+        echo ""
+        echo "=========================================="
         echo ""
         echo -e "${RED}Some tests failed.${NC}"
         exit 1

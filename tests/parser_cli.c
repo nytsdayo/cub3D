@@ -1,6 +1,5 @@
 #include "parse.h"
 #include "utils.h"
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -9,14 +8,10 @@ int main(int argc, char *argv[])
     t_game_data game_data;
 
     if (argc != 2)
-    {
-        fprintf(stderr, "Usage: %s <map.cub>\n", argv[0]);
         return EXIT_FAILURE;
-    }
     memset(&game_data, 0, sizeof(t_game_data));
     if (parse(argv[1], &game_data) != 0)
     {
-        write(2, "Error\nFailed to parse map\n", 26);
         free_config_data(&game_data.config);
         if (game_data.map.map)
             free_map((void **)game_data.map.map);

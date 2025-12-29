@@ -34,12 +34,25 @@ bool	is_valid_char(char c)
  */
 size_t	count_map_lines(char **input_data, size_t line_index)
 {
-	size_t	count;
+	size_t	i;
+	size_t	last_content;
+	int		found_content;
 
-	count = 0;
-	while (input_data[line_index + count])
-		count++;
-	return (count);
+	i = line_index;
+	last_content = line_index;
+	found_content = 0;
+	while (input_data[i])
+	{
+		if (!is_blank_line(input_data[i]))
+		{
+			last_content = i;
+			found_content = 1;
+		}
+		i++;
+	}
+	if (!found_content)
+		return (0);
+	return (last_content - line_index + 1);
 }
 
 /**

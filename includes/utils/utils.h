@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rnakatan <rnakatan@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rnakatan <rnakatan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 19:25:29 by rnakatan          #+#    #+#             */
-/*   Updated: 2025/12/27 05:47:09 by rnakatan         ###   ########.fr       */
+/*   Updated: 2025/12/29 22:58:10 by rnakatan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "cub3d.h"
 # include "parse.h"
+# include "error_manage.h"
 # include <stddef.h>
 
 size_t		ft_strlen(const char *s);
@@ -27,6 +28,7 @@ int			ft_isdigit(int c);
 int			is_blank_line(const char *line);
 const char	**read_map(const char *filename);
 void		free_map(void **map);
+char		*resize_buffer(char *old, int old_size, int new_size);
 
 /* Cleanup */
 void		cleanup_game(t_game *game);

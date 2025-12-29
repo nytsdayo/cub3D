@@ -21,7 +21,7 @@ PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 # Paths
 CUB3D_BIN="${PROJECT_ROOT}/cub3D"
-GOOD_MAPS_DIR="${PROJECT_ROOT}/assets/maps/good"
+GOOD_MAPS_DIR="${PROJECT_ROOT}/assets/maps/Success"
 
 echo "=========================================="
 echo "cub3D Memory Leak Check with Valgrind"
