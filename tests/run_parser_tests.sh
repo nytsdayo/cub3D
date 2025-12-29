@@ -4,12 +4,8 @@
 # This script tests the parser with various map files
 #
 # Directory structure:
-#   - assets/maps/good/    -> Valid maps (should pass)
-#   - assets/maps/success/ -> Valid maps (should pass)
-#   - assets/maps/bad/     -> Invalid maps (should fail)
-#   - assets/maps/failed/  -> Invalid maps (should fail)
-#   - assets/maps/test/    -> Incomplete test maps (not tested)
-#   - assets/maps/Failed/  -> Empty directory (not tested)
+#   - assets/maps/Success/ -> Valid maps (should pass)
+#   - assets/maps/Failed/  -> Invalid maps (should fail)
 
 # Colors for output
 GREEN='\033[0;32m'
@@ -37,13 +33,11 @@ else
 fi
 # Success case directories (should pass)
 SUCCESS_DIRS=(
-    "${PROJECT_ROOT}/assets/maps/success"
-    "${PROJECT_ROOT}/assets/maps/good"
+    "${PROJECT_ROOT}/assets/maps/Success"
 )
 # Failure case directories (should fail)
 FAILED_DIRS=(
-    "${PROJECT_ROOT}/assets/maps/failed"
-    "${PROJECT_ROOT}/assets/maps/bad"
+    "${PROJECT_ROOT}/assets/maps/Failed"
 )
 
 echo "=========================================="
