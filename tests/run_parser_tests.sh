@@ -44,6 +44,10 @@ SUCCESS_DIRS=(
 FAILED_DIRS=(
     "${PROJECT_ROOT}/assets/maps/Failed"
 )
+# Ambiguous case directories (behavior undefined, skipped)
+AMBIGUOUS_DIRS=(
+    "${PROJECT_ROOT}/assets/maps/Ambiguous"
+)
 
 echo "=========================================="
 echo "cub3D Parser Test Suite"
@@ -129,6 +133,25 @@ for FAILED_DIR in "${FAILED_DIRS[@]}"; do
         done < <(find "$FAILED_DIR" -name "*.cub" -type f -print0 | sort -z)
     else
         echo "Failed maps directory not found: $FAILED_DIR"
+    fi
+done
+
+echo ""
+
+# List ambiguous cases (not tested)
+echo "----------------------------------------"
+echo "AMBIGUOUS cases (skipped, behavior undefined):"
+echo "----------------------------------------"
+for AMBIGUOUS_DIR in "${AMBIGUOUS_DIRS[@]}"; do
+    if [ -d "$AMBIGUOUS_DIR" ]; then
+        DIR_NAME=$(basename "$AMBIGUOUS_DIR")
+        echo ""
+        echo "Directory: $DIR_NAME"
+        echo "---"
+        while IFS= read -r -d '' map_file; do
+            map_name="${map_file#$AMBIGUOUS_DIR/}"
+            echo -e "  $map_name ... ${YELLOW}SKIPPED (ambiguous)${NC}"
+        done < <(find "$AMBIGUOUS_DIR" -name "*.cub" -type f -print0 | sort -z)
     fi
 done
 
