@@ -25,16 +25,16 @@ void	calc_texture_coords(t_game *game, t_ray *ray)
 			* ray->ray_dir_x;
 	ray->wall_x -= floor(ray->wall_x);
 	if (ray->side == 0 && ray->ray_dir_x < 0)
-		texture = &game->textures.west;
-	else if (ray->side == 0 && ray->ray_dir_x >= 0)
 		texture = &game->textures.east;
+	else if (ray->side == 0 && ray->ray_dir_x >= 0)
+		texture = &game->textures.west;
 	else if (ray->side == 1 && ray->ray_dir_y < 0)
-		texture = &game->textures.north;
-	else
 		texture = &game->textures.south;
+	else
+		texture = &game->textures.north;
 	ray->tex_x = (int)(ray->wall_x * (double)texture->width);
-	if (ray->side == 0 && ray->ray_dir_x > 0)
+	if (ray->side == 0 && ray->ray_dir_x < 0)
 		ray->tex_x = texture->width - ray->tex_x - 1;
-	if (ray->side == 1 && ray->ray_dir_y < 0)
+	if (ray->side == 1 && ray->ray_dir_y >= 0)
 		ray->tex_x = texture->width - ray->tex_x - 1;
 }
