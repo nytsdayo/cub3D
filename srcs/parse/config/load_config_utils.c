@@ -55,7 +55,7 @@ int	parse_rgb_component(const char *str, int *idx)
 	return (value);
 }
 
-int	parse_rgb_color(const char *line, t_rgb *color)
+int	parse_rgb_color(const char *line, t_color *color)
 {
 	int	i;
 	int	r;

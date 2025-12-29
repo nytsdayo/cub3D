@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rnakatan <rnakatan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rnakatan <rnakatan@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 19:05:14 by mkawano           #+#    #+#             */
-/*   Updated: 2025/12/29 23:14:45 by rnakatan         ###   ########.fr       */
+/*   Updated: 2025/12/29 23:31:15 by rnakatan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,17 +30,6 @@
 # define WINDOW_WIDTH 800
 # define WINDOW_HEIGHT 600
 # define TITLE "cub3D"
-
-/* Map Cell Types */
-typedef enum e_cell_type
-{
-	FLOOR = 0,
-	WALL = 1
-}	t_cell_type;
-
-/* Player Position Constants */
-# define GRID_CENTER_OFFSET 0.5
-# define DEFAULT_PLAYER_POS 3.5
 
 /* Raycasting Constants */
 /* - CAMERA_PLANE_LENGTH
@@ -102,20 +91,6 @@ typedef enum e_cell_type
 # define ON_DESTROY 17
 
 /* Player Structure */
-/* - pos
- *   - プレイヤーの現在位置座標
- * - dir
- *   - プレイヤーの向きベクトル（視線の中心方向）、長さは常に1
- *   - 懐中電灯で例えると
- *     - ライトを向けている中心方向（一番明るい真ん中の光軸）
- *     - FOV光の広がり具合（照射角度）、広いライトか狭いスポットライトか
- *       - 狭いスポットライトなのか、広いワイドライトなのか、という「性能」
- * - plan: dirに垂直な平面ベクトル(FOV実現のために必須)
- *   - Camera Plane Vector(カメラ平面)
- *   - dirに垂直なベクトル
- *   - FOVという性能を具体的に「ベクトルの長さ」として表現する
- *   - plane が長い＝ワイドライト（広角）、短い＝スポットライト（狭角）
-*/
 typedef struct s_player
 {
 	double		pos_x;
@@ -127,12 +102,6 @@ typedef struct s_player
 }				t_player;
 
 /* Image Structure */
-/* img: mlx_new_image()で作成したイメージオブジェクトへのポインタ
- * addr:  mlx_get_data_addr()で取得したピクセルバッファのアドレス
- * bits_per_pixel: 1ピクセルのビット数（32bit = RGBA各8bit）
- * line_length: メモリ上の1行のバイト数（幅x4とは限らないので）
- * endian: バイトオーダー（0=little, 1=big）
- */
 typedef struct s_img
 {
 	void		*img;
@@ -153,13 +122,13 @@ typedef struct s_texture
 	int			height;
 }				t_texture;
 
-/* RGB Color Structure */
-typedef struct s_rgb
+/* Color Structure for Floor/Ceiling */
+typedef struct s_color
 {
 	int			r;
 	int			g;
 	int			b;
-}				t_rgb;
+}				t_color;
 
 /* Game Structure */
 typedef struct s_game
@@ -173,8 +142,8 @@ typedef struct s_game
 	t_player	player;
 	t_img		img;
 	t_texture	textures;
-	t_rgb		floor_color;
-	t_rgb		ceiling_color;
+	t_color		floor_color;
+	t_color		ceiling_color;
 	int			keys[KEY_STATE_SIZE];
 }				t_game;
 

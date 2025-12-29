@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mkawano <mkawano@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/27 00:10:57 by mkawano           #+#    #+#             */
-/*   Updated: 2025/12/28 01:37:41 by mkawano          ###   ########.fr       */
+/*   Created: 2025/12/27 00:00:00 by mkawano           #+#    #+#             */
+/*   Updated: 2025/12/28 00:00:00 by mkawano          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int			**allocate_world_map(int width, int height);
 
 /*
 ** マップをint配列に変換
-** '1' = 壁、'0' or N/S/E/W = 床
+** '1' = 壁、'0' or N/S/E/W = 空間
 */
 void	init_world_map(t_game *game)
 {
@@ -40,13 +40,13 @@ void	init_world_map(t_game *game)
 		while (j < game->map_width && game->map[i] && game->map[i][j])
 		{
 			if (game->map[i][j] == '1')
-				game->world_map[i][j] = WALL;
+				game->world_map[i][j] = 1;
 			else
-				game->world_map[i][j] = FLOOR;
+				game->world_map[i][j] = 0;
 			j++;
 		}
 		while (j < game->map_width)
-			game->world_map[i][j++] = FLOOR;
+			game->world_map[i][j++] = 0;
 		i++;
 	}
 }
@@ -62,18 +62,18 @@ void	init_player(t_game *game)
 
 	if (find_player_position(game->map, &player_x, &player_y, &direction))
 	{
-		game->player.pos_x = (double)player_x + GRID_CENTER_OFFSET;
-		game->player.pos_y = (double)player_y + GRID_CENTER_OFFSET;
+		game->player.pos_x = (double)player_x + 0.5;
+		game->player.pos_y = (double)player_y + 0.5;
 		set_player_direction(&game->player, direction);
 	}
 	else
 	{
-		game->player.pos_x = DEFAULT_PLAYER_POS;
-		game->player.pos_y = DEFAULT_PLAYER_POS;
-		game->player.dir_x = 0.0;
-		game->player.dir_y = -1.0;
-		game->player.plane_x = CAMERA_PLANE_LENGTH;
-		game->player.plane_y = 0.0;
+		game->player.pos_x = 3.5;
+		game->player.pos_y = 3.5;
+		game->player.dir_x = -1.0;
+		game->player.dir_y = 0.0;
+		game->player.plane_x = 0.0;
+		game->player.plane_y = 0.66;
 	}
 }
 
@@ -107,17 +107,17 @@ static void	set_player_direction(t_player *player, char direction)
 {
 	if (direction == 'N')
 	{
-		player->dir_x = 0.0;
-		player->dir_y = -1.0;
-		player->plane_x = CAMERA_PLANE_LENGTH;
-		player->plane_y = 0.0;
+		player->dir_x = -1.0;
+		player->dir_y = 0.0;
+		player->plane_x = 0.0;
+		player->plane_y = 0.66;
 	}
 	else if (direction == 'S')
 	{
-		player->dir_x = 0.0;
-		player->dir_y = 1.0;
-		player->plane_x = -CAMERA_PLANE_LENGTH;
-		player->plane_y = 0.0;
+		player->dir_x = 1.0;
+		player->dir_y = 0.0;
+		player->plane_x = 0.0;
+		player->plane_y = -0.66;
 	}
 	else
 		set_player_dir_ew(player, direction);
@@ -127,16 +127,16 @@ static void	set_player_dir_ew(t_player *player, char direction)
 {
 	if (direction == 'E')
 	{
-		player->dir_x = 1.0;
-		player->dir_y = 0.0;
-		player->plane_x = 0.0;
-		player->plane_y = CAMERA_PLANE_LENGTH;
+		player->dir_x = 0.0;
+		player->dir_y = 1.0;
+		player->plane_x = 0.66;
+		player->plane_y = 0.0;
 	}
 	else if (direction == 'W')
 	{
-		player->dir_x = -1.0;
-		player->dir_y = 0.0;
-		player->plane_x = 0.0;
-		player->plane_y = -CAMERA_PLANE_LENGTH;
+		player->dir_x = 0.0;
+		player->dir_y = -1.0;
+		player->plane_x = -0.66;
+		player->plane_y = 0.0;
 	}
 }

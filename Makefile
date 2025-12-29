@@ -72,7 +72,6 @@ SRCS = $(SRC_DIR)/main.c \
 	   $(SRC_DIR)/engine/player/player_movement.c \
 	   $(SRC_DIR)/engine/player/player_rotation.c \
 	   $(SRC_DIR)/engine/player/player_slide.c \
-	   $(SRC_DIR)/engine/player/player_collision.c \
 	   $(SRC_DIR)/engine/texture/texture_init.c \
 	   $(SRC_DIR)/engine/texture/texture_utils.c \
 	   $(SRC_DIR)/engine/texture/texture_cleanup.c \
