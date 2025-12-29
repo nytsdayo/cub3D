@@ -141,10 +141,10 @@ unit: $(UNIT_TESTS)
 	./$(TEST_PARSE_MAP)
 
 parser-tests: create-forbidden-map
-	$(MAKE) $(PARSER_BIN)
+	@$(MAKE) $(PARSER_BIN) || ($(MAKE) clean-forbidden-map && exit 1)
 	@chmod +x ./run_parser_tests.sh
-	PARSER_BIN="$(PARSER_BIN)" ./run_parser_tests.sh
-	$(MAKE) clean-forbidden-map
+	@PARSER_BIN="$(PARSER_BIN)" ./run_parser_tests.sh || ($(MAKE) clean-forbidden-map && exit 1)
+	@$(MAKE) clean-forbidden-map
 
 leak-check:
 	@if [ ! -x "$(CUB3D_BIN)" ]; then $(MAKE) -C $(ROOT_DIR); fi
