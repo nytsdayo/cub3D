@@ -14,13 +14,12 @@
 #include "utils.h"
 #include <stdlib.h>
 
-void	cleanup_resources(t_cleanup_data *cleanup_data)
-{
-	if (!cleanup_data)
-		return ;
-	if (cleanup_data->config)
-		free_config_data(cleanup_data->config);
-	if (cleanup_data->map)
-		free_map((void **)cleanup_data->map);
-	free(cleanup_data);
+void cleanup_resources(t_cleanup_data *cleanup_data) {
+  if (!cleanup_data)
+    return;
+  if (cleanup_data->config)
+    free_config_data(cleanup_data->config);
+  if (cleanup_data->map)
+    free_map((void **)cleanup_data->map);
+  free(cleanup_data);
 }

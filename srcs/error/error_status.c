@@ -12,19 +12,10 @@
 
 #include "error_manage.h"
 
-static t_error_code	g_error_status = 0;
+static t_error_code g_error_status = 0;
 
-void	set_error_status(t_error_code error_code)
-{
-	g_error_status = error_code;
-}
+void set_error_status(t_error_code error_code) { g_error_status = error_code; }
 
-t_error_code	get_error_status(void)
-{
-	return (g_error_status);
-}
+t_error_code get_error_status(void) { return (g_error_status); }
 
-void	clear_error_status(void)
-{
-	g_error_status = 0;
-}
+void clear_error_status(void) { g_error_status = 0; }

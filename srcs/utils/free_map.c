@@ -12,17 +12,15 @@
 
 #include "utils.h"
 
-void	free_map(void **map)
-{
-	size_t	i;
+void free_map(void **map) {
+  size_t i;
 
-	if (map == NULL)
-		return ;
-	i = 0;
-	while (map[i] != NULL)
-	{
-		free(map[i]);
-		i++;
-	}
-	free(map);
+  if (map == NULL)
+    return;
+  i = 0;
+  while (map[i] != NULL) {
+    free(map[i]);
+    i++;
+  }
+  free(map);
 }
