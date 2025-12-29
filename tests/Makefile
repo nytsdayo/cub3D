@@ -168,22 +168,22 @@ $(PARSER_BIN): $(PARSER_OBJS)
 
 create-forbidden-map:
 	@echo "Creating forbidden.cub for permission test..."
-	@echo "NO textures/wolfenstein/grey_stone.xpm" > $(ROOT_DIR)/assets/maps/Failed/forbidden.cub
-	@echo "SO textures/wolfenstein/purple_stone.xpm" >> $(ROOT_DIR)/assets/maps/Failed/forbidden.cub
-	@echo "WE textures/wolfenstein/red_brick.xpm" >> $(ROOT_DIR)/assets/maps/Failed/forbidden.cub
-	@echo "EA textures/wolfenstein/wood.xpm" >> $(ROOT_DIR)/assets/maps/Failed/forbidden.cub
-	@echo "" >> $(ROOT_DIR)/assets/maps/Failed/forbidden.cub
-	@echo "F 18,53,25" >> $(ROOT_DIR)/assets/maps/Failed/forbidden.cub
-	@echo "C 153,204,255" >> $(ROOT_DIR)/assets/maps/Failed/forbidden.cub
-	@echo "" >> $(ROOT_DIR)/assets/maps/Failed/forbidden.cub
-	@echo "111111111111" >> $(ROOT_DIR)/assets/maps/Failed/forbidden.cub
-	@echo "1         11" >> $(ROOT_DIR)/assets/maps/Failed/forbidden.cub
-	@echo "1          1" >> $(ROOT_DIR)/assets/maps/Failed/forbidden.cub
-	@echo "111111111111" >> $(ROOT_DIR)/assets/maps/Failed/forbidden.cub
-	@echo "10S000000001" >> $(ROOT_DIR)/assets/maps/Failed/forbidden.cub
-	@echo "111111111111" >> $(ROOT_DIR)/assets/maps/Failed/forbidden.cub
-	@echo "11         1" >> $(ROOT_DIR)/assets/maps/Failed/forbidden.cub
-	@echo "111111111111" >> $(ROOT_DIR)/assets/maps/Failed/forbidden.cub
+	@printf "NO textures/wolfenstein/grey_stone.xpm\n" > $(ROOT_DIR)/assets/maps/Failed/forbidden.cub
+	@printf "SO textures/wolfenstein/purple_stone.xpm\n" >> $(ROOT_DIR)/assets/maps/Failed/forbidden.cub
+	@printf "WE textures/wolfenstein/red_brick.xpm\n" >> $(ROOT_DIR)/assets/maps/Failed/forbidden.cub
+	@printf "EA textures/wolfenstein/wood.xpm\n" >> $(ROOT_DIR)/assets/maps/Failed/forbidden.cub
+	@printf "\n" >> $(ROOT_DIR)/assets/maps/Failed/forbidden.cub
+	@printf "F 18,53,25\n" >> $(ROOT_DIR)/assets/maps/Failed/forbidden.cub
+	@printf "C 153,204,255\n" >> $(ROOT_DIR)/assets/maps/Failed/forbidden.cub
+	@printf "\n" >> $(ROOT_DIR)/assets/maps/Failed/forbidden.cub
+	@printf "111111111111\n" >> $(ROOT_DIR)/assets/maps/Failed/forbidden.cub
+	@printf "1         11\n" >> $(ROOT_DIR)/assets/maps/Failed/forbidden.cub
+	@printf "1          1\n" >> $(ROOT_DIR)/assets/maps/Failed/forbidden.cub
+	@printf "111111111111\n" >> $(ROOT_DIR)/assets/maps/Failed/forbidden.cub
+	@printf "10S000000001\n" >> $(ROOT_DIR)/assets/maps/Failed/forbidden.cub
+	@printf "111111111111\n" >> $(ROOT_DIR)/assets/maps/Failed/forbidden.cub
+	@printf "11         1\n" >> $(ROOT_DIR)/assets/maps/Failed/forbidden.cub
+	@printf "111111111111\n" >> $(ROOT_DIR)/assets/maps/Failed/forbidden.cub
 	@chmod 000 $(ROOT_DIR)/assets/maps/Failed/forbidden.cub
 
 clean-forbidden-map:
