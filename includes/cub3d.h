@@ -31,11 +31,22 @@
 # define WINDOW_HEIGHT 600
 # define TITLE "cub3D"
 
+/* Map Cell Types */
+typedef enum e_cell_type
+{
+	FLOOR = 0,
+	WALL = 1
+}	t_cell_type;
+
+/* Player Position Constants */
+# define GRID_CENTER_OFFSET 0.5
+# define DEFAULT_PLAYER_POS 3.5
+
 /* Raycasting Constants */
-/* - FOV
- *   - Field of View
- *   - 視野角（見える範囲の角度の広さ）
- *   - 通常60〜90度が使われる
+/* - CAMERA_PLANE_LENGTH
+ *   - カメラ平面ベクトルの長さ
+ *   - FOVを決定: tan(FOV/2) ≈ 0.66 で FOV ≈ 66度
+ *   - 値が大きい = 広角、小さい = 狭角
  * - MOVE_PER_FRAME:
  *   - Per-frame movement (in grid units)
  *   - フレームあたりの移動量/速度(グリッド単位/frame)
@@ -45,7 +56,7 @@
  *  - COLLISION_MARGIN
  *   - 衝突判定の余白（壁衝突を防ぐ）
  */
-# define FOV 60.0
+# define CAMERA_PLANE_LENGTH 0.66
 # define MOVE_PER_FRAME 0.1
 # define ROT_PER_FRAME 0.05
 # define COLLISION_MARGIN 0.2
