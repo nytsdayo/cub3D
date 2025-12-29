@@ -16,7 +16,7 @@
 #include <stdlib.h>
 
 static int	skip_config_lines(const char **input_data, size_t *line_index);
-static int	process_line(const char *line, size_t *id_count, int *done);
+static int	process_config_line(const char *line, size_t *id_count, int *done);
 
 int	load_data(const char **input_data, void *data)
 {
@@ -46,7 +46,7 @@ static int	skip_config_lines(const char **input_data, size_t *line_index)
 	done = 0;
 	while (input_data[*line_index] && !done)
 	{
-		if (process_line(input_data[*line_index], &id_count, &done) != 0)
+		if (process_config_line(input_data[*line_index], &id_count, &done) != 0)
 			return (-1);
 		if (get_error_status() != 0)
 			return (-1);
@@ -58,7 +58,7 @@ static int	skip_config_lines(const char **input_data, size_t *line_index)
 	return (0);
 }
 
-static int	process_line(const char *line, size_t *id_count, int *done)
+static int	process_config_line(const char *line, size_t *id_count, int *done)
 {
 	t_identifier	id;
 
