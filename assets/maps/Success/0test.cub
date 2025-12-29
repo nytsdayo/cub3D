@@ -1,13 +1,12 @@
-NO assets/textures/cub3_north.xpm
-SO assets/textures/cub3_south.xpm
-WE assets/textures/cub3_west.xpm
-EA assets/textures/cub3_east.xpm
+NO assets/textures/nyan/north.xpm
+SO assets/textures/nyan/south.xpm
+WE assets/textures/nyan/west.xpm
+EA assets/textures/nyan/east.xpm
 
-C 10,10,10
-F 125,255,64
-
-11111
-10001
-10S01
-10001
-11111
+F 255 , 255 , 255
+C 0 , 100 , 200
+111111111
+100000001
+1000N0001
+100000001
+111111111
