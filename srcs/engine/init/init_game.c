@@ -33,6 +33,9 @@ int	init_game(t_game *game, t_config_data *config)
 	i = 0;
 	while (i < 256)
 		game->keys[i++] = 0;
+	game->mouse_pressed = 0;
+	game->last_mouse_x = 0;
+	game->last_mouse_y = 0;
 	if (init_mlx(game) != 0)
 		return (1);
 	init_image(game);
