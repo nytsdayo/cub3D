@@ -49,6 +49,7 @@ PARSE_CONFIG_C_SRCS = $(SRC_DIR)/parse/config/parse_config.c \
 					  $(SRC_DIR)/utils/ft_isdigit.c \
 					  $(SRC_DIR)/utils/is_blank_line.c \
 					  $(SRC_DIR)/utils/read_map.c \
+					  $(SRC_DIR)/utils/read_map_utils.c \
 					  $(SRC_DIR)/utils/free_map.c \
 					  $(SRC_DIR)/error/error_msg.c
 
@@ -66,6 +67,7 @@ TEST_MAP_C_SRCS = $(SRC_DIR)/parse/map/parse_map.c \
 				  $(SRC_DIR)/utils/is_blank_line.c \
 				  $(SRC_DIR)/utils/ft_isspace.c \
 				  $(SRC_DIR)/utils/read_map.c \
+				  $(SRC_DIR)/utils/read_map_utils.c \
 				  $(SRC_DIR)/utils/free_map.c \
 				  $(SRC_DIR)/error/error_msg.c
 
@@ -91,6 +93,7 @@ PARSER_SRCS = $(SRC_DIR)/parse/parse.c \
 			  $(SRC_DIR)/utils/ft_isdigit.c \
 			  $(SRC_DIR)/utils/is_blank_line.c \
 			  $(SRC_DIR)/utils/read_map.c \
+			  $(SRC_DIR)/utils/read_map_utils.c \
 			  $(SRC_DIR)/utils/free_map.c \
 			  $(SRC_DIR)/utils/free_config_data.c \
 			  $(SRC_DIR)/error/error_msg.c \
