@@ -52,7 +52,6 @@ int	validate_config(char **input_data, size_t *line_index)
 		id = detect_identifier(input_data[*line_index]);
 		if (id == ID_UNKNOWN)
 		{
-			error_msg("Error\nUnknown identifier\n");
 			set_error_status(ERR_UNKNOWN_IDENTIFIER);
 			return (-1);
 		}
@@ -64,7 +63,6 @@ int	validate_config(char **input_data, size_t *line_index)
 	}
 	if (!all_identifiers_found(seen_flags))
 	{
-		error_msg("Error\nMissing identifier\n");
 		set_error_status(ERR_MISSING_IDENTIFIER);
 		return (-1);
 	}
@@ -124,7 +122,6 @@ static int	validate_identifier_line(const char *line,
 	idx = get_identifier_index(id);
 	if (seen_flags[idx] > 0)
 	{
-		error_msg("Error\nDuplicate identifier\n");
 		set_error_status(ERR_DUPLICATE_IDENTIFIER);
 		return (-1);
 	}
@@ -134,7 +131,6 @@ static int	validate_identifier_line(const char *line,
 	{
 		if (validate_texture_format(line + 2, id) != 0)
 		{
-			error_msg("Error\nInvalid texture path\n");
 			set_error_status(ERR_SYNTAX_TEXTURE);
 			return (-1);
 		}
@@ -143,7 +139,6 @@ static int	validate_identifier_line(const char *line,
 	{
 		if (validate_rgb_format(line + 1) != 0)
 		{
-			error_msg("Error\nInvalid RGB value\n");
 			set_error_status(ERR_SYNTAX_RGB);
 			return (-1);
 		}

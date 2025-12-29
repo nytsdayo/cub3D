@@ -44,7 +44,10 @@ static int	validate_no_empty_lines(char **input_data, size_t line_index,
 	while (i < map_lines)
 	{
 		if (is_blank_line(input_data[line_index + i]))
-			return (error_msg("Error: Empty line inside map\n"));
+		{
+			set_error_status(ERR_INVALID_CHARACTER);
+			return (-1);
+		}
 		i++;
 	}
 	return (0);
@@ -66,10 +69,16 @@ int	validate_map(char **input_data, size_t line_index)
 	while (input_data[line_index] && is_blank_line(input_data[line_index]))
 		line_index++;
 	if (!input_data[line_index])
-		return (error_msg("Error: Map not found after config\n"));
+	{
+		set_error_status(ERR_MINIMUM_MAP_SIZE);
+		return (-1);
+	}
 	map_lines = count_map_lines(input_data, line_index);
 	if (map_lines < MIN_MAP_SIZE)
-		return (error_msg("Error: Map is too small\n"));
+	{
+		set_error_status(ERR_MINIMUM_MAP_SIZE);
+		return (-1);
+	}
 	if (validate_no_empty_lines(input_data, line_index, map_lines) != 0)
 		return (-1);
 	max_len = get_max_line_length(input_data, line_index, map_lines);

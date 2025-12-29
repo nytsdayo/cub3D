@@ -38,7 +38,10 @@ int	validate_surrounded_by_walls(char **input_data, size_t line_index,
 	{
 		c = input_data[line_index][i];
 		if (c != ' ' && c != '1')
-			return (error_msg("Error: Top border must be all walls\n"));
+		{
+			set_error_status(ERR_WALL_ENCLOSURE);
+			return (-1);
+		}
 		i++;
 	}
 	i = 0;
@@ -46,7 +49,10 @@ int	validate_surrounded_by_walls(char **input_data, size_t line_index,
 	{
 		c = input_data[line_index + map_lines - 1][i];
 		if (c != ' ' && c != '1')
-			return (error_msg("Error: Bottom border must be all walls\n"));
+		{
+			set_error_status(ERR_WALL_ENCLOSURE);
+			return (-1);
+		}
 		i++;
 	}
 	return (check_side_borders(input_data, line_index, map_lines));
@@ -74,9 +80,15 @@ static int	check_row_borders(char **input_data, size_t line_index, size_t j)
 	else
 		right_idx = i - 1;
 	if (input_data[line_index + j][left_idx] != '1')
-		return (error_msg("Error: Left border must be a wall\n"));
+	{
+		set_error_status(ERR_WALL_ENCLOSURE);
+		return (-1);
+	}
 	if (input_data[line_index + j][right_idx] != '1')
-		return (error_msg("Error: Right border must be a wall\n"));
+	{
+		set_error_status(ERR_WALL_ENCLOSURE);
+		return (-1);
+	}
 	return (1);
 }
 

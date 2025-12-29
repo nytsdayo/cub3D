@@ -62,10 +62,16 @@ static int	check_dir(char **input_data, size_t line_index,
 	char	adj;
 
 	if (i >= map_lines)
-		return (error_msg("Error: Open space adjacent to void\n"));
+	{
+		set_error_status(ERR_SPACE_VOID_CONTACT);
+		return (-1);
+	}
 	row_len = ft_strlen(input_data[line_index + i]);
 	if (j >= row_len)
-		return (error_msg("Error: Open space adjacent to void\n"));
+	{
+		set_error_status(ERR_SPACE_VOID_CONTACT);
+		return (-1);
+	}
 	adj = input_data[line_index + i][j];
 	if (adj == ' ')
 		return (0);

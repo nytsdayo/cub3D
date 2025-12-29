@@ -27,7 +27,7 @@ int	load_data(const char **input_data, void *data)
 		return (-1);
 	line_index = 0;
 	if (skip_config_lines(input_data, &line_index) != 0)
-		return (error_msg("Error\n"));
+		return (-1);
 	if (load_map((char **)input_data, line_index, &game_data->map) != 0)
 		return (-1);
 	return (0);
