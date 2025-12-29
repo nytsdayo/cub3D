@@ -152,8 +152,9 @@ if [ -f "$CUB3D_BIN" ]; then
         echo "Failed Test Details"
         echo "=========================================="
         for detail in "${FAILED_TEST_DETAILS[@]}"; do
-            # Split by pipe character
-            IFS='|' read -r test_name error_msg <<< "$detail"
+            # Split by special delimiter (first line is test name, rest is error)
+            test_name="${detail%%|*}"
+            error_msg="${detail#*|}"
             echo ""
             echo -e "${RED}▸ $test_name${NC}"
             echo "  Error output:"
