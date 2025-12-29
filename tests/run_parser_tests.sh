@@ -27,7 +27,12 @@ PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 # Paths
 if [ -n "$PARSER_BIN" ]; then
-    CUB3D_BIN="$PARSER_BIN"
+    # Convert to absolute path if it's a relative path
+    if [[ "$PARSER_BIN" != /* ]]; then
+        CUB3D_BIN="$(cd "$(dirname "$PARSER_BIN")" && pwd)/$(basename "$PARSER_BIN")"
+    else
+        CUB3D_BIN="$PARSER_BIN"
+    fi
 else
     CUB3D_BIN="${PROJECT_ROOT}/cub3D"
 fi
