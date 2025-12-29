@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "cub3d.h"
+#include "error_manage.h"
 
 void	get_map_dimensions(char **map, int *width, int *height)
 {
@@ -40,7 +41,7 @@ int	**allocate_world_map(int width, int height)
 
 	world_map = malloc(sizeof(int *) * height);
 	if (!world_map)
-		return (NULL);
+		return (set_error_status(ERR_MALLOC_FAILURE), NULL);
 	i = 0;
 	while (i < height)
 	{
@@ -50,7 +51,7 @@ int	**allocate_world_map(int width, int height)
 			while (i > 0)
 				free(world_map[--i]);
 			free(world_map);
-			return (NULL);
+			return (set_error_status(ERR_MALLOC_FAILURE), NULL);
 		}
 		i++;
 	}

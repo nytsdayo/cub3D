@@ -12,6 +12,7 @@
 
 #include "parse.h"
 #include "utils.h"
+#include "error_manage.h"
 #include <stdlib.h>
 
 static int	skip_to_value_start(const char *line, t_identifier id)
@@ -94,17 +95,17 @@ int	parse_rgb_color(const char *line, t_color *color)
 	i = 0;
 	r = parse_component_with_spaces(line, &i);
 	if (r == -1 || expect_comma(line, &i) != 0)
-		return (-1);
+		return (set_error_status(ERR_SYNTAX_RGB), -1);
 	g = parse_component_with_spaces(line, &i);
 	if (g == -1 || expect_comma(line, &i) != 0)
-		return (-1);
+		return (set_error_status(ERR_SYNTAX_RGB), -1);
 	b = parse_component_with_spaces(line, &i);
 	if (b == -1)
-		return (-1);
+		return (set_error_status(ERR_SYNTAX_RGB), -1);
 	while (ft_isspace(line[i]))
 		i++;
 	if (line[i] != '\0')
-		return (-1);
+		return (set_error_status(ERR_SYNTAX_RGB), -1);
 	color->r = r;
 	color->g = g;
 	color->b = b;

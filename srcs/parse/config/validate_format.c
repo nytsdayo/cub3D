@@ -34,9 +34,9 @@ int	validate_texture_format(const char *line, t_identifier id)
 		i++;
 	len = i - start;
 	if (len < 4)
-		return (-1);
+		return (set_error_status(ERR_INVALID_FILE_EXTENSION), -1);
 	if (ft_strncmp(&line[start + len - 4], ".xpm", 4) != 0)
-		return (-1);
+		return (set_error_status(ERR_INVALID_FILE_EXTENSION), -1);
 	return (0);
 }
 
@@ -48,7 +48,7 @@ static int	parse_component_with_spaces(const char *line, int *idx)
 		(*idx)++;
 	value = parse_rgb_component(line, idx);
 	if (value < 0)
-		return (-1);
+		return (set_error_status(ERR_SYNTAX_RGB), -1);
 	while (ft_isspace(line[*idx]))
 		(*idx)++;
 	return (value);
@@ -57,7 +57,7 @@ static int	parse_component_with_spaces(const char *line, int *idx)
 static int	expect_comma(const char *line, int *idx)
 {
 	if (line[*idx] != ',')
-		return (-1);
+		return (set_error_status(ERR_SYNTAX_RGB), -1);
 	(*idx)++;
 	return (0);
 }
@@ -80,6 +80,6 @@ int	validate_rgb_format(const char *line)
 	while (ft_isspace(line[i]))
 		i++;
 	if (line[i] != '\0')
-		return (-1);
+		return (set_error_status(ERR_SYNTAX_RGB), -1);
 	return (0);
 }

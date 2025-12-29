@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "utils.h"
+#include "error_manage.h"
 
 #define BUFFER_SIZE 4096
 
@@ -29,7 +30,7 @@ const char	**read_map(const char *filename)
 	char		**map;
 
 	if (fd < 0)
-		return (NULL);
+		return (set_error_status(ERR_FILE_NOT_FOUND), NULL);
 	content = read_entire_file(fd);
 	close(fd);
 	if (!content)
@@ -48,7 +49,7 @@ static char	*read_entire_file(int fd)
 
 	result = malloc(1);
 	if (!result)
-		return (NULL);
+		return (set_error_status(ERR_MALLOC_FAILURE), NULL);
 	result[0] = '\0';
 	total = 0;
 	bytes = read(fd, buf, BUFFER_SIZE);
@@ -57,13 +58,13 @@ static char	*read_entire_file(int fd)
 		buf[bytes] = '\0';
 		result = resize_buffer(result, total, total + bytes + 1);
 		if (!result)
-			return (NULL);
+			return (set_error_status(ERR_MALLOC_FAILURE), NULL);
 		ft_memcpy(result + total, buf, bytes + 1);
 		total += bytes;
 		bytes = read(fd, buf, BUFFER_SIZE);
 	}
 	if (bytes < 0)
-		return (free(result), NULL);
+		return (set_error_status(ERR_FILE_READ_PERMISSION), free(result), NULL);
 	return (result);
 }
 

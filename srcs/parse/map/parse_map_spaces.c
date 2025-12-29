@@ -62,19 +62,13 @@ static int	check_dir(char **input_data, size_t line_index,
 	char	adj;
 
 	if (i >= map_lines)
-	{
-		set_error_status(ERR_SPACE_VOID_CONTACT);
-		return (-1);
-	}
+		return (set_error_status(ERR_SPACE_VOID_CONTACT), -1);
 	row_len = ft_strlen(input_data[line_index + i]);
 	if (j >= row_len)
-	{
-		set_error_status(ERR_SPACE_VOID_CONTACT);
-		return (-1);
-	}
+		return (set_error_status(ERR_SPACE_VOID_CONTACT), -1);
 	adj = input_data[line_index + i][j];
 	if (adj == ' ')
-		return (0);
+		return (set_error_status(ERR_SPACE_VOID_CONTACT), -1);
 	return (0);
 }
 

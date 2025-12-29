@@ -12,6 +12,7 @@
 
 #include "parse.h"
 #include "utils.h"
+#include "error_manage.h"
 #include <stdlib.h>
 
 static int	skip_config_lines(const char **input_data, size_t *line_index);
@@ -23,12 +24,15 @@ int	load_data(const char **input_data, void *data)
 	size_t		line_index;
 
 	game_data = (t_game_data *)data;
-	if (load_config(input_data, &game_data->config) != 0)
+	load_config(input_data, &game_data->config);
+	if (get_error_status() != 0)
 		return (-1);
 	line_index = 0;
-	if (skip_config_lines(input_data, &line_index) != 0)
+	skip_config_lines(input_data, &line_index);
+	if (get_error_status() != 0)
 		return (-1);
-	if (load_map((char **)input_data, line_index, &game_data->map) != 0)
+	load_map((char **)input_data, line_index, &game_data->map);
+	if (get_error_status() != 0)
 		return (-1);
 	return (0);
 }
@@ -48,7 +52,7 @@ static int	skip_config_lines(const char **input_data, size_t *line_index)
 			(*line_index)++;
 	}
 	if (id_count < 6)
-		return (-1);
+		return (set_error_status(ERR_MISSING_IDENTIFIER), -1);
 	return (0);
 }
 
@@ -62,12 +66,12 @@ static int	process_line(const char *line, size_t *id_count, int *done)
 	if (id != ID_UNKNOWN)
 	{
 		if (*id_count >= 6)
-			return (-1);
+			return (set_error_status(ERR_DUPLICATE_IDENTIFIER), -1);
 		(*id_count)++;
 		return (0);
 	}
 	if (*id_count < 6)
-		return (-1);
+		return (set_error_status(ERR_MISSING_IDENTIFIER), -1);
 	*done = 1;
 	return (0);
 }

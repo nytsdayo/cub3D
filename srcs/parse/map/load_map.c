@@ -12,6 +12,7 @@
 
 #include "parse.h"
 #include "utils.h"
+#include "error_manage.h"
 #include <stdlib.h>
 
 static void	free_partial_map(char **map, size_t count)
@@ -60,13 +61,13 @@ int	load_map(char **input_data, size_t line_index, t_map_data *map_data)
 	max_len = get_max_line_length(input_data, line_index, map_lines);
 	map_data->map = malloc(sizeof(char *) * (map_lines + 1));
 	if (!map_data->map)
-		return (-1);
+		return (set_error_status(ERR_MALLOC_FAILURE), -1);
 	i = 0;
 	while (i < map_lines)
 	{
 		map_data->map[i] = malloc(sizeof(char) * (max_len + 1));
 		if (!map_data->map[i])
-			return (free_partial_map(map_data->map, i), -1);
+			return (set_error_status(ERR_MALLOC_FAILURE), free_partial_map(map_data->map, i), -1);
 		copy_map_line(map_data->map[i], input_data[line_index + i], max_len);
 		i++;
 	}

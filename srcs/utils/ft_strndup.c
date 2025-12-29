@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "utils.h"
+#include "error_manage.h"
 
 char	*ft_strndup(const char *s, size_t len)
 {
@@ -19,7 +20,7 @@ char	*ft_strndup(const char *s, size_t len)
 
 	dst = (char *)malloc(sizeof(char) * (len + 1));
 	if (dst == NULL)
-		return (NULL);
+		return (set_error_status(ERR_MALLOC_FAILURE), NULL);
 	i = 0;
 	while (i < len)
 	{
