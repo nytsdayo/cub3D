@@ -51,13 +51,11 @@ int	validate_map(char **input_data, size_t line_index)
 	while (input_data[line_index] && is_blank_line(input_data[line_index]))
 		line_index++;
 	if (!input_data[line_index])
-		return (fprintf(stderr,
-				"Error: Map not found after config\n"), -1);
+		return (error_msg_format("Error: Map not found after config\n"));
 	map_lines = count_map_lines(input_data, line_index);
 	if (map_lines < MIN_MAP_SIZE)
-		return (fprintf(stderr,
-				"Error: Map must have at least %d lines\n",
-				MIN_MAP_SIZE), -1);
+		return (error_msg_format("Error: Map must have at least %d lines\n",
+				MIN_MAP_SIZE));
 	max_len = get_max_line_length(input_data, line_index, map_lines);
 	return (run_validations(input_data, line_index, map_lines, max_len));
 }

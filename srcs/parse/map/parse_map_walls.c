@@ -38,9 +38,9 @@ int	validate_surrounded_by_walls(char **input_data, size_t line_index,
 	{
 		c = input_data[line_index][i];
 		if (c != ' ' && c != '1')
-			return (fprintf(stderr,
+			return (error_msg_format(
 					"Error: Top border must be all walls at column %zu\n",
-					i), -1);
+					i));
 		i++;
 	}
 	i = 0;
@@ -48,9 +48,9 @@ int	validate_surrounded_by_walls(char **input_data, size_t line_index,
 	{
 		c = input_data[line_index + map_lines - 1][i];
 		if (c != ' ' && c != '1')
-			return (fprintf(stderr,
+			return (error_msg_format(
 					"Error: Bottom border must be all walls at column %zu\n",
-					i), -1);
+					i));
 		i++;
 	}
 	return (check_side_borders(input_data, line_index, map_lines));
@@ -78,9 +78,9 @@ static int	check_row_borders(char **input_data, size_t line_index, size_t j)
 	else
 		right_idx = i - 1;
 	if (input_data[line_index + j][left_idx] != '1')
-		return (fprintf(stderr, "Error: Left border at row %zu\n", j), -1);
+		return (error_msg_format("Error: Left border at row %zu\n", j));
 	if (input_data[line_index + j][right_idx] != '1')
-		return (fprintf(stderr, "Error: Right border at row %zu\n", j), -1);
+		return (error_msg_format("Error: Right border at row %zu\n", j));
 	return (1);
 }
 

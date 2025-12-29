@@ -15,7 +15,7 @@ NAME = cub3D
 # Compiler and flags
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
-INCLUDES = -I./includes -I./includes/parse -I./includes/engine -I./includes/utils
+INCLUDES = -I./includes -I./includes/parse -I./includes/engine -I./includes/utils -I./includes/error
 
 # OS Detection
 UNAME_S := $(shell uname -s)
@@ -52,6 +52,7 @@ SRCS = $(SRC_DIR)/main.c \
 	   $(SRC_DIR)/utils/read_map_utils.c \
 	   $(SRC_DIR)/utils/free_map.c \
 	   $(SRC_DIR)/utils/free_config_data.c \
+	   $(SRC_DIR)/error/error_msg.c \
 	   $(SRC_DIR)/engine/init/init_game.c \
 	   $(SRC_DIR)/engine/init/init_map.c \
 	   $(SRC_DIR)/engine/init/init_map_utils.c \

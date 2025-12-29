@@ -15,6 +15,7 @@
 
 # include "cub3d.h"
 # include "parse.h"
+# include "error.h"
 # include <stddef.h>
 
 size_t		ft_strlen(const char *s);

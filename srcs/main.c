@@ -28,7 +28,7 @@ int	main(int argc, char *argv[])
 		return (EXIT_FAILURE);
 	if (parse(argv[1], &game_data) != 0)
 	{
-		write(2, "Error\nFailed to parse map\n", 26);
+		error_msg("Error\nFailed to parse map\n");
 		free_config_data(&game_data.config);
 		return (EXIT_FAILURE);
 	}
@@ -60,7 +60,7 @@ static int	valid_args(int argc, char *argv[])
 {
 	if (argc != 2 || ft_strcmp(argv[1] + ft_strlen(argv[1]) - 4, ".cub") != 0)
 	{
-		write(2, "Error\nUsage: ./cub3D <map.cub>\n", 31);
+		error_msg("Error\nUsage: ./cub3D <map.cub>\n");
 		return (1);
 	}
 	return (0);

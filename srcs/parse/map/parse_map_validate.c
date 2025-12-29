@@ -34,13 +34,13 @@ int	validate_map_size(char **input_data, size_t line_index,
 	(void)line_index;
 	if (map_lines < MIN_MAP_SIZE || map_lines > MAX_MAP_SIZE)
 	{
-		fprintf(stderr, "Error: Map size must be between %d and %d rows\n",
+		error_msg_format("Error: Map size must be between %d and %d rows\n",
 			MIN_MAP_SIZE, MAX_MAP_SIZE);
 		return (-1);
 	}
 	if (max_len < MIN_MAP_SIZE || max_len > MAX_MAP_SIZE)
 	{
-		fprintf(stderr, "Error: Map size must be between %d and %d columns\n",
+		error_msg_format("Error: Map size must be between %d and %d columns\n",
 			MIN_MAP_SIZE, MAX_MAP_SIZE);
 		return (-1);
 	}
@@ -87,7 +87,7 @@ int	validate_player_start(char **input_data, size_t line_index,
 	player_count = count_players(input_data, line_index, map_lines);
 	if (player_count != 1)
 	{
-		fprintf(stderr,
+		error_msg_format(
 			"Error: Map must have exactly one player start (found %d)\n",
 			player_count);
 		return (-1);
@@ -118,7 +118,7 @@ int	validate_invalid_chars(char **input_data, size_t line_index,
 			c = input_data[line_index + i][j];
 			if (!is_valid_char(c))
 			{
-				fprintf(stderr,
+				error_msg_format(
 					"Error: Invalid character '%c' at line %zu, col %zu\n",
 					c, i, j);
 				return (-1);
