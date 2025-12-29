@@ -128,10 +128,16 @@ PARSER_OBJS = $(PARSER_SRCS:.c=.o)
 # Rules
 all: test
 
-test: unit
+test: ensure-mlx unit
 	$(MAKE) build
 	$(MAKE) parser-tests
 	$(MAKE) leak-check
+
+ensure-mlx:
+	@if [ ! -d "$(ROOT_DIR)/libraries/minilibx-linux" ] && [ ! -d "$(ROOT_DIR)/libraries/minilibx_opengl_20191021" ]; then \
+		echo "MiniLibX not found, extracting and building..."; \
+		$(MAKE) -C $(ROOT_DIR) 2>&1 | grep -v "is up to date" || true; \
+	fi
 
 unit: $(UNIT_TESTS)
 	./$(TEST_PARSE_CONFIG)
@@ -202,4 +208,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re test unit parser-tests leak-check build create-forbidden-map clean-forbidden-map
+.PHONY: all clean fclean re test unit parser-tests leak-check build create-forbidden-map clean-forbidden-map ensure-mlx
