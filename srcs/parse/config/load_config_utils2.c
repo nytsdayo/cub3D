@@ -13,34 +13,32 @@
 #include "parse.h"
 #include "utils.h"
 
-static int	skip_to_value_start(const char *line, t_identifier id);
+static int skip_to_value_start(const char *line, t_identifier id);
 
-char	*extract_texture_path(const char *line, t_identifier id)
-{
-	int		i;
-	int		start;
-	int		len;
+char *extract_texture_path(const char *line, t_identifier id) {
+  int i;
+  int start;
+  int len;
 
-	i = skip_to_value_start(line, id);
-	start = i;
-	while (line[i] && !ft_isspace(line[i]) && line[i] != '\n')
-		i++;
-	len = i - start;
-	return (ft_strndup(&line[start], len));
+  i = skip_to_value_start(line, id);
+  start = i;
+  while (line[i] && !ft_isspace(line[i]) && line[i] != '\n')
+    i++;
+  len = i - start;
+  return (ft_strndup(&line[start], len));
 }
 
-static int	skip_to_value_start(const char *line, t_identifier id)
-{
-	int	i;
+static int skip_to_value_start(const char *line, t_identifier id) {
+  int i;
 
-	i = 0;
-	while (ft_isspace(line[i]))
-		i++;
-	if (id >= ID_NO && id <= ID_EA)
-		i += 2;
-	else
-		i += 1;
-	while (ft_isspace(line[i]))
-		i++;
-	return (i);
+  i = 0;
+  while (ft_isspace(line[i]))
+    i++;
+  if (id >= ID_NO && id <= ID_EA)
+    i += 2;
+  else
+    i += 1;
+  while (ft_isspace(line[i]))
+    i++;
+  return (i);
 }

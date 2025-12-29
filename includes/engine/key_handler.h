@@ -11,17 +11,17 @@
 /* ************************************************************************** */
 
 #ifndef KEY_HANDLER_H
-# define KEY_HANDLER_H
+#define KEY_HANDLER_H
 
-# include "cub3d.h"
+#include "cub3d.h"
 
 /* Window Control */
-int		close_window(t_game *game);
+int close_window(t_game *game);
 
 /* Input Handling */
-int		handle_keypress(int keycode, t_game *game);
-int		handle_keyrelease(int keycode, t_game *game);
-int		handle_mouse_move(int x, int y, t_game *game);
-void	process_held_keys(t_game *game);
+int handle_keypress(int keycode, t_game *game);
+int handle_keyrelease(int keycode, t_game *game);
+int handle_mouse_move(int x, int y, t_game *game);
+void process_held_keys(t_game *game);
 
 #endif
