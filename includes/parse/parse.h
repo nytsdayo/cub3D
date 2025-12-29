@@ -40,8 +40,8 @@ typedef struct s_config_data
 	char	*south_texture_path;
 	char	*west_texture_path;
 	char	*east_texture_path;
-	t_color	floor_color;
-	t_color	ceiling_color;
+	t_rgb	floor_color;
+	t_rgb	ceiling_color;
 }	t_config_data;
 
 typedef struct s_map_data
@@ -77,7 +77,7 @@ int				load_map(char **input_data, size_t line_index,
 
 char			*extract_texture_path(const char *line, t_identifier id);
 int				parse_rgb_component(const char *str, int *idx);
-int				parse_rgb_color(const char *line, t_color *color);
+int				parse_rgb_color(const char *line, t_rgb *color);
 
 bool			is_valid_char(char c);
 size_t			count_map_lines(char **input_data, size_t line_index);

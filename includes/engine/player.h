@@ -41,6 +41,9 @@ void	move_right(t_game *game);
 /* Wall sliding */
 void	try_wall_slide(t_game *game, double new_x, double new_y, t_vec move);
 
+/* Collision detection */
+int		is_wall(t_game *game, double x, double y);
+
 /* Rotation */
 void	rotate_left(t_game *game);
 void	rotate_right(t_game *game);

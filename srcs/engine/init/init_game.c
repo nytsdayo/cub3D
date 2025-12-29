@@ -31,7 +31,7 @@ int	init_game(t_game *game, t_config_data *config)
 	game->mlx = NULL;
 	game->win = NULL;
 	i = 0;
-	while (i < 256)
+	while (i < KEY_STATE_SIZE)
 		game->keys[i++] = 0;
 	if (init_mlx(game) != 0)
 		return (1);
