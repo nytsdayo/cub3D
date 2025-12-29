@@ -31,6 +31,17 @@
 # define WINDOW_HEIGHT 600
 # define TITLE "cub3D"
 
+/* Map Cell Types */
+typedef enum e_cell_type
+{
+	FLOOR = 0,
+	WALL = 1
+}	t_cell_type;
+
+/* Player Position Constants */
+# define GRID_CENTER_OFFSET 0.5
+# define DEFAULT_PLAYER_POS 3.5
+
 /* Raycasting Constants */
 /* - CAMERA_PLANE_LENGTH
  *   - カメラ平面ベクトルの長さ
@@ -53,10 +64,6 @@
 /* Texture Constants */
 # define TEX_WIDTH 2048
 # define TEX_HEIGHT 2048
-# define TEX_NORTH_PATH "assets/textures/cub3_north_newyear.xpm"
-# define TEX_SOUTH_PATH "assets/textures/cub3_south_xmaswreath.xpm"
-# define TEX_EAST_PATH "assets/textures/cub3_east_cookie.xpm"
-# define TEX_WEST_PATH "assets/textures/cub3_west_snowflake.xpm"
 
 /* Key State Array Size (large enough for X11 KeySym values) */
 /* キー状態配列のサイズ(Linux X11 KeySym値の最大値約65000より大きく設定) */
