@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "error.h"
+#include "error_manage.h"
 #include <stddef.h>
 
 static const char	*get_parse_error(t_error_code code)

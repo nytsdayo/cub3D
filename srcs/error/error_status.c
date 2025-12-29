@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "error.h"
+#include "error_manage.h"
 
 static t_error_code	g_error_status = 0;
 

@@ -16,7 +16,7 @@
 # include <stddef.h>
 # include <stdbool.h>
 # include "cub3d.h"
-# include "error.h"
+# include "error_manage.h"
 
 # define RGB_MAX 255
 # define NON_NUM 0

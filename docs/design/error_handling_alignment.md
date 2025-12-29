@@ -14,7 +14,7 @@
 
 ```
 includes/error/
-└── error.h              - エラー関数宣言のみ
+└── error_manage.h              - エラー関数宣言のみ
 
 srcs/error/
 └── error_msg.c          - シンプルなメッセージ出力関数
@@ -23,7 +23,7 @@ srcs/error/
 ### 1.2 実装されている機能
 
 ```c
-// includes/error/error.h
+// includes/error/error_manage.h
 int	error_msg(const char *msg);
 ```
 
@@ -54,7 +54,7 @@ int	error_msg(const char *msg)
 ### 2.1 ファイル構成
 
 ```
-includes/error.h
+includes/error_manage.h
 ├── t_error_code 列挙型（22種類のエラー）
 ├── t_warning_code 列挙型
 ├── t_cleanup_data 構造体
@@ -192,7 +192,7 @@ if (error_condition)
 **目標**: 設計書の基本構造を実装
 
 1. **エラーコード列挙型の追加**
-   - `includes/error/error.h` に `t_error_code` を追加
+   - `includes/error/error_manage.h` に `t_error_code` を追加
    - 全22種類のエラーコードを定義
 
 2. **クリーンアップデータ構造の追加**
@@ -336,7 +336,7 @@ if (cleanup_data && cleanup_data->mlx)
 - `docs/design/error_handling/error_list.md`
 
 ### 現在の実装（refactor/error-handling-system ブランチ）
-- `includes/error/error.h`
+- `includes/error/error_manage.h`
 - `srcs/error/error_msg.c`
 
 ---

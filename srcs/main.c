@@ -14,7 +14,7 @@
 #include "engine.h"
 #include "parse.h"
 #include "utils.h"
-#include "error.h"
+#include "error_manage.h"
 
 static int	valid_args(int argc, char *argv[]);
 static void	init_structs(t_game *game, t_game_data *game_data);

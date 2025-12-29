@@ -12,7 +12,7 @@
 
 #include "parse.h"
 #include "utils.h"
-#include "error.h"
+#include "error_manage.h"
 #include <stdlib.h>
 #include <stdbool.h>
 #include <unistd.h>
