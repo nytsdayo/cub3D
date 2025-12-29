@@ -52,7 +52,6 @@ SRCS = $(SRC_DIR)/main.c \
 	   $(SRC_DIR)/utils/read_map_utils.c \
 	   $(SRC_DIR)/utils/free_map.c \
 	   $(SRC_DIR)/utils/free_config_data.c \
-	   $(SRC_DIR)/error/error_msg.c \
 	   $(SRC_DIR)/error/error_exit.c \
 	   $(SRC_DIR)/error/error_messages.c \
 	   $(SRC_DIR)/error/error_cleanup.c \

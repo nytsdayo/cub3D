@@ -52,7 +52,6 @@ PARSE_CONFIG_C_SRCS = $(SRC_DIR)/parse/config/parse_config.c \
 					  $(SRC_DIR)/utils/read_map_utils.c \
 					  $(SRC_DIR)/utils/free_map.c \
 					  $(SRC_DIR)/utils/free_config_data.c \
-					  $(SRC_DIR)/error/error_msg.c \
 					  $(SRC_DIR)/error/error_exit.c \
 					  $(SRC_DIR)/error/error_messages.c \
 					  $(SRC_DIR)/error/error_cleanup.c \
@@ -76,7 +75,6 @@ TEST_MAP_C_SRCS = $(SRC_DIR)/parse/map/parse_map.c \
 				  $(SRC_DIR)/utils/read_map_utils.c \
 				  $(SRC_DIR)/utils/free_map.c \
 				  $(SRC_DIR)/utils/free_config_data.c \
-				  $(SRC_DIR)/error/error_msg.c \
 				  $(SRC_DIR)/error/error_exit.c \
 				  $(SRC_DIR)/error/error_messages.c \
 				  $(SRC_DIR)/error/error_cleanup.c \
@@ -108,7 +106,6 @@ PARSER_SRCS = $(SRC_DIR)/parse/parse.c \
 			  $(SRC_DIR)/utils/read_map_utils.c \
 			  $(SRC_DIR)/utils/free_map.c \
 			  $(SRC_DIR)/utils/free_config_data.c \
-			  $(SRC_DIR)/error/error_msg.c \
 			  $(SRC_DIR)/error/error_exit.c \
 			  $(SRC_DIR)/error/error_messages.c \
 			  $(SRC_DIR)/error/error_cleanup.c \

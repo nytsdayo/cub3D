@@ -73,13 +73,6 @@ typedef struct s_cleanup_data
 }	t_cleanup_data;
 
 /**
- * @brief Output a simple error message to stderr
- * @param msg The error message to output
- * @return Always returns -1 for convenient error handling
- */
-int		error_msg(const char *msg);
-
-/**
  * @brief Unified error handler with cleanup
  * @param error_code Error code enumeration
  * @param context Optional context information
