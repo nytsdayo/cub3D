@@ -53,6 +53,10 @@ SRCS = $(SRC_DIR)/main.c \
 	   $(SRC_DIR)/utils/free_map.c \
 	   $(SRC_DIR)/utils/free_config_data.c \
 	   $(SRC_DIR)/error/error_msg.c \
+	   $(SRC_DIR)/error/error_exit.c \
+	   $(SRC_DIR)/error/error_messages.c \
+	   $(SRC_DIR)/error/error_cleanup.c \
+	   $(SRC_DIR)/error/error_warning.c \
 	   $(SRC_DIR)/engine/init/init_game.c \
 	   $(SRC_DIR)/engine/init/init_map.c \
 	   $(SRC_DIR)/engine/init/init_map_utils.c \

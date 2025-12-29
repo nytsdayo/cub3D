@@ -14,6 +14,7 @@
 #include "engine.h"
 #include "parse.h"
 #include "utils.h"
+#include "error.h"
 
 static int	valid_args(int argc, char *argv[]);
 static void	init_structs(t_game *game, t_game_data *game_data);
@@ -58,10 +59,10 @@ static void	init_structs(t_game *game, t_game_data *game_data)
 
 static int	valid_args(int argc, char *argv[])
 {
-	if (argc != 2 || ft_strcmp(argv[1] + ft_strlen(argv[1]) - 4, ".cub") != 0)
-	{
-		error_msg("Error\nUsage: ./cub3D <map.cub>\n");
-		return (1);
-	}
+	if (argc != 2)
+		error_exit_simple(ERR_INVALID_ARGC);
+	if (ft_strlen(argv[1]) < 4
+		|| ft_strcmp(argv[1] + ft_strlen(argv[1]) - 4, ".cub") != 0)
+		error_exit_simple(ERR_INVALID_FILE_EXTENSION);
 	return (0);
 }
