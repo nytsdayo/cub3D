@@ -1,13 +1,13 @@
-   WE                            textures/wolfenstein/grey_stone.xpm
-NO      textures/wolfenstein/purple_stone.xpm
+   WE                            assets/textures/cub3_north.xpm
+NO      assets/textures/cub3_north.xpm
 
 
 
-SO textures/wolfenstein/red_brick.xpm
+SO assets/textures/cub3_north.xpm
 
 F      17,    38,     64
 
-EA textures/wolfenstein/wood.xpm
+EA assets/textures/cub3_north.xpm
 
 
 

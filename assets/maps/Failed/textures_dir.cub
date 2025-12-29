@@ -1,6 +1,6 @@
-NO textures/test/north.xpm
-SO textures/test/south.xpm
-WE textures/test/west.xpm
+NO assets/textures/cub3_north.xpm
+SO assets/textures/cub3_north.xpm
+WE assets/textures/cub3_north.xpm
 EA textures/test/
 
 F 20,20,20

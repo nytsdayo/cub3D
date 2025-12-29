@@ -1,7 +1,7 @@
-NO   assets/textures/north.xpm
-SO   assets/textures/south.xpm
-WE   assets/textures/west.xpm
-EA   assets/textures/east.xpm
+NO   assets/textures/cub3_north.xpm
+SO   assets/textures/cub3_south.xpm
+WE   assets/textures/cub3_west.xpm
+EA   assets/textures/cub3_east.xpm
 
 F   255,  255,  255
 C   0,  100,  200

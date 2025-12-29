@@ -1,7 +1,7 @@
-NO textures/test/forbidden.xpm
-SO textures/test/south.xpm
-WE textures/test/west.xpm
-EA textures/test/east.xpm
+NO textures/forbidden/forbidden.xpm
+SO textures/forbidden/forbidden.xpm
+WE textures/forbidden/forbidden.xpm
+EA textures/forbidden/forbidden.xpm
 
 F 20,20,20
 C 200,200,200
