@@ -2,9 +2,9 @@ F 139,99,58
 C 171,154,137
 
 NO assets/textures/cub3_north.xpm
-SO assets/textures/cub3_north.xpm
-WE assets/textures/cub3_north.xpm
-EA assets/textures/cub3_north.xpm
+SO assets/textures/cub3_south.xpm
+WE assets/textures/cub3_west.xpm
+EA assets/textures/cub3_east.xpm
 
 1111111111111111111
 1001001001001001001

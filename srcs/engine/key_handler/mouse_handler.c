@@ -32,7 +32,7 @@ int	handle_mouse_move(int x, int y, t_game *game)
 	if (delta_x != 0)
 	{
 		rotate_by_angle(game, delta_x * MOUSE_SENSITIVITY);
-		mlx_mouse_move(game->win, center_x, center_y);
+		mlx_mouse_move(game->mlx, game->win, center_x, center_y);
 	}
 	return (0);
 }
