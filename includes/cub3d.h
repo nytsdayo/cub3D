@@ -109,6 +109,8 @@ typedef struct s_img
 	int			bits_per_pixel;
 	int			line_length;
 	int			endian;
+	int			width;
+	int			height;
 }				t_img;
 
 /* Texture Structure */
@@ -118,8 +120,6 @@ typedef struct s_texture
 	t_img		south;
 	t_img		east;
 	t_img		west;
-	int			width;
-	int			height;
 }				t_texture;
 
 /* Color Structure for Floor/Ceiling */
