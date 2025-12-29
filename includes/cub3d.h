@@ -55,11 +55,14 @@ typedef enum e_cell_type
  *   - フレームあたりの回転量/速度（ラジアン/frame）
  *  - COLLISION_MARGIN
  *   - 衝突判定の余白（壁衝突を防ぐ）
+ * - MOUSE_SENSITIVITY
+ *   - マウス移動の感度（ピクセルあたりの回転量）
  */
 # define CAMERA_PLANE_LENGTH 0.66
 # define MOVE_PER_FRAME 0.1
 # define ROT_PER_FRAME 0.05
 # define COLLISION_MARGIN 0.2
+# define MOUSE_SENSITIVITY 0.002
 
 /* Texture Constants */
 # define TEX_WIDTH 2048
@@ -95,6 +98,7 @@ typedef enum e_cell_type
 /* X11/MLX標準のイベントタイプ値 */
 # define ON_KEYDOWN 2
 # define ON_KEYUP 3
+# define ON_MOUSE_MOVE 6
 # define ON_DESTROY 17
 
 /* Player Structure */

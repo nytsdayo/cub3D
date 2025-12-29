@@ -63,3 +63,29 @@ void	rotate_right(t_game *game)
 	game->player.plane_y = old_plane_x * sin_rot
 		+ game->player.plane_y * cos_rot;
 }
+
+/*
+** rotate_by_angle
+** プレイヤーを指定角度回転（マウス用）
+** angle: 回転角度（ラジアン、正=右回転、負=左回転）
+*/
+void	rotate_by_angle(t_game *game, double angle)
+{
+	double	old_dir_x;
+	double	old_plane_x;
+	double	cos_rot;
+	double	sin_rot;
+
+	cos_rot = cos(angle);
+	sin_rot = sin(angle);
+	old_dir_x = game->player.dir_x;
+	game->player.dir_x = game->player.dir_x * cos_rot
+		- game->player.dir_y * sin_rot;
+	game->player.dir_y = old_dir_x * sin_rot
+		+ game->player.dir_y * cos_rot;
+	old_plane_x = game->player.plane_x;
+	game->player.plane_x = game->player.plane_x * cos_rot
+		- game->player.plane_y * sin_rot;
+	game->player.plane_y = old_plane_x * sin_rot
+		+ game->player.plane_y * cos_rot;
+}

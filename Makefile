@@ -63,6 +63,7 @@ SRCS = $(SRC_DIR)/main.c \
 	   $(SRC_DIR)/engine/init/init_map_utils.c \
 	   $(SRC_DIR)/engine/game_loop.c \
 	   $(SRC_DIR)/engine/key_handler/key_handler.c \
+	   $(SRC_DIR)/engine/key_handler/mouse_handler.c \
 	   $(SRC_DIR)/engine/renderer/render_frame.c \
 	   $(SRC_DIR)/engine/raycasting/raycasting.c \
 	   $(SRC_DIR)/engine/raycasting/ray_init.c \

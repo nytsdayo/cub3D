@@ -44,5 +44,6 @@ void	try_wall_slide(t_game *game, double new_x, double new_y, t_vec move);
 /* Rotation */
 void	rotate_left(t_game *game);
 void	rotate_right(t_game *game);
+void	rotate_by_angle(t_game *game, double angle);
 
 #endif
