@@ -31,7 +31,7 @@ void	put_pixel(t_game *game, int x, int y, int color)
 /*
 ** RGB値から色を作成
 */
-static int	create_rgb_color(t_color color)
+static int	create_rgb_color(t_rgb color)
 {
 	return ((color.r << 16) | (color.g << 8) | color.b);
 }
