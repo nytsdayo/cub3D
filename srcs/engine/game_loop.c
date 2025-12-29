@@ -29,6 +29,8 @@ static void	setup_event_hooks(t_game *game)
 {
 	mlx_hook(game->win, ON_KEYDOWN, KeyPressMask, handle_keypress, game);
 	mlx_hook(game->win, ON_KEYUP, KeyReleaseMask, handle_keyrelease, game);
+	mlx_hook(game->win, ON_MOUSE_MOVE, PointerMotionMask,
+		handle_mouse_move, game);
 	mlx_hook(game->win, ON_DESTROY, StructureNotifyMask, close_window, game);
 	mlx_loop_hook(game->mlx, render_frame, game);
 }
@@ -39,6 +41,7 @@ static void	setup_event_hooks(t_game *game)
 {
 	mlx_hook(game->win, ON_KEYDOWN, 0, handle_keypress, game);
 	mlx_hook(game->win, ON_KEYUP, 0, handle_keyrelease, game);
+	mlx_hook(game->win, ON_MOUSE_MOVE, 0, handle_mouse_move, game);
 	mlx_hook(game->win, ON_DESTROY, 0, close_window, game);
 	mlx_loop_hook(game->mlx, render_frame, game);
 }
