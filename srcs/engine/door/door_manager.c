@@ -67,19 +67,39 @@ void	free_door_state(t_game *game)
 }
 
 /*
+** プレイヤーがドアのセル内にいるかチェック
+*/
+static int	is_player_in_door(t_game *game, int door_x, int door_y)
+{
+	int	player_map_x;
+	int	player_map_y;
+
+	player_map_x = (int)game->player.pos_x;
+	player_map_y = (int)game->player.pos_y;
+	if (player_map_x == door_x && player_map_y == door_y)
+		return (1);
+	return (0);
+}
+
+/*
 ** ドアの開閉を切り替える
+** プレイヤーがドア内にいる場合は閉じられない
 */
 void	toggle_door(t_game *game, int map_x, int map_y)
 {
 	if (map_x < 0 || map_x >= game->map_width
 		|| map_y < 0 || map_y >= game->map_height)
 		return ;
-	if (game->world_map[map_y][map_x] == DOOR)
-		game->door_state[map_y][map_x] = !game->door_state[map_y][map_x];
+	if (game->world_map[map_y][map_x] != DOOR)
+		return ;
+	if (game->door_state[map_y][map_x] && is_player_in_door(game, map_x, map_y))
+		return ;
+	game->door_state[map_y][map_x] = !game->door_state[map_y][map_x];
 }
 
 /*
 ** プレイヤーの前方にあるドアを開閉
+** 最大2マスの範囲でドアを探す
 */
 void	interact_door(t_game *game)
 {
@@ -87,10 +107,24 @@ void	interact_door(t_game *game)
 	double	check_y;
 	int		map_x;
 	int		map_y;
+	double	distance;
 
-	check_x = game->player.pos_x + game->player.dir_x * 1.5;
-	check_y = game->player.pos_y + game->player.dir_y * 1.5;
-	map_x = (int)check_x;
-	map_y = (int)check_y;
-	toggle_door(game, map_x, map_y);
+	distance = 0.5;
+	while (distance <= 2.0)
+	{
+		check_x = game->player.pos_x + game->player.dir_x * distance;
+		check_y = game->player.pos_y + game->player.dir_y * distance;
+		map_x = (int)check_x;
+		map_y = (int)check_y;
+		if (map_x >= 0 && map_x < game->map_width
+			&& map_y >= 0 && map_y < game->map_height)
+		{
+			if (game->world_map[map_y][map_x] == DOOR)
+			{
+				toggle_door(game, map_x, map_y);
+				return ;
+			}
+		}
+		distance += 0.5;
+	}
 }

@@ -15,7 +15,18 @@
 
 #define MINIMAP_SIZE 150
 #define MINIMAP_OFFSET 10
-#define MINIMAP_TILE_SIZE 10
+
+static int	calculate_tile_size(t_game *game)
+{
+	int	tile_w;
+	int	tile_h;
+
+	tile_w = MINIMAP_SIZE / game->map_width;
+	tile_h = MINIMAP_SIZE / game->map_height;
+	if (tile_w < tile_h)
+		return (tile_w);
+	return (tile_h);
+}
 
 static int	get_cell_color(t_game *game, int map_x, int map_y)
 {
@@ -34,16 +45,16 @@ static int	get_cell_color(t_game *game, int map_x, int map_y)
 }
 
 static void	draw_minimap_cell(t_game *game, int screen_x, int screen_y,
-		int color)
+		int tile_size, int color)
 {
 	int	i;
 	int	j;
 
 	i = 0;
-	while (i < MINIMAP_TILE_SIZE)
+	while (i < tile_size)
 	{
 		j = 0;
-		while (j < MINIMAP_TILE_SIZE)
+		while (j < tile_size)
 		{
 			if (screen_x + j < MINIMAP_SIZE && screen_y + i < MINIMAP_SIZE)
 			{
@@ -61,12 +72,14 @@ static void	draw_player_on_minimap(t_game *game, int player_screen_x,
 {
 	int	i;
 	int	j;
+	int	radius;
 
-	i = -2;
-	while (i <= 2)
+	radius = 3;
+	i = -radius;
+	while (i <= radius)
 	{
-		j = -2;
-		while (j <= 2)
+		j = -radius;
+		while (j <= radius)
 		{
 			if (player_screen_x + j >= 0 && player_screen_x + j < MINIMAP_SIZE
 				&& player_screen_y + i >= 0
@@ -89,24 +102,26 @@ void	render_minimap(t_game *game)
 	int	screen_y;
 	int	player_screen_x;
 	int	player_screen_y;
+	int	tile_size;
 
+	tile_size = calculate_tile_size(game);
+	if (tile_size < 1)
+		tile_size = 1;
 	map_y = 0;
-	while (map_y < game->map_height
-		&& map_y * MINIMAP_TILE_SIZE < MINIMAP_SIZE)
+	while (map_y < game->map_height)
 	{
 		map_x = 0;
-		while (map_x < game->map_width
-			&& map_x * MINIMAP_TILE_SIZE < MINIMAP_SIZE)
+		while (map_x < game->map_width)
 		{
-			screen_x = map_x * MINIMAP_TILE_SIZE;
-			screen_y = map_y * MINIMAP_TILE_SIZE;
-			draw_minimap_cell(game, screen_x, screen_y,
+			screen_x = map_x * tile_size;
+			screen_y = map_y * tile_size;
+			draw_minimap_cell(game, screen_x, screen_y, tile_size,
 				get_cell_color(game, map_x, map_y));
 			map_x++;
 		}
 		map_y++;
 	}
-	player_screen_x = (int)(game->player.pos_x * MINIMAP_TILE_SIZE);
-	player_screen_y = (int)(game->player.pos_y * MINIMAP_TILE_SIZE);
+	player_screen_x = (int)(game->player.pos_x * tile_size);
+	player_screen_y = (int)(game->player.pos_y * tile_size);
 	draw_player_on_minimap(game, player_screen_x, player_screen_y);
 }
