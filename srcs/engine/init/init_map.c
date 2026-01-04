@@ -22,7 +22,7 @@ int			**allocate_world_map(int width, int height);
 
 /*
 ** マップをint配列に変換
-** '1' = 壁、'0' or N/S/E/W = 床
+** '1' = 壁、'0' or N/S/E/W = 床、'D' = ドア
 */
 void	init_world_map(t_game *game)
 {
@@ -41,6 +41,8 @@ void	init_world_map(t_game *game)
 		{
 			if (game->map[i][j] == '1')
 				game->world_map[i][j] = WALL;
+			else if (game->map[i][j] == 'D')
+				game->world_map[i][j] = DOOR;
 			else
 				game->world_map[i][j] = FLOOR;
 			j++;

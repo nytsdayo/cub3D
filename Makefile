@@ -76,6 +76,8 @@ SRCS = $(SRC_DIR)/main.c \
 	   $(SRC_DIR)/engine/texture/texture_init.c \
 	   $(SRC_DIR)/engine/texture/texture_utils.c \
 	   $(SRC_DIR)/engine/texture/texture_cleanup.c \
+	   $(SRC_DIR)/engine/door/door_manager.c \
+	   $(SRC_DIR)/engine/renderer/minimap.c \
 	   $(SRC_DIR)/utils/cleanup.c
 
 # Object files

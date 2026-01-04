@@ -35,7 +35,8 @@
 typedef enum e_cell_type
 {
 	FLOOR = 0,
-	WALL = 1
+	WALL = 1,
+	DOOR = 2
 }	t_cell_type;
 
 /* Player Position Constants */
@@ -81,6 +82,7 @@ typedef enum e_cell_type
 #  define KEY_A 0
 #  define KEY_S 1
 #  define KEY_D 2
+#  define KEY_E 14
 #  define KEY_LEFT 123
 #  define KEY_RIGHT 124
 # else
@@ -89,6 +91,7 @@ typedef enum e_cell_type
 #  define KEY_A XK_a
 #  define KEY_S XK_s
 #  define KEY_D XK_d
+#  define KEY_E XK_e
 #  define KEY_LEFT XK_Left
 #  define KEY_RIGHT XK_Right
 # endif
@@ -154,6 +157,7 @@ typedef struct s_game
 	void		*win;
 	char		**map;
 	int			**world_map;
+	bool		**door_state;
 	int			map_width;
 	int			map_height;
 	t_player	player;

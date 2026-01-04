@@ -13,6 +13,7 @@
 #include "cub3d.h"
 #include "texture.h"
 #include "utils.h"
+#include "door.h"
 
 static void	cleanup_mlx(void *mlx);
 
@@ -33,6 +34,7 @@ void	cleanup_game(t_game *game)
 			free(game->world_map[i++]);
 		free(game->world_map);
 	}
+	free_door_state(game);
 	if (game->map)
 		free_map((void **)game->map);
 	if (game->mlx)

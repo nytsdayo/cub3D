@@ -14,6 +14,7 @@
 #include "key_handler.h"
 #include "player.h"
 #include "utils.h"
+#include "door.h"
 
 #ifdef __linux__
 
@@ -38,6 +39,8 @@ int	handle_keypress(int keycode, t_game *game)
 {
 	if (keycode == KEY_ESC)
 		close_window(game);
+	else if (keycode == KEY_E)
+		interact_door(game);
 	else if (keycode >= 0 && keycode < KEY_STATE_SIZE)
 		game->keys[keycode] = 1;
 	return (0);
