@@ -61,19 +61,21 @@ void	free_door_state(t_game *game)
 
 /*
 ** ドアの開閉を切り替える
-** プレイヤーがドア内にいる場合は閉じられない
+** プレイヤーがドア内または近くにいる場合は閉じられない
 ** アニメーションシステムを使用
 */
 void	toggle_door(t_game *game, int map_x, int map_y)
 {
 	int	is_opening;
+	int	will_close;
 
 	if (map_x < 0 || map_x >= game->map_width
 		|| map_y < 0 || map_y >= game->map_height)
 		return ;
 	if (game->world_map[map_y][map_x] != DOOR)
 		return ;
-	if (game->door_state[map_y][map_x] && is_player_in_door(game, map_x, map_y))
+	will_close = game->door_state[map_y][map_x];
+	if (will_close && is_player_in_door(game, map_x, map_y))
 		return ;
 	game->door_state[map_y][map_x] = !game->door_state[map_y][map_x];
 	is_opening = game->door_state[map_y][map_x];

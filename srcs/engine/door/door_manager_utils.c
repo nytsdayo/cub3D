@@ -33,14 +33,24 @@ void	cleanup_partial_door_state(t_game *game, int last_row)
 	game->door_state = NULL;
 }
 
+/*
+** プレイヤーがドアに近いかチェック
+** ドアのグリッドから一定範囲内にいる場合、閉じられないようにする
+*/
 int	is_player_in_door(t_game *game, int door_x, int door_y)
 {
-	int	player_map_x;
-	int	player_map_y;
+	double	px;
+	double	py;
+	double	dx;
+	double	dy;
+	double	distance_sq;
 
-	player_map_x = (int)game->player.pos_x;
-	player_map_y = (int)game->player.pos_y;
-	if (player_map_x == door_x && player_map_y == door_y)
+	px = game->player.pos_x;
+	py = game->player.pos_y;
+	dx = px - (door_x + 0.5);
+	dy = py - (door_y + 0.5);
+	distance_sq = dx * dx + dy * dy;
+	if (distance_sq < 1.0)
 		return (1);
 	return (0);
 }
