@@ -13,8 +13,6 @@
 #include "cub3d.h"
 #include "player.h"
 
-static int	is_wall(t_game *game, double x, double y);
-
 /*
 ** move_forward
 ** プレイヤーを前方に移動（方向ベクトルに沿って）
@@ -110,45 +108,4 @@ void	move_right(t_game *game)
 	move.x = game->player.plane_x;
 	move.y = game->player.plane_y;
 	try_wall_slide(game, new_x, new_y, move);
-}
-
-static int	is_blocked_cell(t_game *game, int map_x, int map_y)
-{
-	int	cell_type;
-
-	cell_type = game->world_map[map_y][map_x];
-	if (cell_type == WALL)
-		return (1);
-	if (cell_type == DOOR && !game->door_state[map_y][map_x])
-		return (1);
-	return (0);
-}
-
-/*
-** is_wall
-** 指定位置の当たり判定をマージン付きでチェック
-** プレイヤーのバウンディングボックス四隅を確認
-*/
-static int	is_wall(t_game *game, double x, double y)
-{
-	int	x1;
-	int	x2;
-	int	y1;
-	int	y2;
-
-	x1 = (int)(x - COLLISION_MARGIN);
-	x2 = (int)(x + COLLISION_MARGIN);
-	y1 = (int)(y - COLLISION_MARGIN);
-	y2 = (int)(y + COLLISION_MARGIN);
-	if (x1 < 0 || x2 >= game->map_width || y1 < 0 || y2 >= game->map_height)
-		return (1);
-	if (is_blocked_cell(game, x1, y1))
-		return (1);
-	if (is_blocked_cell(game, x2, y1))
-		return (1);
-	if (is_blocked_cell(game, x1, y2))
-		return (1);
-	if (is_blocked_cell(game, x2, y2))
-		return (1);
-	return (0);
 }
