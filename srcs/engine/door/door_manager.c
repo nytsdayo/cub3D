@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "cub3d.h"
+#include "door_utils.h"
 #include <stdlib.h>
 
 /*
@@ -20,7 +21,6 @@
 void	init_door_state(t_game *game)
 {
 	int	i;
-	int	j;
 
 	game->door_state = malloc(sizeof(bool *) * game->map_height);
 	if (!game->door_state)
@@ -31,18 +31,10 @@ void	init_door_state(t_game *game)
 		game->door_state[i] = malloc(sizeof(bool) * game->map_width);
 		if (!game->door_state[i])
 		{
-			while (--i >= 0)
-				free(game->door_state[i]);
-			free(game->door_state);
-			game->door_state = NULL;
+			cleanup_partial_door_state(game, i);
 			return ;
 		}
-		j = 0;
-		while (j < game->map_width)
-		{
-			game->door_state[i][j] = false;
-			j++;
-		}
+		init_door_row(game, i);
 		i++;
 	}
 }
@@ -64,21 +56,6 @@ void	free_door_state(t_game *game)
 	}
 	free(game->door_state);
 	game->door_state = NULL;
-}
-
-/*
-** プレイヤーがドアのセル内にいるかチェック
-*/
-static int	is_player_in_door(t_game *game, int door_x, int door_y)
-{
-	int	player_map_x;
-	int	player_map_y;
-
-	player_map_x = (int)game->player.pos_x;
-	player_map_y = (int)game->player.pos_y;
-	if (player_map_x == door_x && player_map_y == door_y)
-		return (1);
-	return (0);
 }
 
 /*

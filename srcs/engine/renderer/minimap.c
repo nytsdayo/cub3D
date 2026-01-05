@@ -12,116 +12,78 @@
 
 #include "cub3d.h"
 #include "raycasting.h"
+#include "minimap_utils.h"
 
-#define MINIMAP_SIZE 150
-#define MINIMAP_OFFSET 10
-
-static int	calculate_tile_size(t_game *game)
-{
-	int	tile_w;
-	int	tile_h;
-
-	tile_w = MINIMAP_SIZE / game->map_width;
-	tile_h = MINIMAP_SIZE / game->map_height;
-	if (tile_w < tile_h)
-		return (tile_w);
-	return (tile_h);
-}
-
-static int	get_cell_color(t_game *game, int map_x, int map_y)
-{
-	if (map_x < 0 || map_x >= game->map_width
-		|| map_y < 0 || map_y >= game->map_height)
-		return (0x000000);
-	if (game->world_map[map_y][map_x] == WALL)
-		return (0xFFFFFF);
-	if (game->world_map[map_y][map_x] == DOOR)
-	{
-		if (game->door_state[map_y][map_x])
-			return (0x00FF00);
-		return (0x8B4513);
-	}
-	return (0x000000);
-}
-
-static void	draw_minimap_cell(t_game *game, int screen_x, int screen_y,
-		int tile_size, int color)
+static void	draw_minimap_cell(t_game *game, t_minimap_ctx *ctx)
 {
 	int	i;
 	int	j;
 
 	i = 0;
-	while (i < tile_size)
+	while (i < ctx->tile_size)
 	{
 		j = 0;
-		while (j < tile_size)
+		while (j < ctx->tile_size)
 		{
-			if (screen_x + j < MINIMAP_SIZE && screen_y + i < MINIMAP_SIZE)
-			{
-				put_pixel(game, MINIMAP_OFFSET + screen_x + j,
-					MINIMAP_OFFSET + screen_y + i, color);
-			}
+			draw_minimap_pixel(game, ctx, i, j);
 			j++;
 		}
 		i++;
 	}
 }
 
-static void	draw_player_on_minimap(t_game *game, int player_screen_x,
-		int player_screen_y)
+static void	draw_player_on_minimap(t_game *game, int px, int py)
 {
 	int	i;
 	int	j;
-	int	radius;
 
-	radius = 3;
-	i = -radius;
-	while (i <= radius)
+	i = -3;
+	while (i <= 3)
 	{
-		j = -radius;
-		while (j <= radius)
+		j = -3;
+		while (j <= 3)
 		{
-			if (player_screen_x + j >= 0 && player_screen_x + j < MINIMAP_SIZE
-				&& player_screen_y + i >= 0
-				&& player_screen_y + i < MINIMAP_SIZE)
-			{
-				put_pixel(game, MINIMAP_OFFSET + player_screen_x + j,
-					MINIMAP_OFFSET + player_screen_y + i, 0xFF0000);
-			}
+			draw_player_pixel(game, px + j, py + i);
 			j++;
 		}
 		i++;
 	}
 }
 
-void	render_minimap(t_game *game)
+static void	render_map_cells(t_game *game, int tile_size)
 {
-	int	map_x;
-	int	map_y;
-	int	screen_x;
-	int	screen_y;
-	int	player_screen_x;
-	int	player_screen_y;
-	int	tile_size;
+	t_minimap_ctx	ctx;
+	int				map_x;
+	int				map_y;
 
-	tile_size = calculate_tile_size(game);
-	if (tile_size < 1)
-		tile_size = 1;
+	ctx.tile_size = tile_size;
 	map_y = 0;
 	while (map_y < game->map_height)
 	{
 		map_x = 0;
 		while (map_x < game->map_width)
 		{
-			screen_x = map_x * tile_size;
-			screen_y = map_y * tile_size;
-			draw_minimap_cell(game, screen_x, screen_y, tile_size,
-				get_cell_color(game, map_x, map_y));
+			ctx.screen_x = map_x * tile_size;
+			ctx.screen_y = map_y * tile_size;
+			ctx.color = get_cell_color(game, map_x, map_y);
+			draw_minimap_cell(game, &ctx);
 			map_x++;
 		}
 		map_y++;
 	}
-	player_screen_x = (int)(game->player.pos_x * tile_size);
-	player_screen_y = (int)(game->player.pos_y * tile_size);
-	draw_player_on_minimap(game, player_screen_x, player_screen_y);
+}
+
+void	render_minimap(t_game *game)
+{
+	int	tile_size;
+	int	player_x;
+	int	player_y;
+
+	tile_size = calculate_tile_size(game);
+	if (tile_size < 1)
+		tile_size = 1;
+	render_map_cells(game, tile_size);
+	player_x = (int)(game->player.pos_x * tile_size);
+	player_y = (int)(game->player.pos_y * tile_size);
+	draw_player_on_minimap(game, player_x, player_y);
 }
