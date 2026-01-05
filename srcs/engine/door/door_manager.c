@@ -12,6 +12,7 @@
 
 #include "cub3d.h"
 #include "door_utils.h"
+#include "door_animation.h"
 #include <stdlib.h>
 
 /*
@@ -61,9 +62,12 @@ void	free_door_state(t_game *game)
 /*
 ** ドアの開閉を切り替える
 ** プレイヤーがドア内にいる場合は閉じられない
+** アニメーションシステムを使用
 */
 void	toggle_door(t_game *game, int map_x, int map_y)
 {
+	int	is_opening;
+
 	if (map_x < 0 || map_x >= game->map_width
 		|| map_y < 0 || map_y >= game->map_height)
 		return ;
@@ -72,6 +76,8 @@ void	toggle_door(t_game *game, int map_x, int map_y)
 	if (game->door_state[map_y][map_x] && is_player_in_door(game, map_x, map_y))
 		return ;
 	game->door_state[map_y][map_x] = !game->door_state[map_y][map_x];
+	is_opening = game->door_state[map_y][map_x];
+	start_door_animation(game, map_x, map_y, is_opening);
 }
 
 /*

@@ -150,25 +150,29 @@ typedef struct s_color
 	int			b;
 }				t_color;
 
+/* Forward declaration for door animation */
+typedef struct s_door_animation	t_door_animation;
+
 /* Game Structure */
 typedef struct s_game
 {
-	void		*mlx;
-	void		*win;
-	char		**map;
-	int			**world_map;
-	bool		**door_state;
-	int			map_width;
-	int			map_height;
-	t_player	player;
-	t_img		img;
-	t_texture	textures;
-	t_color		floor_color;
-	t_color		ceiling_color;
-	int			keys[KEY_STATE_SIZE];
-	int			mouse_pressed;
-	int			last_mouse_x;
-	int			last_mouse_y;
+	void				*mlx;
+	void				*win;
+	char				**map;
+	int					**world_map;
+	bool				**door_state;
+	t_door_animation	**door_animations;
+	int					map_width;
+	int					map_height;
+	t_player			player;
+	t_img				img;
+	t_texture			textures;
+	t_color				floor_color;
+	t_color				ceiling_color;
+	int					keys[KEY_STATE_SIZE];
+	int					mouse_pressed;
+	int					last_mouse_x;
+	int					last_mouse_y;
 }				t_game;
 
 #endif

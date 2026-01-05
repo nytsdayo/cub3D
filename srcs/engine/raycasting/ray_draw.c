@@ -13,6 +13,7 @@
 #include "cub3d.h"
 #include "raycasting.h"
 #include "texture.h"
+#include "door_renderer.h"
 
 /*
 ** ピクセルを描画
@@ -36,26 +37,11 @@ static int	create_rgb_color(t_color color)
 	return ((color.r << 16) | (color.g << 8) | color.b);
 }
 
-static void	draw_door(t_game *game, t_ray *ray, int x)
-{
-	int	y;
-	int	door_color;
-
-	door_color = 0x8B4513;
-	y = 0;
-	while (y < ray->draw_start)
-		put_pixel(game, x, y++, create_rgb_color(game->ceiling_color));
-	while (y <= ray->draw_end)
-		put_pixel(game, x, y++, door_color);
-	while (y < WINDOW_HEIGHT)
-		put_pixel(game, x, y++, create_rgb_color(game->floor_color));
-}
-
 static int	try_draw_door(t_game *game, t_ray *ray, int x)
 {
 	if (game->world_map[ray->map_y][ray->map_x] != DOOR)
 		return (0);
-	draw_door(game, ray, x);
+	draw_animated_door(game, ray, x);
 	return (1);
 }
 
