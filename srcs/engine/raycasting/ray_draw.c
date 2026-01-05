@@ -51,6 +51,14 @@ static void	draw_door(t_game *game, t_ray *ray, int x)
 		put_pixel(game, x, y++, create_rgb_color(game->floor_color));
 }
 
+static int	try_draw_door(t_game *game, t_ray *ray, int x)
+{
+	if (game->world_map[ray->map_y][ray->map_x] != DOOR)
+		return (0);
+	draw_door(game, ray, x);
+	return (1);
+}
+
 /*
 ** 垂直線を描画（天井、テクスチャ壁、床）
 */
@@ -62,11 +70,8 @@ void	draw_vertical_line(t_game *game, t_ray *ray, int x)
 	double	tex_pos;
 	t_img	*texture;
 
-	if (game->world_map[ray->map_y][ray->map_x] == DOOR)
-	{
-		draw_door(game, ray, x);
+	if (try_draw_door(game, ray, x))
 		return ;
-	}
 	y = 0;
 	while (y < ray->draw_start)
 		put_pixel(game, x, y++, create_rgb_color(game->ceiling_color));
