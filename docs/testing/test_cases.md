@@ -4,50 +4,46 @@ This document provides a comprehensive list of all test cases for the cub3D pars
 
 ## Test Statistics
 
-- **Total Tests**: 111
-- **Success Cases**: 57
-- **Failure Cases**: 54
+- **Total Tests**: 133
+- **Success Cases**: 66
+- **Failure Cases**: 67
 
-## Success Test Cases (57)
+## Success Test Cases (66)
 
 These test cases should pass validation and parsing.
 
 | # | Test File | Category | Description |
 |---|-----------|----------|-------------|
-| 1 | `cheese_maze.cub` | Complex Map | Cheese-themed maze layout |
-| 2 | `creepy.cub` | Themed Map | Creepy atmosphere themed map |
-| 3 | `diamond.cub` | Shape Test | Symmetrical diamond-shaped map |
-| 4 | `dungeon.cub` | Themed Map | Dungeon-style map |
-| 5 | `library.cub` | Themed Map | Library-themed environment |
-| 6 | `matrix.cub` | Themed Map | Matrix-inspired map |
-| 7 | `sad_face.cub` | Shape Test | Sad face shaped map |
-| 8 | `square_map.cub` | Basic Shape | Standard square map with various features |
-| 9 | `subject_map.cub` | Reference | Map from project subject |
-| 10 | `test_map.cub` | Basic Test | General test map |
-| 11 | `test_map_hole.cub` | Edge Case | Map with hole in the middle |
-| 12 | `test_pos_bottom.cub` | Player Position | Player at bottom of map |
-| 13 | `test_pos_left.cub` | Player Position | Player at left side of map |
-| 14 | `test_pos_right.cub` | Player Position | Player at right side of map |
-| 15 | `test_pos_top.cub` | Player Position | Player at top of map |
-| 16 | `test_textures.cub` | Texture Test | Various texture configurations |
-| 17 | `test_whitespace.cub` | Format Test | Map with extra whitespace |
-| 18 | `valid_basic.cub` | Basic | Minimal valid configuration |
-| 19 | `valid_bigmap/large_open_space.cub` | Large Map | Large open area |
-| 20 | `valid_bigmap/maze_pattern.cub` | Large Map | Maze pattern in large map |
-| 21 | `valid_bigmap/spiral_pattern.cub` | Large Map | Spiral pattern layout |
-| 22 | `valid_complex.cub` | Complex | Complex map structure |
-| 23 | `valid_complex/spiky_edges_1.cub` | Complex Shape | Map with spiky edges (variant 1) |
-| 24 | `valid_complex/spiky_edges_2.cub` | Complex Shape | Map with spiky edges (variant 2) |
-| 25 | `valid_complex/zigzag_horizontal.cub` | Complex Shape | Horizontal zigzag pattern |
-| 26 | `valid_complex/zigzag_vertical.cub` | Complex Shape | Vertical zigzag pattern |
-| 27 | `valid_minimal.cub` | Minimal | Smallest valid map (3x3) |
-| 28 | `valid_player_east.cub` | Player Direction | Player facing East |
-| 29 | `valid_player_south.cub` | Player Direction | Player facing South |
-| 30 | `valid_player_west.cub` | Player Direction | Player facing West |
-| 31 | `valid_random_order.cub` | Config Order | Random identifier order |
-| 32-55 | `valid_random_order/order_*.cub` | Config Order | 24 permutations of identifier order |
-| 56 | `valid_with_empty_lines.cub` | Format Test | Valid map with empty lines in config |
-| 57 | `works.cub` | General | General working example |
+| 1 | `diamond.cub` | Shape Test | Symmetrical diamond-shaped map |
+| 2 | `dungeon.cub` | Themed Map | Dungeon-style map |
+| 3 | `library.cub` | Themed Map | Library-themed environment |
+| 4 | `matrix.cub` | Themed Map | Matrix-inspired map |
+| 5 | `sad_face.cub` | Shape Test | Sad face shaped map |
+| 6 | `square_map.cub` | Basic Shape | Standard square map with various features |
+| 7 | `test_map.cub` | Basic Test | General test map |
+| 8 | `test_map_hole.cub` | Edge Case | Map with hole in the middle |
+| 9 | `test_pos_bottom_south.cub` | Player Position | Player at bottom of map |
+| 10 | `test_pos_left_west.cub` | Player Position | Player at left side of map |
+| 11 | `test_pos_right_east.cub` | Player Position | Player at right side of map |
+| 12 | `test_pos_top_north.cub` | Player Position | Player at top of map |
+| 13 | `test_textures.cub` | Texture Test | Various texture configurations |
+| 14 | `test_whitespace.cub` | Format Test | Map with extra whitespace |
+| 15 | `valid_basic.cub` | Basic | Minimal valid configuration |
+| 16 | `valid_bigmap/large_open_space.cub` | Large Map | Large open area |
+| 17 | `valid_bigmap/maze_pattern.cub` | Large Map | Maze pattern in large map |
+| 18 | `valid_bigmap/spiral_pattern.cub` | Large Map | Spiral pattern layout |
+| 19 | `valid_complex.cub` | Complex | Complex map structure |
+| 20 | `valid_complex/spiky_edges_1.cub` | Complex Shape | Map with spiky edges (variant 1) |
+| 21 | `valid_complex/spiky_edges_2.cub` | Complex Shape | Map with spiky edges (variant 2) |
+| 22 | `valid_complex/zigzag_horizontal.cub` | Complex Shape | Horizontal zigzag pattern |
+| 23 | `valid_complex/zigzag_vertical.cub` | Complex Shape | Vertical zigzag pattern |
+| 24 | `valid_minimal.cub` | Minimal | Smallest valid map (3x3) |
+| 25 | `valid_player_east.cub` | Player Direction | Player facing East |
+| 26 | `valid_player_south.cub` | Player Direction | Player facing South |
+| 27 | `valid_player_west.cub` | Player Direction | Player facing West |
+| 28-51 | `valid_random_order/order_*.cub` | Config Order | 24 permutations of identifier order |
+| 52 | `valid_with_empty_lines.cub` | Format Test | Valid map with empty lines in config |
+| 53 | `works.cub` | General | General working example |
 
 ### Identifier Order Tests (24 cases)
 
@@ -61,7 +57,7 @@ Tests all valid permutations of configuration identifiers (NO, SO, WE, EA, F, C)
 | 4 | `order_04_NO_F_C_SO_WE_EA.cub` | NO → F → C → SO → WE → EA |
 | 5-24 | ... | (20 more permutations) |
 
-## Failure Test Cases (54)
+## Failure Test Cases (67)
 
 These test cases should fail validation with specific error codes.
 
@@ -124,15 +120,13 @@ These test cases should fail validation with specific error codes.
 | 1 | `map_first.cub` | Config Order | Map before configuration |
 | 2 | `map_middle.cub` | Config Order | Map in middle of config |
 
-### Player Tests (15 cases)
+### Player Tests (13 cases)
 
 | # | Test File | Error Type | Description |
 |---|-----------|------------|-------------|
 | 1 | `invalid_no_player.cub` | No Player | No player start position |
-| 2 | `player_none.cub` | No Player | Missing player |
-| 3 | `player_multiple.cub` | Multiple Players | Multiple player positions |
-| 4 | `player_on_edge.cub` | Invalid Position | Player on map edge |
-| 5-15 | `invalid_multiple_players/*.cub` | Multiple Players | 11 combinations of multiple players |
+| 2 | `player_on_edge.cub` | Invalid Position | Player on map edge |
+| 3-13 | `invalid_multiple_players/*.cub` | Multiple Players | 11 combinations of multiple players |
 
 ### Multiple Player Combinations (11 cases)
 
