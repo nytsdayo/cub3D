@@ -43,8 +43,8 @@
 **注記:** プレイヤーが北向き（N）のマップは、`valid_random_order/order_01_NO_SO_WE_EA_F_C.cub`が同じ内容のため、重複削除されました。
 
 ### 5. 設定要素の順序が異なるマップ
-**path:** `assets/maps/Success/valid_random_order/`  
-**detail:** 設定要素（NO, SO, WE, EA, F, C）の順序が様々に異なる24パターンのマップファイル。どの順序でも有効であることを確認。成功ケース。order_01ファイルは北向きプレイヤーのケースも兼ねています。
+**path:** `assets/maps/Success/valid_random_order/`
+**detail:** 設定要素（NO, SO, WE, EA, F, C）の順序が様々に異なる24パターンのマップファイル。どの順序でも有効であることを確認。成功ケース。order_01ファイルは北向きプレイヤーのケースも兼ねています。スタンドアロンの `valid_random_order.cub` はディレクトリ内ファイルと冗長のため削除済み。
 
 ### 6. 空行を含む有効なマップ
 **path:** `assets/maps/Success/valid_with_empty_lines.cub`  
@@ -143,15 +143,15 @@ bash ./test/run_parser_tests.sh
 - 複雑なマップ: 5ファイル（オリジナル1 + ジグザグ2 + とげとげ2）
 - 最小マップ: 1ファイル
 - プレイヤー方向: 3ファイル（S, E, W）※Nはランダム順序のorder_01と同一のため削除
-- ランダム順序: 25ファイル（オリジナル1 + 新規24、order_01は北向きプレイヤーケースを兼ねる）
+- ランダム順序: 24ファイル（order_01は北向きプレイヤーケースを兼ねる）
 - 空行含む: 1ファイル
 - 大きなマップ: 3ファイル（>1024文字）
-- 既存マップ（good/から移動）: 17ファイル（cheese_maze, creepy, dungeon等）
-- **合計: 56ファイル**
+- 既存マップ（good/から移動）: 13ファイル（diamond, dungeon, library等）
+- **合計: 66ファイル**
 
 ### 失敗ケース (Failed Cases)
-- 複数プレイヤー: 11ファイル（全組み合わせ）※親ファイルは削除（N_S.cubと同一）
-- プレイヤーなし: 1ファイル
+- 複数プレイヤー: 11ファイル（全組み合わせ）
+- プレイヤーなし: 1ファイル（invalid_no_player.cub）
 - 未閉鎖マップ: 1ファイル
 - 無効文字: 1ファイル
 - 不完全設定: 1ファイル
@@ -161,26 +161,34 @@ bash ./test/run_parser_tests.sh
 - 存在しないテクスチャ: 1ファイル
 - マップ内空行: 1ファイル
 - RGBフォーマット不正: 6ファイル※親ファイルは削除（floor_space_separated.cubと同一）
-- 既存マップ（bad/から移動）: 28ファイル
-- **合計: 54ファイル**
+- 既存マップ（bad/から移動）: 25ファイル
+- **合計: 67ファイル**
 
 ### 総計
-**全テストケース: 110ファイル**
+**全テストケース: 133ファイル**
 
 ### 重複削除の詳細
 整理の際に以下の重複ファイルを削除しました：
 1. `valid_player_north.cub` - `valid_random_order/order_01_NO_SO_WE_EA_F_C.cub`と同一
 2. `invalid_multiple_players.cub` - `invalid_multiple_players/N_S.cub`と同一
 3. `invalid_rgb_format.cub` - `invalid_rgb_format/floor_space_separated.cub`と同一
+4. `valid_diagonal_corridor.cub` - `naname.cub`と完全一致
+5. `invalid_map_unclosed_4.cub` - `invalid_map_unclosed_2.cub`と完全一致
+6. `subject_map.cub` - `valid_basic.cub`とマップ同一（色微差のみ）
+7. `valid_random_order.cub` - `valid_random_order/`ディレクトリ内ファイルと冗長
+8. `player_multiple.cub` - `invalid_multiple_players/S_E.cub`と冗長
+9. `player_none.cub` - `invalid_no_player.cub`と冗長
+10. `cheese_maze.cub` - `matrix.cub`とマップ同一（テーマ違いのみ）
+11. `creepy.cub` - `sad_face.cub`とマップ同一（テーマ違いのみ）
 
 ### ディレクトリ構造
 ```
 assets/maps/
-├── Success/          # 有効なマップ（56ファイル）
+├── Success/          # 有効なマップ（66ファイル）
 │   ├── valid_bigmap/
 │   ├── valid_complex/
 │   └── valid_random_order/
-└── Failed/           # 無効なマップ（54ファイル）
+└── Failed/           # 無効なマップ（67ファイル）
     ├── invalid_multiple_players/
     └── invalid_rgb_format/
 ```
