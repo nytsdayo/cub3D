@@ -21,6 +21,10 @@ int	calculate_tile_size(t_game *game)
 
 	tile_w = MINIMAP_SIZE / game->map_width;
 	tile_h = MINIMAP_SIZE / game->map_height;
+	if (tile_w < 1)
+		tile_w = 1;
+	if (tile_h < 1)
+		tile_h = 1;
 	if (tile_w < tile_h)
 		return (tile_w);
 	return (tile_h);

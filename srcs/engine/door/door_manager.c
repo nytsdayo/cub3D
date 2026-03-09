@@ -14,6 +14,7 @@
 #include "door_utils.h"
 #include "door_animation.h"
 #include <stdlib.h>
+#include <math.h>
 
 /*
 ** ドア状態配列の初期化
@@ -99,16 +100,17 @@ void	interact_door(t_game *game)
 	{
 		check_x = game->player.pos_x + game->player.dir_x * distance;
 		check_y = game->player.pos_y + game->player.dir_y * distance;
-		map_x = (int)check_x;
-		map_y = (int)check_y;
-		if (map_x >= 0 && map_x < game->map_width
-			&& map_y >= 0 && map_y < game->map_height)
+		map_x = (int)floor(check_x);
+		map_y = (int)floor(check_y);
+		if (map_x < 0 || map_x >= game->map_width
+			|| map_y < 0 || map_y >= game->map_height)
+			break ;
+		if (game->world_map[map_y][map_x] == WALL)
+			break ;
+		if (game->world_map[map_y][map_x] == DOOR)
 		{
-			if (game->world_map[map_y][map_x] == DOOR)
-			{
-				toggle_door(game, map_x, map_y);
-				return ;
-			}
+			toggle_door(game, map_x, map_y);
+			return ;
 		}
 		distance += 0.5;
 	}
