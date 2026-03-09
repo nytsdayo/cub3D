@@ -71,11 +71,20 @@ SRCS = $(SRC_DIR)/main.c \
 	   $(SRC_DIR)/engine/raycasting/ray_draw.c \
 	   $(SRC_DIR)/engine/raycasting/texture_coords.c \
 	   $(SRC_DIR)/engine/player/player_movement.c \
+	   $(SRC_DIR)/engine/player/player_collision.c \
 	   $(SRC_DIR)/engine/player/player_rotation.c \
 	   $(SRC_DIR)/engine/player/player_slide.c \
 	   $(SRC_DIR)/engine/texture/texture_init.c \
 	   $(SRC_DIR)/engine/texture/texture_utils.c \
 	   $(SRC_DIR)/engine/texture/texture_cleanup.c \
+	   $(SRC_DIR)/engine/door/door_manager.c \
+	   $(SRC_DIR)/engine/door/door_manager_utils.c \
+	   $(SRC_DIR)/engine/door/door_animation_init.c \
+	   $(SRC_DIR)/engine/door/door_animation_update.c \
+	   $(SRC_DIR)/engine/door/door_animation_control.c \
+	   $(SRC_DIR)/engine/door/door_renderer.c \
+	   $(SRC_DIR)/engine/renderer/minimap.c \
+	   $(SRC_DIR)/engine/renderer/minimap_utils.c \
 	   $(SRC_DIR)/utils/cleanup.c
 
 # Object files

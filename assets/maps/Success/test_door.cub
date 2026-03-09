@@ -1,0 +1,16 @@
+NO assets/textures/nyan/north.xpm
+SO assets/textures/nyan/south.xpm
+WE assets/textures/nyan/west.xpm
+EA assets/textures/nyan/east.xpm
+
+F 255,255,255
+C 0,100,200
+1111111111111
+1000000000001
+1000000D00001
+1000000000001
+1000000N00001
+1000000000001
+1000000000001
+1000000000001
+1111111111111

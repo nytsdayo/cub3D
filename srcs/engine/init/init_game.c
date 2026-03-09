@@ -15,6 +15,8 @@
 #include "raycasting.h"
 #include "texture.h"
 #include "utils.h"
+#include "door.h"
+#include "door_animation.h"
 
 static int	init_mlx(t_game *game);
 static void	init_image(t_game *game);
@@ -42,6 +44,12 @@ int	init_game(t_game *game, t_config_data *config)
 	init_textures(game, config);
 	init_colors(game, config);
 	init_world_map(game);
+	init_door_state(game);
+	if (!game->door_state)
+		return (1);
+	init_door_animations(game);
+	if (!game->door_animations)
+		return (1);
 	init_player(game);
 	return (0);
 }

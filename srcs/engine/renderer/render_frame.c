@@ -14,11 +14,15 @@
 #include "engine.h"
 #include "key_handler.h"
 #include "raycasting.h"
+#include "minimap.h"
+#include "door_animation.h"
 
 int	render_frame(t_game *game)
 {
 	process_held_keys(game);
+	update_door_animations(game);
 	cast_rays(game);
+	render_minimap(game);
 	mlx_put_image_to_window(game->mlx, game->win, game->img.img, 0, 0);
 	return (0);
 }

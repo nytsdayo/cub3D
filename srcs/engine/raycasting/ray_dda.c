@@ -13,6 +13,18 @@
 #include "cub3d.h"
 #include "raycasting.h"
 
+static int	is_solid_wall(t_game *game, int map_x, int map_y)
+{
+	int	cell_type;
+
+	cell_type = game->world_map[map_y][map_x];
+	if (cell_type == WALL)
+		return (1);
+	if (cell_type == DOOR && !game->door_state[map_y][map_x])
+		return (1);
+	return (0);
+}
+
 /*
 ** DDAアルゴリズムで壁を探す
 */
@@ -32,7 +44,7 @@ void	perform_dda(t_game *game, t_ray *ray)
 			ray->map_y += ray->step_y;
 			ray->side = 1;
 		}
-		if (game->world_map[ray->map_y][ray->map_x] > 0)
+		if (is_solid_wall(game, ray->map_x, ray->map_y))
 			ray->hit = 1;
 	}
 }

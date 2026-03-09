@@ -13,6 +13,7 @@
 #include "cub3d.h"
 #include "raycasting.h"
 #include "texture.h"
+#include "door_renderer.h"
 
 /*
 ** ピクセルを描画
@@ -36,6 +37,14 @@ static int	create_rgb_color(t_color color)
 	return ((color.r << 16) | (color.g << 8) | color.b);
 }
 
+static int	try_draw_door(t_game *game, t_ray *ray, int x)
+{
+	if (game->world_map[ray->map_y][ray->map_x] != DOOR)
+		return (0);
+	draw_animated_door(game, ray, x);
+	return (1);
+}
+
 /*
 ** 垂直線を描画（天井、テクスチャ壁、床）
 */
@@ -47,6 +56,8 @@ void	draw_vertical_line(t_game *game, t_ray *ray, int x)
 	double	tex_pos;
 	t_img	*texture;
 
+	if (try_draw_door(game, ray, x))
+		return ;
 	y = 0;
 	while (y < ray->draw_start)
 		put_pixel(game, x, y++, create_rgb_color(game->ceiling_color));
